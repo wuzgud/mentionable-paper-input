@@ -1,0 +1,83 @@
+$mention-helpbar-height: 32px;
+
+.mentionable-input {
+
+  .possible-mentions {
+    z-index: 1000;
+    min-width: 100%;
+    position: absolute;
+    top: 65%;
+    box-shadow: 0 5px 10px rgba(0,0,0,.15);
+    border: 1px solid rgba(0,0,0,.15);
+    background-color: #fff;
+    border-radius: 6px;
+
+    .help-bar {
+      position: absolute;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      background: #fafbfc;
+      color: #7f7f83;
+      font-size: 12px;
+      border-bottom: 1px solid rgba(0,0,0,.15);
+      background-clip: padding-box;
+      height: $mention-helpbar-height;
+      overflow: hidden;
+      border-radius: 6px 6px 0 0;
+
+      .matching-text {
+        max-width: 170px;
+        position: relative;
+        left: 12px;
+        @extend .text-truncate;
+      }
+
+      .close-action {
+        position: relative;
+        right: 12px;
+
+        md-icon {
+          color: #474747 !important;
+        }
+
+        .close:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    ul.options {
+      list-style-type: none;
+      margin: $mention-helpbar-height 0 0 0;
+      padding: 0;
+      background-clip: padding-box;
+      overflow: hidden;
+      overflow-y: auto;
+      max-height: calc(350px - #{$mention-helpbar-height});
+
+      li.option {
+        display: flex;
+        align-items: center;
+        padding: 5px 22px 5px 11px;
+        white-space: nowrap;
+
+        .primary {
+          color: rgb(20, 23, 26);
+          font-weight: 600;
+        }
+
+        .subtext {
+          position: relative;
+          top: 1px;
+        }
+
+        &:hover {
+          background: #eee;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

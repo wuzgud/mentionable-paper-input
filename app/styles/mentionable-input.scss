@@ -1,0 +1,22 @@
+@import 'ember-paper';
+@import 'util';
+@import 'dropdown-options';
+@import 'styled-input-text';
+
+.mentionable-input {
+
+  input, textarea {
+    color: #000 !important;
+    @media (min-width: 991px) {
+      text-shadow: 0 0 0 transparent !important; // magic behind styling mentions in comments
+      -webkit-text-fill-color: transparent !important;
+    }
+  }
+
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
+    color: #000;
+    text-shadow: none;
+    -webkit-text-fill-color: initial;
+  }
+}

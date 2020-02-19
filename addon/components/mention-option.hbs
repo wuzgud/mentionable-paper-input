@@ -1,0 +1,10 @@
+<li class="option" role="button" {{on 'click' (fn @doMention (get @option @mentionKey))}} data-test-mention-option>
+  {{#if (has-block)}}
+    {{yield @option}}
+  {{else}}
+    {{!-- todo: support dynamic image --}}
+    <span class="avatar-rounded-small mr-2"></span>
+    <span class="primary mr-2" data-test-primary>{{get @option @displayKey}}</span>
+    <span class="subtext" data-test-subtext>{{get @option @mentionKey}}</span>
+  {{/if}}
+</li>

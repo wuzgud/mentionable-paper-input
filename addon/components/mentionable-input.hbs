@@ -1,1 +1,37 @@
-{{yield}}
+<div class="mentionable-input">
+  <PaperInput
+          @textarea={{true}}
+          @block={{true}}
+          @label={{this.label}}
+          @passThru={{hash maxRows=4}}
+          @required={{@required}}
+          @value={{@value}}
+          @onChange={{fn this.onInputChange}}
+          @spellcheck={{false}}
+          @onKeyDown={{fn this.keyDown}}
+    {{did-insert this.setTextAreaWrapperElement}}>
+    {{#if this.showHint}}
+      <div class="hint">
+        Type "{{this.specialCharacter}}" to mention
+      </div>
+    {{/if}}
+    <StyledInputText
+            @rawText={{@value}}
+            @existingMentions={{this.alreadyMentioned}}
+            @mentionPattern={{this.mentionPattern}}
+            @textAreaElement={{this.textAreaElement}}>
+    </StyledInputText>
+    {{#if (and this.isMentioning this.enableMentions)}}
+      {{yield (hash
+        mentionOptions=(component 'mention-options'
+          options="@options must be passed by consuming context"
+          doMention=(fn this.doMention)
+          closeDropdown=(fn this.closeOptionsDropdown)
+          currentMention=this.currentMention
+          textAreaElement=this.textAreaElement
+        )
+      )}}
+    {{/if}}
+  </PaperInput>
+</div>
+

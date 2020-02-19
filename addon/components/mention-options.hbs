@@ -1,0 +1,34 @@
+<div class="possible-mentions" data-test="possible-mentions"
+  {{did-insert this.setMentionsDropdownTopPosition @currentMention}}
+  {{did-update this.setMentionsDropdownTopPosition @currentMention}}>
+  <div class="help-bar">
+    <span class="matching-text mr-auto">
+      {{this.resultTypeDisplay}} matching <strong>"{{@currentMention}}"</strong>
+    </span>
+    <span class="close-action">
+      {{#if (media 'isMobileDevice')}}
+        <span class="close" role="button" {{on 'click' @closeDropdown}}>
+          <PaperIcon @icon={{'close'}} @size={{20}} />
+        </span>
+      {{else}}
+        <strong>esc</strong> to dismiss
+      {{/if}}
+    </span>
+  </div>
+  <ul class="options">
+    {{#each @options as |option|}}
+      {{yield (hash
+        option=(component 'mention-option'
+          option=option
+          doMention=@doMention
+          mentionKey="mentionKey (mention-option component) needs to be passed and overridden by consuming context!"
+          displayKey="displayKey (mention-option component) needs to be passed and overridden by consuming context!"
+        )
+      )}}
+    {{else}}
+      <li class="option" data-test-no-mention-options-text>
+        No {{this.resultTypeDisplay}} found matching <span class="ml-1 font-weight-600">{{@currentMention}}</span>
+      </li>
+    {{/each}}
+  </ul>
+</div>
