@@ -14,5 +14,22 @@
     line-height: 26px;
     border-radius: 0;
     white-space: normal;
+
+    a.mention {
+      color: #1264a3;
+      text-decoration: none;
+
+      &:hover {
+        color: darken(#1264a3, 15%);
+      }
+
+      &.incomplete {
+        color: rgb(20, 23, 26);
+        pointer-events: none;
+        &:hover {
+          color: rgb(20, 23, 26);
+        }
+      }
+    }
   }
 }

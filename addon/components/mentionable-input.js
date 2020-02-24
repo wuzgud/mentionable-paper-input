@@ -63,19 +63,19 @@ class MentionableInputComponent extends Component {
       this.args.onInputChange && typeof this.args.onInputChange === 'function'
     );
     assert(
-      '<MentionableInput> requires a bound `onMentionTriggered` action which accepts the current mention as an argument',
-      this.args.onMentionTriggered && typeof this.args.onMentionTriggered === 'function'
+      '<MentionableInput> requires a bound `onMentionStarted` action which accepts the current mention as an argument',
+      this.args.onMentionStarted && typeof this.args.onMentionStarted === 'function'
     );
-    this.alreadyMentioned = A([]).concat(this.args.prePopulatedMentions || []);
+    this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
   }
 
   /**
    * Executed when a user adds or removes text in the textarea
    * Strips excessive spacing (no more than one space between words is allowed)
    * A necessary (and low-cost) compromise to make the styling hackery in StyledInputText work
-   * @param  { String } newValue Complete mention value (e.g. a user's full username)
+   * @param  { String } newValue The new, raw text value from textarea element
    * @return { action<String> } emits updated textarea value to parent context via onInputChange action binding
-   * @return { action<String> } emits current mention (see currentMention) to parent context via onMentionTriggered action
+   * @return { action<String> } emits current mention (see currentMention) to parent context via onMentionStarted action
    */
   @action
   onInputChange(newValue) {
@@ -86,7 +86,7 @@ class MentionableInputComponent extends Component {
     }
     this.args.onInputChange(newValue);
     if (this.isMentioning) {
-      this.args.onMentionTriggered(this.currentMention);
+      this.args.onMentionStarted(this.currentMention);
     }
   }
 
@@ -99,8 +99,9 @@ class MentionableInputComponent extends Component {
    */
   @action
   doMention(optionDisplayText) {
-    if (!this.alreadyMentioned.includes(`@${optionDisplayText}`)) {
-      this.alreadyMentioned.pushObject(`@${optionDisplayText}`);
+    const fullMentionText = `${this.specialCharacter}${optionDisplayText}`;
+    if (!this.alreadyMentioned.includes(fullMentionText)) {
+      this.alreadyMentioned.pushObject(fullMentionText);
     }
 
     const updatedTextWithMention = this.addMentionToText(this.value, this.currentMention, optionDisplayText);
@@ -125,7 +126,7 @@ class MentionableInputComponent extends Component {
     return replaceAt(
       text,
       startIndexOfMention,
-      `@${optionDisplayText} `,
+      `${this.specialCharacter}${optionDisplayText} `,
       incompleteMention.length + 1 // plus 1 because of extra space added to end of mention
     );
   }
@@ -134,7 +135,7 @@ class MentionableInputComponent extends Component {
    */
   @action
   closeOptionsDropdown() {
-    this.args.onMentionTriggered(null);
+    this.args.onMentionStarted(null);
     this.enableMentions = false;
   }
   /**
@@ -193,7 +194,7 @@ class MentionableInputComponent extends Component {
    * @return { RegExp } regular expression to match a mention option's full display value
    */
   getSpecificMentionRegex(optionDisplayText) {
-    const regex = `@\\b${optionDisplayText}(?!\\S)`;
+    const regex = `${this.specialCharacter}\\b${optionDisplayText}(?!\\S)`;
     return new RegExp(regex, 'g');
   }
 

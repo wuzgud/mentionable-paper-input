@@ -1,3 +1,11 @@
-<h2 id="title">Welcome to Ember</h2>
-
+<MentionableInput
+        @value={{this.newCommentText}}
+        @onInputChange={{fn this.commentChanged}}
+        @onMentionStarted={{perform this.searchUsersToMention}} as |mentionInput|>
+  <mentionInput.mentionOptions @options={{this.userMentions}} as |options|>
+    <options.option
+            @mentionKey={{"username"}}
+            @displayKey={{"name"}} />
+  </mentionInput.mentionOptions>
+</MentionableInput>
 {{outlet}}

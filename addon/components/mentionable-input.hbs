@@ -1,5 +1,6 @@
-<div class="mentionable-input">
+<div class="mentionable-input" data-test-mentionable-input>
   <PaperInput
+          data-test-mention-input
           @textarea={{true}}
           @block={{true}}
           @label={{this.label}}
@@ -9,14 +10,14 @@
           @onChange={{fn this.onInputChange}}
           @spellcheck={{false}}
           @onKeyDown={{fn this.keyDown}}
-    {{did-insert this.setTextAreaWrapperElement}}>
+          {{did-insert this.setTextAreaWrapperElement}}>
     {{#if this.showHint}}
-      <div class="hint">
+      <div class="hint" data-test-mention-hint>
         Type "{{this.specialCharacter}}" to mention
       </div>
     {{/if}}
     <StyledInputText
-            @rawText={{@value}}
+            @rawValue={{@value}}
             @existingMentions={{this.alreadyMentioned}}
             @mentionPattern={{this.mentionPattern}}
             @textAreaElement={{this.textAreaElement}}>

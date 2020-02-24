@@ -41,13 +41,13 @@ class StyledInputTextComponent extends Component {
   }
 
   get textSegments() {
-    const rawText = this.rawValue;
-    if (!rawText) {
+    const rawValue = this.rawValue;
+    if (!rawValue) {
       return [];
     }
     const mentionRegex = this.mentionPattern;
-    const mentions = rawText.match(mentionRegex) || [];
-    const plainTextSegments = rawText.split(mentionRegex);
+    const mentions = rawValue.match(mentionRegex) || [];
+    const plainTextSegments = rawValue.split(mentionRegex);
     return plainTextSegments.flatMap( (plainText, i) => {
       const segments = [ plainText ];
       if (mentions[i]) {

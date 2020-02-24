@@ -1,13 +1,13 @@
 <div class="possible-mentions" data-test="possible-mentions"
   {{did-insert this.setMentionsDropdownTopPosition @currentMention}}
   {{did-update this.setMentionsDropdownTopPosition @currentMention}}>
-  <div class="help-bar">
-    <span class="matching-text mr-auto">
+  <div class="help-bar" data-test-help-bar>
+    <span class="matching-text mr-auto" data-test-help-bar-text>
       {{this.resultTypeDisplay}} matching <strong>"{{@currentMention}}"</strong>
     </span>
-    <span class="close-action">
+    <span class="close-action" data-test-help-bar-close>
       {{#if (media 'isMobileDevice')}}
-        <span class="close" role="button" {{on 'click' @closeDropdown}}>
+        <span class="close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
           <PaperIcon @icon={{'close'}} @size={{20}} />
         </span>
       {{else}}
