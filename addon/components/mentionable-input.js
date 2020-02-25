@@ -39,11 +39,20 @@ class MentionableInputComponent extends Component {
   }
   /**
    * Regular expression pattern used to match text for mentions
-   * @return { RegExp } Defaults to a pattern that matches a string
-   *    starting with a space-preceded "@" followed by a continuous string of letters, numbers, underscores, and periods
+   * @return { RegExp } the user passed pattern or the default
    */
   get mentionPattern() {
-    return this.args.mentionPattern || /\B@[a-z0-9_.]+/gi;
+    return this.args.mentionPattern || this.defaultRegex;
+  }
+
+  /**
+   * Regular expression pattern used to match text for mentions
+   * @return { RegExp } Defaults to a pattern that matches a string
+   *    starting with a space-preceded ${this.specialCharacter} followed by a continuous string of letters, numbers, underscores, and periods
+   */
+  get defaultRegex(){
+    //TODO: this.specialCharacter needs to be escaped properly so that special regex characters could be used literally (eg $)
+    return new RegExp(`\\B${this.specialCharacter}[a-z0-9_.]+`, 'gi');
   }
   /**
    * Used to control visibility of a hint directly underneath textarea element. The hint instructs users how to mention

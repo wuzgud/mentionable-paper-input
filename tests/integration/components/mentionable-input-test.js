@@ -13,7 +13,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
   hooks.beforeEach(function() {
     this.set('newValue', '');
-});
+  });
 
   test('able to select a mention from the mention options dropdown which emits onInputChange action passing the new input value', async function(assert) {
     assert.expect(10);
@@ -57,6 +57,54 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
     assert.equal(page.inputWithMentions.text, '@ajball');
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
+    assert.equal(
+      this.element.querySelector(page.input.scope + ' textarea'),
+      document.activeElement,
+      'textarea is still focused after selecting mention'
+    );
+  });
+
+  test('can set the mention special character prefix via @specialCharacter', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+
+    this.set('setUserMentions', () => {
+      this.set('mentionOptions', testUsers.map((testUser) => {
+        return new User({ name: testUser.name, username: testUser.username });
+      }));
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @specialCharacter='#'
+        @onInputChange={{fn this.inputChanged}}
+        @onMentionStarted={{fn this.setUserMentions}} as |mi|>
+          <mi.mentionOptions @options={{this.mentionOptions}} as |options|>
+            <options.option
+                    @mentionKey={{"username"}}
+                    @displayKey={{"name"}} />
+          </mi.mentionOptions>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+
+    assert.equal(page.input.value, '@an');
+    assert.equal(page.mentionOptions.length, 0);
+
+    await page.fillWithWait('#an');
+
+    assert.equal(page.input.value, '#an');
+    assert.equal(page.mentionOptions.length, 2);
+
+    await page.mentionOptions[0].click();
+
+    assert.equal(page.input.value, '#ajball ', 'space added to end of mention after adding');
+    assert.equal(page.inputWithMentions.text, '#ajball');
     assert.equal(page.inputWithMentions.mentions.length, 1);
     assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
     assert.equal(
