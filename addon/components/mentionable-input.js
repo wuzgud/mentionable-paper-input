@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { A } from '@ember/array';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { assert } from '@ember/debug';
 
 class MentionableInputComponent extends Component {
@@ -13,6 +13,9 @@ class MentionableInputComponent extends Component {
   alreadyMentioned = A([]);
   @tracked
   enableMentions = true;
+  @tracked
+  focusedOptionIndex = -1;
+
 
   // ===================== Public getters for this component's input parameters =====================
 
@@ -146,17 +149,58 @@ class MentionableInputComponent extends Component {
   closeOptionsDropdown() {
     this.args.onMentionStarted(null);
     this.enableMentions = false;
+    this.focusedOptionIndex = -1;
   }
   /**
-   * Binds to the textarea's key down event and closes the mention options dropdown if the "Escape" key is pressed
-   * Only available on non-mobile screen sizes
+   * Binds to the textarea's key down event and closes the mention options dropdown
+   * this action delegates various key down events like close with escape,
+   * and navgiating to/selecting a mention when mention via enter and arrow keys
    * @param  { KeyboardEvent } event The key down event. Used to check the key property
-   * @todo support up/down arrow and enter to cycle and select mention options
    */
   @action
   keyDown(event) {
     if (event.key === 'Escape') {
       this.closeOptionsDropdown();
+    }
+    if(this.isMentioning){
+      if(event.key === 'ArrowUp'){
+        event.preventDefault();
+        this.processArrowUp();
+      }else if(event.key === 'ArrowDown'){
+        event.preventDefault();
+        this.processArrowDown();
+      }else if(event.key === 'Enter'){
+        if(this.focusedOptionIndex == -1){
+          this.closeOptionsDropdown();
+        }else{
+          const option = this.args.options[this.focusedOptionIndex];
+          if(option){
+            this.doMention(get(option, this.args.mentionKey));
+          }else{
+            this.closeOptionsDropdown();
+          }
+        }
+      }
+    }
+  }
+
+  processArrowUp(){
+    let options = this.args.options;
+    if(!options) { return; }
+    if(this.focusedOptionIndex == -1){
+      this.focusedOptionIndex = options.length - 1;
+    }else{
+      this.focusedOptionIndex--;
+    }
+  }
+
+  processArrowDown(){
+    let options = this.args.options;
+    if(!options) { return; }
+    if(this.focusedOptionIndex == (options.length -1)){
+      this.focusedOptionIndex = -1;
+    }else{
+      this.focusedOptionIndex++;
     }
   }
   /**

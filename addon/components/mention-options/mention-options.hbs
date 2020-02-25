@@ -16,12 +16,14 @@
     </span>
   </div>
   <ul class="options">
-    {{#each @options as |option|}}
+    {{#each @options as |option index|}}
       {{yield (hash
         option=(component 'mention-option'
           option=option
           doMention=@doMention
-          mentionKey="mentionKey (mention-option component) needs to be passed and overridden by consuming context!"
+          index=index
+          focusedIndex=@focusedIndex
+          mentionKey=@mentionKey
           displayKey="displayKey (mention-option component) needs to be passed and overridden by consuming context!"
         )
       )}}

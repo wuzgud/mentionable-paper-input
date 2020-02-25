@@ -78,6 +78,9 @@ $mention-helpbar-height: 32px;
           cursor: pointer;
         }
       }
+      li.option.focused-mention-option{
+        background: #eee;
+      }
     }
   }
 }

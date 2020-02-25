@@ -35,10 +35,11 @@ module('Integration | Component | mentionable-input', function(hooks) {
       <MentionableInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
+        @options={{this.mentionOptions}}
+        @mentionKey={{"username"}}
         @onMentionStarted={{fn this.setUserMentions}} as |mentionInput|>
-          <mentionInput.mentionOptions @options={{this.mentionOptions}} as |options|>
+          <mentionInput.mentionOptions as |options|>
             <options.option
-                    @mentionKey={{"username"}}
                     @displayKey={{"name"}} />
           </mentionInput.mentionOptions>
         </MentionableInput>
@@ -81,11 +82,12 @@ module('Integration | Component | mentionable-input', function(hooks) {
       <MentionableInput
         @value={{this.newValue}}
         @specialCharacter='#'
+        @options={{this.mentionOptions}}
+        @mentionKey={{"username"}}
         @onInputChange={{fn this.inputChanged}}
         @onMentionStarted={{fn this.setUserMentions}} as |mi|>
-          <mi.mentionOptions @options={{this.mentionOptions}} as |options|>
+          <mi.mentionOptions as |options|>
             <options.option
-                    @mentionKey={{"username"}}
                     @displayKey={{"name"}} />
           </mi.mentionOptions>
         </MentionableInput>
@@ -113,7 +115,75 @@ module('Integration | Component | mentionable-input', function(hooks) {
       'textarea is still focused after selecting mention'
     );
   });
+  test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+
+    this.set('setUserMentions', () => {
+      this.set('mentionOptions', testUsers.map((testUser) => {
+        return new User({ name: testUser.name, username: testUser.username });
+      }));
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @options={{this.mentionOptions}}
+        @mentionKey="username"
+        @onInputChange={{fn this.inputChanged}}
+        @onMentionStarted={{fn this.setUserMentions}} as |mentionInput|>
+          <mentionInput.mentionOptions as |options|>
+            <options.option
+                    @displayKey={{"name"}} />
+          </mentionInput.mentionOptions>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+
+    assert.equal(page.input.value, '@an');
+    assert.equal(page.mentionOptions.length, 2);
+    page.mentionOptions.forEach((it) => {
+      assert.notOk(it.isFocused);
+    });
+
+    await page.arrowDown();
+    assert.ok(page.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptions[1].isFocused);
+
+    await page.arrowDown();
+    assert.notOk(page.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptions[1].isFocused);
+
+    await page.arrowDown();
+    page.mentionOptions.forEach((it) => {
+      assert.notOk(it.isFocused);
+    });
+
+    await page.arrowUp();
+    assert.notOk(page.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptions[1].isFocused);
+
+    await page.arrowUp();
+    assert.ok(page.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptions[1].isFocused);
+
+    await page.enter();
+
+    assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
+    assert.equal(page.inputWithMentions.text, '@ajball');
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
+    assert.equal(
+      this.element.querySelector(page.input.scope + ' textarea'),
+      document.activeElement,
+      'textarea is still focused after selecting mention'
+    );
+  });
+
 });
+
 
 const testUsers = [
   {

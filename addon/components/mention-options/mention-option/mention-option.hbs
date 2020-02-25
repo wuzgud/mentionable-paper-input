@@ -1,4 +1,4 @@
-<li class="option" role="button" {{on 'click' (fn @doMention (get @option @mentionKey))}} data-test-mention-option>
+<li class="option {{if this.focused 'focused-mention-option'}}" role="button" {{on 'click' (fn @doMention (get @option @mentionKey))}} data-test-mention-option>
   {{#if (has-block)}}
     {{yield @option}}
   {{else}}

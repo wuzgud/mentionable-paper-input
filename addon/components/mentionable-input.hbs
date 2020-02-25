@@ -25,11 +25,13 @@
     {{#if (and this.isMentioning this.enableMentions)}}
       {{yield (hash
         mentionOptions=(component 'mention-options'
-          options="@options must be passed by consuming context"
+          options=@options
           doMention=(fn this.doMention)
           closeDropdown=(fn this.closeOptionsDropdown)
           currentMention=this.currentMention
           textAreaElement=this.textAreaElement
+          focusedIndex=this.focusedOptionIndex
+          mentionKey=@mentionKey
         )
       )}}
     {{/if}}

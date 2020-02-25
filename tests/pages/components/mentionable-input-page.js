@@ -1,4 +1,4 @@
-import { collection, clickable, text } from 'ember-cli-page-object';
+import { collection, clickable, text, triggerable,hasClass } from 'ember-cli-page-object';
 import { waitPromise } from "../../helpers/wait";
 import textarea from './paper/paper-textarea-page';
 import styledInputText from "./styled-input-text-page";
@@ -7,6 +7,9 @@ export default function(scope){
     return {
         scope,
         input: textarea('[data-test-mention-input]'),
+        arrowUp: triggerable('keydown', '[data-test-mention-input] textarea',  { eventProperties: { key: 'ArrowUp' } }),
+        arrowDown: triggerable('keydown', '[data-test-mention-input] textarea',  { eventProperties: { key: 'ArrowDown' } }),
+        enter: triggerable('keydown', '[data-test-mention-input] textarea',  { eventProperties: { key: 'Enter' } }),
         fillWithWait: async function(value) {
             await this.input.textarea(value);
             await waitPromise(150);
@@ -24,6 +27,7 @@ export default function(scope){
         mentionOptions: collection('[data-test-mention-option]', {
             primary: text('[data-test-primary]'),
             subtext: text('[data-test-subtext]'),
+            isFocused: hasClass('focused-mention-option')
         }),
         noResults: text('[data-test-no-mention-options-text]')
     }
