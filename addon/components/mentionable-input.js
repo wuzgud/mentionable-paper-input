@@ -3,6 +3,7 @@ import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import replaceAt from "addon/utils/replace-at";
 
 class MentionableInputComponent extends Component {
   /**
@@ -52,7 +53,6 @@ class MentionableInputComponent extends Component {
   get mentionPattern() {
     return this.args.mentionPattern || this.defaultRegex;
   }
-
   /**
    * Regular expression pattern used to match text for mentions
    * @return { RegExp } Defaults to a pattern that matches a string
@@ -276,10 +276,6 @@ class MentionableInputComponent extends Component {
   getCursorPosition() {
     return this.textAreaElement.selectionStart;
   }
-}
-
-function replaceAt(text, index, replacementText, replacedTextLength) {
-  return text.substr(0, index) + replacementText + text.substr(index + replacedTextLength);
 }
 
 export default MentionableInputComponent;
