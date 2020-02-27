@@ -3,7 +3,7 @@ import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import replaceAt from "addon/utils/replace-at";
+import replaceAt from '../utils/replace-at';
 
 class MentionableInputComponent extends Component {
   /**
