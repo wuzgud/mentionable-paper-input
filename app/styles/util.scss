@@ -63,7 +63,7 @@ $mi-grid-breakpoints: (
   }
 
   .subtext {
-    font-size: 13px;
+    font-size: 14px;
     color: #929598;
   }
 
@@ -95,5 +95,9 @@ $mi-grid-breakpoints: (
     @include circle-of-size(30px);
     @extend .avatar-common;
     border: 1px solid #929598;
+  }
+
+  .lower-case {
+    text-transform: lowercase;
   }
 }

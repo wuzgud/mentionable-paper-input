@@ -3,7 +3,10 @@ import { tagName } from '@ember-decorators/component';
 
 @tagName('')
 class MentionOptionComponent extends Component {
-  get focused(){
+  get extractedMention() {
+    return this.args.extractMention(this.args.option);
+  }
+  get focused() {
     return this.args.focusedIndex === this.args.index;
   }
 }

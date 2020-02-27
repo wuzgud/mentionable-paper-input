@@ -27,7 +27,7 @@ export default function(scope){
         mentionOptions: collection('[data-test-mention-option]', {
             primary: text('[data-test-primary]'),
             subtext: text('[data-test-subtext]'),
-            isFocused: hasClass('focused-mention-option')
+            isFocused: hasClass('focused')
         }),
         noResults: text('[data-test-no-mention-options-text]')
     }

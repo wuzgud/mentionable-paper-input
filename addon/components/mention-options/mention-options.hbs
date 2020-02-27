@@ -1,9 +1,9 @@
-<div class="possible-mentions" data-test="possible-mentions"
+<div class="possible-mentions"
   {{did-insert this.setMentionsDropdownTopPosition @currentMention}}
   {{did-update this.setMentionsDropdownTopPosition @currentMention}}>
   <div class="help-bar" data-test-help-bar>
     <span class="matching-text mr-auto" data-test-help-bar-text>
-      {{this.resultTypeDisplay}} matching <strong>"{{@currentMention}}"</strong>
+      Results matching <strong>"{{@currentMention}}"</strong>
     </span>
     <span class="close-action" data-test-help-bar-close>
       {{#if (media 'isMobileDevice')}}
@@ -17,20 +17,19 @@
   </div>
   <ul class="options">
     {{#each @options as |option index|}}
-      {{yield (hash
-        option=(component 'mention-option'
-          option=option
-          doMention=@doMention
-          index=index
-          focusedIndex=@focusedIndex
-          mentionKey=@mentionKey
-          displayKey="displayKey (mention-option component) needs to be passed and overridden by consuming context!"
-        )
+      {{yield (component 'mention-option'
+        option=option
+        doMention=@doMention
+        extractMention=@extractMention
+        index=index
+        focusedIndex=@focusedIndex
       )}}
     {{else}}
-      <li class="option" data-test-no-mention-options-text>
-        No {{this.resultTypeDisplay}} found matching <span class="ml-1 font-weight-600">{{@currentMention}}</span>
-      </li>
+      <MentionOption @doMention={{noop}} @index={{null}}>
+        <span data-test-no-mention-options-text>
+          No results found matching <span class="ml-1 font-weight-600">{{@currentMention}}</span>
+        </span>
+      </MentionOption>
     {{/each}}
   </ul>
 </div>

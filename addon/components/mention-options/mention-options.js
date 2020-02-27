@@ -5,10 +5,6 @@ import { action } from '@ember/object';
 
 @tagName('')
 class MentionOptionsComponent extends Component {
-  // defaults generically to "Results". If passed, make sure it's pluralized (e.g. Users, People, Tags, etc)
-  get resultTypeDisplay() {
-    return this.args.resultTypeDisplay || 'Results';
-  }
   constructor() {
     super(...arguments);
   }

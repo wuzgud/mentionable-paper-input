@@ -5,13 +5,18 @@ import RSVP from 'rsvp';
 import { User } from '../models/user';
 
 export default class Application extends Controller {
+  constructor() {
+    super(...arguments);
+  }
+
   @action
   commentChanged(newText) {
     this.set('newCommentText', newText);
   }
 
-  constructor() {
-    super(...arguments);
+  @action
+  getUsername(user) {
+    return user ? user.username : null;
   }
 
   @task(function * (currentMention) {

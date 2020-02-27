@@ -37,11 +37,11 @@ module('Integration | Component | mentionable-input', function(hooks) {
         @onInputChange={{fn this.inputChanged}}
         @options={{this.mentionOptions}}
         @mentionKey={{"username"}}
-        @onMentionStarted={{fn this.setUserMentions}} as |mentionInput|>
-          <mentionInput.mentionOptions as |options|>
-            <options.option
+        @onMentionStarted={{fn this.setUserMentions}} as |mi|>
+          <mi.mentionOptions as |results|>
+            <results.option
                     @displayKey={{"name"}} />
-          </mentionInput.mentionOptions>
+          </mi.mentionOptions>
         </MentionableInput>
     `);
 

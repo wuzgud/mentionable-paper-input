@@ -1,9 +1,8 @@
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
+import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-
-import { A } from '@ember/array';
-import { action, get } from '@ember/object';
-import { assert } from '@ember/debug';
 
 class MentionableInputComponent extends Component {
   /**
@@ -16,8 +15,7 @@ class MentionableInputComponent extends Component {
   @tracked
   focusedOptionIndex = -1;
 
-
-  // ===================== Public getters for this component's input parameters =====================
+  // ===================== Public getters for <MentionableInput>'s input parameters =====================
 
   /**
    * The textarea element's raw text value
@@ -25,6 +23,13 @@ class MentionableInputComponent extends Component {
    */
   get value() {
     return this.args.value;
+  }
+  /**
+   * The textarea element's raw text value
+   * @return { String } textarea value
+   */
+  get options() {
+    return this.args.options || [];
   }
   /**
    * Label for the textarea element
@@ -53,7 +58,7 @@ class MentionableInputComponent extends Component {
    * @return { RegExp } Defaults to a pattern that matches a string
    *    starting with a space-preceded ${this.specialCharacter} followed by a continuous string of letters, numbers, underscores, and periods
    */
-  get defaultRegex(){
+  get defaultRegex() {
     //TODO: this.specialCharacter needs to be escaped properly so that special regex characters could be used literally (eg $)
     return new RegExp(`\\B${this.specialCharacter}[a-z0-9_.]+`, 'gi');
   }
@@ -77,6 +82,10 @@ class MentionableInputComponent extends Component {
     assert(
       '<MentionableInput> requires a bound `onMentionStarted` action which accepts the current mention as an argument',
       this.args.onMentionStarted && typeof this.args.onMentionStarted === 'function'
+    );
+    assert(
+      '<MentionableInput> requires a bound `extractMention` action which accepts a mention option as an argument',
+      this.args.extractMention && typeof this.args.extractMention === 'function'
     );
     this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
   }
@@ -103,47 +112,46 @@ class MentionableInputComponent extends Component {
   }
 
   /**
-   * Executed when a user clicks on a mention result in the mention options dropdown
+   * Executed when a user selects a mention result in the mention options dropdown
    * Completes the mention by adding it to the textarea text and pushing it to the array tracking added mentions
    * Refocuses textarea element
-   * @param  { String } optionDisplayText Complete mention value (e.g. a user's full username)
+   * @param  { String } mentionValue Complete mention value (e.g. a user's full username)
    * @return { action<String> } emits updated textarea text value to parent context via onInputChange action binding
    */
   @action
-  doMention(optionDisplayText) {
-    const fullMentionText = `${this.specialCharacter}${optionDisplayText}`;
+  doMention(mentionValue) {
+    const fullMentionText = `${this.specialCharacter}${mentionValue}`;
     if (!this.alreadyMentioned.includes(fullMentionText)) {
       this.alreadyMentioned.pushObject(fullMentionText);
     }
 
-    const updatedTextWithMention = this.addMentionToText(this.value, this.currentMention, optionDisplayText);
-    this.args.onInputChange(updatedTextWithMention);
-    // if the current/incomplete mention and optionDisplayText are the same, the overall textarea value won't be affected and the options dropdown won't close
-    if (this.currentMention === optionDisplayText) {
-      this.closeOptionsDropdown();
+    if (this.currentMention) {
+      const updatedTextWithMention = this.addMentionToText(this.value, this.currentMention, mentionValue);
+      this.args.onInputChange(updatedTextWithMention);
     }
 
+    this.closeOptionsDropdown();
     this.textAreaElement.focus();
   }
   /**
    * Helper function to add a completed mention to a given text value
    * @param  { String } text Text to add the mention to (in this case, the current value of the textarea element)
    * @param  { String } incompleteMention The current, incomplete mention value (e.g. a user's incomplete username, andrew.b)
-   * @param  { String } optionDisplayText Complete mention value (e.g. a user's full username, andrew.ball)
+   * @param  { String } mentionValue Complete mention value (e.g. a user's full username, andrew.ball)
    * @return { String } text with the new mention added
    */
-  addMentionToText(text, incompleteMention, optionDisplayText) {
+  addMentionToText(text, incompleteMention, mentionValue) {
     const cursorPosition = this.getCursorPosition();
     const startIndexOfMention = cursorPosition - incompleteMention.length;
     return replaceAt(
       text,
       startIndexOfMention,
-      `${this.specialCharacter}${optionDisplayText} `,
+      `${this.specialCharacter}${mentionValue} `,
       incompleteMention.length + 1 // plus 1 because of extra space added to end of mention
     );
   }
   /**
-   * Hides mention options dropdown. Executed when a user clicks the close button on the mention options dropdown
+   * Hides mention options dropdown
    */
   @action
   closeOptionsDropdown() {
@@ -154,7 +162,7 @@ class MentionableInputComponent extends Component {
   /**
    * Binds to the textarea's key down event and closes the mention options dropdown
    * this action delegates various key down events like close with escape,
-   * and navgiating to/selecting a mention when mention via enter and arrow keys
+   * and navigating to/selecting a mention when the user mentions via enter and arrow keys
    * @param  { KeyboardEvent } event The key down event. Used to check the key property
    */
   @action
@@ -162,21 +170,23 @@ class MentionableInputComponent extends Component {
     if (event.key === 'Escape') {
       this.closeOptionsDropdown();
     }
-    if(this.isMentioning){
-      if(event.key === 'ArrowUp'){
+    if (this.isMentioning) {
+      if (event.key === 'ArrowUp') {
         event.preventDefault();
         this.processArrowUp();
-      }else if(event.key === 'ArrowDown'){
+      } else if (event.key === 'ArrowDown') {
         event.preventDefault();
         this.processArrowDown();
-      }else if(event.key === 'Enter'){
-        if(this.focusedOptionIndex == -1){
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (this.focusedOptionIndex === -1) {
           this.closeOptionsDropdown();
-        }else{
-          const option = this.args.options[this.focusedOptionIndex];
-          if(option){
-            this.doMention(get(option, this.args.mentionKey));
-          }else{
+        } else {
+          const option = this.options[this.focusedOptionIndex];
+          if (option) {
+            const mentionText = this.args.extractMention(option);
+            this.doMention(mentionText);
+          } else {
             this.closeOptionsDropdown();
           }
         }
@@ -184,22 +194,22 @@ class MentionableInputComponent extends Component {
     }
   }
 
-  processArrowUp(){
-    let options = this.args.options;
-    if(!options) { return; }
-    if(this.focusedOptionIndex == -1){
+  processArrowUp() {
+    let options = this.options;
+    if (!options) { return; }
+    if (this.focusedOptionIndex === -1) {
       this.focusedOptionIndex = options.length - 1;
-    }else{
+    } else {
       this.focusedOptionIndex--;
     }
   }
 
-  processArrowDown(){
-    let options = this.args.options;
-    if(!options) { return; }
-    if(this.focusedOptionIndex == (options.length -1)){
+  processArrowDown() {
+    let options = this.options;
+    if (!options) { return; }
+    if (this.focusedOptionIndex === (options.length -1)) {
       this.focusedOptionIndex = -1;
-    }else{
+    } else {
       this.focusedOptionIndex++;
     }
   }
@@ -235,7 +245,7 @@ class MentionableInputComponent extends Component {
       const regex = this.getSpecificMentionRegex(mention.substring(1));
 
       const indicesOfThisMention = [];
-      while (regex.exec(text)){
+      while (regex.exec(text)) {
         indicesOfThisMention.push(regex.lastIndex);
       }
       return indicesOfThisMention.includes(cursorPosition);
@@ -243,11 +253,11 @@ class MentionableInputComponent extends Component {
   }
   /**
    * Creates a regular expression that can be used to match text for a specific mention
-   * @param  { String } optionDisplayText The full display value for a mention option (e.g. a user's username)
+   * @param  { String } mentionValue The full display value for a mention option (e.g. a user's username)
    * @return { RegExp } regular expression to match a mention option's full display value
    */
-  getSpecificMentionRegex(optionDisplayText) {
-    const regex = `${this.specialCharacter}\\b${optionDisplayText}(?!\\S)`;
+  getSpecificMentionRegex(mentionValue) {
+    const regex = `${this.specialCharacter}\\b${mentionValue}(?!\\S)`;
     return new RegExp(regex, 'g');
   }
 
@@ -268,7 +278,7 @@ class MentionableInputComponent extends Component {
   }
 }
 
-function replaceAt(text, index, replacementText, replacedTextLength){
+function replaceAt(text, index, replacementText, replacedTextLength) {
   return text.substr(0, index) + replacementText + text.substr(index + replacedTextLength);
 }
 

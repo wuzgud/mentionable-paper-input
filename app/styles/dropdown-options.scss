@@ -39,7 +39,7 @@ $mention-helpbar-height: 32px;
         right: 12px;
 
         md-icon {
-          color: #474747 !important;
+          color: rgb(20, 23, 26) !important;
         }
 
         .close:hover {
@@ -60,26 +60,17 @@ $mention-helpbar-height: 32px;
       li.option {
         display: flex;
         align-items: center;
-        padding: 5px 22px 5px 11px;
+        padding: 3px 10px;
+        min-height: 42px;
         white-space: nowrap;
 
-        .primary {
-          color: rgb(20, 23, 26);
-          font-weight: 600;
-        }
-
-        .subtext {
-          position: relative;
-          top: 1px;
+        &:hover, &.focused {
+          background: #eee;
         }
 
         &:hover {
-          background: #eee;
           cursor: pointer;
         }
-      }
-      li.option.focused-mention-option{
-        background: #eee;
       }
     }
   }

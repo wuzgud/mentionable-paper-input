@@ -19,6 +19,8 @@ module.exports = {
     browser: true
   },
   rules: {
+    'keyword-spacing': 'error',
+    'space-before-blocks': 'error',
     'ember/no-jquery': 'error'
   },
   overrides: [

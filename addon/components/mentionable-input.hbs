@@ -16,24 +16,25 @@
         Type "{{this.specialCharacter}}" to mention
       </div>
     {{/if}}
+
     <StyledInputText
             @rawValue={{@value}}
             @existingMentions={{this.alreadyMentioned}}
             @mentionPattern={{this.mentionPattern}}
             @textAreaElement={{this.textAreaElement}}>
     </StyledInputText>
+
     {{#if (and this.isMentioning this.enableMentions)}}
-      {{yield (hash
-        mentionOptions=(component 'mention-options'
-          options=@options
-          doMention=(fn this.doMention)
-          closeDropdown=(fn this.closeOptionsDropdown)
-          currentMention=this.currentMention
-          textAreaElement=this.textAreaElement
-          focusedIndex=this.focusedOptionIndex
-          mentionKey=@mentionKey
-        )
-      )}}
+      <MentionOptions
+              @options={{this.options}}
+              @doMention={{fn this.doMention}}
+              @extractMention={{@extractMention}}
+              @currentMention={{this.currentMention}}
+              @closeDropdown={{fn this.closeOptionsDropdown}}
+              @focusedIndex={{this.focusedOptionIndex}}
+              @textAreaElement={{this.textAreaElement}} as |OptionComponent|>
+        {{yield OptionComponent}}
+      </MentionOptions>
     {{/if}}
   </PaperInput>
 </div>

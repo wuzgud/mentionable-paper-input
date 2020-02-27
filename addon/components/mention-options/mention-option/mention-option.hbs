@@ -1,10 +1,4 @@
-<li class="option {{if this.focused 'focused-mention-option'}}" role="button" {{on 'click' (fn @doMention (get @option @mentionKey))}} data-test-mention-option>
-  {{#if (has-block)}}
+<li class="option {{if this.focused 'focused'}}" role="button"
+  {{on 'click' (fn @doMention this.extractedMention)}} data-test-mention-option>
     {{yield @option}}
-  {{else}}
-    {{!-- todo: support dynamic image --}}
-    <span class="avatar-rounded-small mr-2"></span>
-    <span class="primary mr-2" data-test-primary>{{get @option @displayKey}}</span>
-    <span class="subtext" data-test-subtext>{{get @option @mentionKey}}</span>
-  {{/if}}
 </li>

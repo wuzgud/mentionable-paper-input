@@ -1,13 +1,13 @@
 <MentionableInput
         @value={{this.newCommentText}}
         @options={{this.userMentions}}
-        @mentionKey="username"
+        @extractMention={{fn this.getUsername}}
         @onInputChange={{fn this.commentChanged}}
-        @onMentionStarted={{perform this.searchUsersToMention}} as |mentionInput|>
-  <mentionInput.mentionOptions as |options|>
-    <options.option
-
-            @displayKey={{"name"}} />
-  </mentionInput.mentionOptions>
+        @onMentionStarted={{perform this.searchUsersToMention}} as |OptionResult|>
+  <OptionResult as |user|>
+    <span class="avatar-rounded-small mr-2"></span>
+    <span class="primary mr-2" data-test-primary>{{user.name}}</span>
+    <span class="subtext" data-test-subtext>{{user.username}}</span>
+  </OptionResult>
 </MentionableInput>
 {{outlet}}
