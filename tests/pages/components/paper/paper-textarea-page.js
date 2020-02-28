@@ -1,11 +1,6 @@
-import {
-    fillable,
-    text,
-    collection,
-    value
-} from 'ember-cli-page-object';
+import { collection, fillable, text, value } from 'ember-cli-page-object';
 
-export default function(selector){
+export default function(selector) {
     return {
         scope: selector,
         textarea: fillable('textarea'),

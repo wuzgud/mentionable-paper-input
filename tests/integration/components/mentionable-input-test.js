@@ -3,6 +3,7 @@ import { hbs } from 'ember-cli-htmlbars';
 import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
+import { waitPromise } from '../../helpers/wait';
 
 import mentionableInputPage from "../../pages/components/mentionable-input-page";
 
@@ -16,7 +17,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('able to select a mention from the mention options dropdown which emits onInputChange action passing the new input value', async function(assert) {
-    assert.expect(10);
+    assert.expect(12);
     let expectedValueEmitted;
     this.set('inputChanged', (val) => {
       assert.equal(val, expectedValueEmitted);
@@ -25,23 +26,31 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     let expectedMentionStartedVal;
     this.set('setUserMentions', (val) => {
-      assert.equal(val, expectedMentionStartedVal);
-      this.set('mentionOptions', testUsers.map((testUser) => {
+      const assertionMsg = val === null
+        ? `onMentionStarted action: null because mention is completed and we are no longer "mentioning" after a mention is clicked`
+        : `onMentionStarted action: we have a value of ${val} because mention was just started and is incomplete`;
+      assert.equal(val, expectedMentionStartedVal, assertionMsg);
+      this.set('mentionOptions', val ? testUsers.map((testUser) => {
         return new User({ name: testUser.name, username: testUser.username });
-      }));
+      }) : []);
+    });
+
+    this.set('extractor', (user) => {
+      assert.equal(user.username, 'ajball');
+      return user.username;
     });
 
     await render(hbs`
       <MentionableInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @mentionKey={{"username"}}
-        @onMentionStarted={{fn this.setUserMentions}} as |mi|>
-          <mi.mentionOptions as |results|>
-            <results.option
-                    @displayKey={{"name"}} />
-          </mi.mentionOptions>
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span data-test-option-text-primary>{{user.name}}</span>
+            <span data-test-option-text-secondary>{{user.username}}</span>
+          </OptionResult>
         </MentionableInput>
     `);
 
@@ -52,8 +61,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.equal(page.input.value, '@an');
     assert.equal(page.mentionOptions.length, 2);
 
-    expectedMentionStartedVal = '@ajball';
-    expectedValueEmitted = `${expectedMentionStartedVal} `;
+    expectedMentionStartedVal = null;
+    expectedValueEmitted = `@ajball `;
     await page.mentionOptions[0].click();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
@@ -78,18 +87,22 @@ module('Integration | Component | mentionable-input', function(hooks) {
       }));
     });
 
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
     await render(hbs`
       <MentionableInput
-        @value={{this.newValue}}
         @specialCharacter='#'
-        @options={{this.mentionOptions}}
-        @mentionKey={{"username"}}
+        @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
-        @onMentionStarted={{fn this.setUserMentions}} as |mi|>
-          <mi.mentionOptions as |options|>
-            <options.option
-                    @displayKey={{"name"}} />
-          </mi.mentionOptions>
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span data-test-option-text-primary>{{user.name}}</span>
+            <span data-test-option-text-secondary>{{user.username}}</span>
+          </OptionResult>
         </MentionableInput>
     `);
 
@@ -115,28 +128,34 @@ module('Integration | Component | mentionable-input', function(hooks) {
       'textarea is still focused after selecting mention'
     );
   });
+
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
     });
 
-    this.set('setUserMentions', () => {
+    this.set('setUserMentions', async () => {
+      await waitPromise(1000); // Just to make sure it doesn't break if there's a delay setting the options
       this.set('mentionOptions', testUsers.map((testUser) => {
         return new User({ name: testUser.name, username: testUser.username });
       }));
     });
 
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
     await render(hbs`
       <MentionableInput
         @value={{this.newValue}}
-        @options={{this.mentionOptions}}
-        @mentionKey="username"
         @onInputChange={{fn this.inputChanged}}
-        @onMentionStarted={{fn this.setUserMentions}} as |mentionInput|>
-          <mentionInput.mentionOptions as |options|>
-            <options.option
-                    @displayKey={{"name"}} />
-          </mentionInput.mentionOptions>
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span data-test-option-text-primary>{{user.name}}</span>
+            <span data-test-option-text-secondary>{{user.username}}</span>
+          </OptionResult>
         </MentionableInput>
     `);
 
@@ -181,9 +200,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
       'textarea is still focused after selecting mention'
     );
   });
-
 });
-
 
 const testUsers = [
   {

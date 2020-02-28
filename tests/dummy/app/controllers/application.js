@@ -10,8 +10,8 @@ export default class Application extends Controller {
   }
 
   @action
-  commentChanged(newText) {
-    this.set('newCommentText', newText);
+  valueChanged(newText) {
+    this.set('textVal', newText);
   }
 
   @action

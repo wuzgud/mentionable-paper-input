@@ -1,8 +1,8 @@
 <MentionableInput
-        @value={{this.newCommentText}}
+        @value={{this.textVal}}
         @options={{this.userMentions}}
         @extractMention={{fn this.getUsername}}
-        @onInputChange={{fn this.commentChanged}}
+        @onInputChange={{fn this.valueChanged}}
         @onMentionStarted={{perform this.searchUsersToMention}} as |OptionResult|>
   <OptionResult as |user|>
     <span class="avatar-rounded-small mr-2"></span>

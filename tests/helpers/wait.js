@@ -1,17 +1,16 @@
-import { run } from '@ember/runloop';
 import { Promise } from 'rsvp';
+import { run } from '@ember/runloop';
 
 function wait(assert, timeout= 200) {
     const done = assert.async();
-
-    run.later(this, function() {
+    run.later(this, () => {
         done();
     }, timeout);
 }
 
 function waitPromise(timeout= 200) {
-    return new Promise(function(resolve){
-        run.later(this, function() {
+    return new Promise((resolve) => {
+        run.later(this, () => {
             resolve(true);
         }, timeout);
     });
