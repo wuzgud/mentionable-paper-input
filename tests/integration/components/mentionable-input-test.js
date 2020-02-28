@@ -155,7 +155,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.mentionOptions[0].click();
 
     assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.notOk(page.inputWithMentions.mentions[0].incomplete);
+    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
     assert.equal(page.inputWithMentions.text, '@ajball');
 
     expectedValueEmitted = '@ajbal';
@@ -163,7 +163,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.fillWithWait(page.input.value.slice(0, -2)); //remove last char
 
     assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.ok(page.inputWithMentions.mentions[0].incomplete);
+    assert.ok(page.inputWithMentions.mentions[0].isIncomplete);
     assert.equal(page.inputWithMentions.text, '@ajbal');
 
     expectedValueEmitted = '@janine ';
@@ -172,11 +172,11 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.mentionOptions[1].click();
 
     assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.notOk(page.inputWithMentions.mentions[0].incomplete);
+    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
     assert.equal(page.inputWithMentions.text, '@janine');
   });
 
-  test('backspacing to the end of mention triggers a new mentions search', async function(assert) {
+  test('backspacing to the end of mention triggers onMentionStarted', async function(assert) {
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
     });
@@ -462,15 +462,54 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.notOk(page.mentionOptions.isPresent);
     assert.equal(page.inputWithMentions.text, '@ajball');
 
-    await page.fillWithWait(page.input.value + '@wil');
-    await page.mentionOptions[0].click();
+    await page.fillWithWait(page.input.value + '@jan');
+    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
+    assert.ok(page.inputWithMentions.mentions[1].isIncomplete);
+    await page.mentionOptions[1].click();
     assert.equal(page.inputWithMentions.mentions.length, 2);
-    assert.notOk(page.inputWithMentions.mentions[0].incomplete && page.inputWithMentions.mentions[1].incomplete, 'able to add duplicate mentions');
-    assert.equal(page.inputWithMentions.text, '@ajball @ajball');
+    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete && page.inputWithMentions.mentions[1].isIncomplete, 'able to add duplicate mentions');
+    assert.equal(page.inputWithMentions.text, '@ajball @janine');
 
-    await page.fillWithWait(page.input.value + ' no mention');
+    await page.fillWithWait(page.input.value + ' no mention text');
     assert.notOk(page.mentionOptions.isPresent);
-    assert.equal(page.inputWithMentions.text, '@ajball @ajball no mention');
+    assert.equal(page.inputWithMentions.text, '@ajball @janine no mention text');
+    assert.equal(page.inputWithMentions.mentions.length, 2, 'still have only two completed mentions');
+  });
+
+  test('it is able to show a hint', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', () => {
+      this.set('mentionOptions', []);
+    });
+    this.set('extractor', () => {
+      assert.notOk(true, 'extractMention should not be called');
+    });
+    this.set('showHint', true);
+    this.set('specialChar', '#');
+
+    await render(hbs`
+      <MentionableInput
+        @showHint={{this.showHint}}
+        @specialCharacter={{this.specialChar}}
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    assert.equal(page.hint, 'Type "#" to mention');
+    this.set('specialChar', null);
+    assert.equal(page.hint, 'Type "@" to mention');
+    this.set('showHint', false);
+    assert.notOk(page.hintIsPresent, 'Hint is not present');
   });
 });
 

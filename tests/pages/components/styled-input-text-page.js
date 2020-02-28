@@ -4,7 +4,7 @@ export default function(scope) {
     return {
         scope,
         mentions: collection('[data-test-mention]', {
-            incomplete: hasClass('incomplete'),
+            isIncomplete: hasClass('incomplete'),
             href: attribute('href')
         })
     }
