@@ -3,7 +3,7 @@ import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import replaceAt from '../utils/replace-at';
+import { replaceAt } from '../utils/replace-at';
 
 class MentionableInputComponent extends Component {
   /**
@@ -91,9 +91,9 @@ class MentionableInputComponent extends Component {
   }
 
   /**
-   * Executed when a user adds or removes text in the textarea
+   * Executed when a user edits (i.e. add or remove) the textarea's value
    * Strips excessive spacing (no more than one space between words is allowed)
-   * A necessary (and low-cost) compromise to make the styling hackery in StyledInputText work
+   * A necessary (and low-cost) compromise to make the styling magic in StyledInputText work
    * @param  { String } newValue The new, raw text value from textarea element
    * @return { action<String> } emits updated textarea value to parent context via onInputChange action binding
    * @return { action<String> } emits current mention (see currentMention) to parent context via onMentionStarted action

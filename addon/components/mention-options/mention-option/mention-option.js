@@ -1,5 +1,5 @@
-import Component from '@glimmer/component';
 import { tagName } from '@ember-decorators/component';
+import Component from '@glimmer/component';
 
 @tagName('')
 class MentionOptionComponent extends Component {

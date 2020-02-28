@@ -1,4 +1,4 @@
-$mention-helpbar-height: 32px;
+$mention-help-bar-height: 32px;
 
 .mentionable-input {
 
@@ -20,15 +20,15 @@ $mention-helpbar-height: 32px;
       padding: 0;
       background: #fafbfc;
       color: #7f7f83;
-      font-size: 12px;
+      font-size: 14px;
       border-bottom: 1px solid rgba(0,0,0,.15);
       background-clip: padding-box;
-      height: $mention-helpbar-height;
+      height: $mention-help-bar-height;
       overflow: hidden;
       border-radius: 6px 6px 0 0;
 
       .matching-text {
-        max-width: 170px;
+        max-width: 50%;
         position: relative;
         left: 12px;
         @extend .text-truncate;
@@ -50,12 +50,12 @@ $mention-helpbar-height: 32px;
 
     ul.options {
       list-style-type: none;
-      margin: $mention-helpbar-height 0 0 0;
+      margin: $mention-help-bar-height 0 0 0;
       padding: 0;
       background-clip: padding-box;
       overflow: hidden;
       overflow-y: auto;
-      max-height: calc(350px - #{$mention-helpbar-height});
+      max-height: calc(350px - #{$mention-help-bar-height});
 
       li.option {
         display: flex;

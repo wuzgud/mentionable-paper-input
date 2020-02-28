@@ -6,12 +6,12 @@
       Results matching <strong>"{{@currentMention}}"</strong>
     </span>
     <span class="close-action" data-test-help-bar-close>
-      {{#if (media 'isMobileDevice')}}
+      {{#if this.isDesktop}}
+        <strong>esc</strong> to dismiss
+      {{else}}
         <span class="close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
           <PaperIcon @icon={{'close'}} @size={{20}} />
         </span>
-      {{else}}
-        <strong>esc</strong> to dismiss
       {{/if}}
     </span>
   </div>

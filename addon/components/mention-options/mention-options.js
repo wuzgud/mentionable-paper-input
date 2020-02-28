@@ -1,10 +1,15 @@
-import Component from '@glimmer/component';
-
 import { tagName } from '@ember-decorators/component';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
 @tagName('')
 class MentionOptionsComponent extends Component {
+  @service media;
+  @computed('media.{isDesktop,isJumbo}')
+  get isDesktop() {
+    return this.media.isDesktop || this.media.isJumbo;
+  }
   constructor() {
     super(...arguments);
   }
