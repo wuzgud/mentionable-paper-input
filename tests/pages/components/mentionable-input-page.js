@@ -1,4 +1,4 @@
-import { clickable, collection, hasClass, text, triggerable } from 'ember-cli-page-object';
+import { clickable, collection, hasClass, text, triggerable, isPresent } from 'ember-cli-page-object';
 import { waitPromise } from "../../helpers/wait";
 import textarea from './paper/paper-textarea-page';
 import styledInputText from "./styled-input-text-page";
@@ -17,7 +17,7 @@ export default function(scope) {
             key: 'ArrowDown'
           }
         }),
-        enter: triggerable('keydown', '[data-test-mention-input] textarea',  {
+        pressEnter: triggerable('keydown', '[data-test-mention-input] textarea',  {
           eventProperties: {
             key: 'Enter'
           }
@@ -37,10 +37,9 @@ export default function(scope) {
           }
         },
         mentionOptions: collection('[data-test-mention-option]', {
-            primary: text('[data-test-option-text-primary]'),
-            subtext: text('[data-test-option-text-secondary]'),
-            isFocused: hasClass('focused')
-        }),
-        noResults: text('[data-test-no-mention-options-text]')
+          isFocused: hasClass('focused'),
+          noResults: text('[data-test-no-mention-options-text]'),
+          noResultsMsgExists: isPresent('[data-test-no-mention-options-text]')
+        })
     }
 }

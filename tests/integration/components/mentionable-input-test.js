@@ -30,9 +30,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
         ? `onMentionStarted action: null because mention is completed and we are no longer "mentioning" after a mention is clicked`
         : `onMentionStarted action: we have a value of ${val} because mention was just started and is incomplete`;
       assert.equal(val, expectedMentionStartedVal, assertionMsg);
-      this.set('mentionOptions', val ? testUsers.map((testUser) => {
-        return new User({ name: testUser.name, username: testUser.username });
-      }) : []);
+      this.set('mentionOptions', val ? getTestUsers() : []);
     });
 
     this.set('extractor', (user) => {
@@ -48,21 +46,21 @@ module('Integration | Component | mentionable-input', function(hooks) {
         @options={{this.mentionOptions}}
         @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
-            <span data-test-option-text-primary>{{user.name}}</span>
-            <span data-test-option-text-secondary>{{user.username}}</span>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
           </OptionResult>
         </MentionableInput>
     `);
 
     expectedValueEmitted = '@an';
-    expectedMentionStartedVal = expectedValueEmitted;
+    expectedMentionStartedVal = 'an';
     await page.fillWithWait('@an');
 
     assert.equal(page.input.value, '@an');
     assert.equal(page.mentionOptions.length, 2);
 
     expectedMentionStartedVal = null;
-    expectedValueEmitted = `@ajball `;
+    expectedValueEmitted = `@ajball `; // extra space at the end is deliberate. reflects actual behavior of component
     await page.mentionOptions[0].click();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
@@ -76,15 +74,151 @@ module('Integration | Component | mentionable-input', function(hooks) {
     );
   });
 
+  test('it renders mention options correctly if they exist', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+
+    this.set('setUserMentions', (val) => {
+      this.set('mentionOptions', val ? getTestUsers() : []);
+    });
+
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+
+    assert.equal(page.mentionOptions.length, 2);
+    assert.equal(page.mentionOptions[0].text, 'Andrew Ball ajball');
+    assert.equal(page.mentionOptions[1].text, 'Janine Henry janine');
+    assert.notOk(page.mentionOptions[0].noResultsMsgExists);
+    assert.notOk(page.mentionOptions[1].noResultsMsgExists);
+  });
+
+  test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete', async function(assert) {
+    assert.expect(19);
+
+    let expectedValueEmitted;
+    this.set('inputChanged', (val) => {
+      assert.equal(val, expectedValueEmitted);
+      this.set('newValue', val);
+    });
+
+    let expectedMentionStartedVal;
+    this.set('setUserMentions', (val) => {
+      assert.equal(val, expectedMentionStartedVal);
+      this.set('mentionOptions', val ? getTestUsers() : []);
+    });
+
+    let expectedExtractedMention;
+    this.set('extractor', (user) => {
+      assert.equal(user.username, expectedExtractedMention);
+      return user.username;
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    expectedValueEmitted = '@an';
+    expectedMentionStartedVal = 'an';
+    await page.fillWithWait('@an');
+
+    expectedValueEmitted = '@ajball ';
+    expectedExtractedMention = 'ajball';
+    expectedMentionStartedVal = null;
+    await page.mentionOptions[0].click();
+
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.notOk(page.inputWithMentions.mentions[0].incomplete);
+    assert.equal(page.inputWithMentions.text, '@ajball');
+
+    expectedValueEmitted = '@ajbal';
+    expectedMentionStartedVal = 'ajbal';
+    await page.fillWithWait(page.input.value.slice(0, -2)); //remove last char
+
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.ok(page.inputWithMentions.mentions[0].incomplete);
+    assert.equal(page.inputWithMentions.text, '@ajbal');
+
+    expectedValueEmitted = '@janine ';
+    expectedExtractedMention = 'janine';
+    expectedMentionStartedVal = null;
+    await page.mentionOptions[1].click();
+
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.notOk(page.inputWithMentions.mentions[0].incomplete);
+    assert.equal(page.inputWithMentions.text, '@janine');
+  });
+
+  test('backspacing to the end of mention triggers a new mentions search', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+
+    this.set('setUserMentions', (val) => {
+      this.set('mentionOptions', val ? getTestUsers() : []);
+    });
+
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+    assert.equal(page.mentionOptions.length, 2);
+    await page.mentionOptions[0].click();
+    assert.equal(page.mentionOptions.length, 0);
+
+    await page.fillWithWait(page.input.value.slice(0, -1)); //remove space to get cursor at end of mention
+    assert.equal(page.mentionOptions.length, 2);
+  });
+
   test('can set the mention special character prefix via @specialCharacter', async function(assert) {
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
     });
 
     this.set('setUserMentions', () => {
-      this.set('mentionOptions', testUsers.map((testUser) => {
-        return new User({ name: testUser.name, username: testUser.username });
-      }));
+      this.set('mentionOptions', getTestUsers());
     });
 
     this.set('extractor', (user) => {
@@ -100,8 +234,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
         @options={{this.mentionOptions}}
         @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
-            <span data-test-option-text-primary>{{user.name}}</span>
-            <span data-test-option-text-secondary>{{user.username}}</span>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
           </OptionResult>
         </MentionableInput>
     `);
@@ -136,9 +270,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     this.set('setUserMentions', async () => {
       await waitPromise(1000); // Just to make sure it doesn't break if there's a delay setting the options
-      this.set('mentionOptions', testUsers.map((testUser) => {
-        return new User({ name: testUser.name, username: testUser.username });
-      }));
+      this.set('mentionOptions', getTestUsers());
     });
 
     this.set('extractor', (user) => {
@@ -153,8 +285,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
         @options={{this.mentionOptions}}
         @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
-            <span data-test-option-text-primary>{{user.name}}</span>
-            <span data-test-option-text-secondary>{{user.username}}</span>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
           </OptionResult>
         </MentionableInput>
     `);
@@ -188,7 +320,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.ok(page.mentionOptions[0].isFocused);
     assert.notOk(page.mentionOptions[1].isFocused);
 
-    await page.enter();
+    await page.pressEnter();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
     assert.equal(page.inputWithMentions.text, '@ajball');
@@ -200,31 +332,164 @@ module('Integration | Component | mentionable-input', function(hooks) {
       'textarea is still focused after selecting mention'
     );
   });
+
+  test('it does not start a mention if normal/plain text (i.e. no @, #, ${specialCharacter}) is entered', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', () => {
+      assert.notOk(true, 'onMentionStarted should not be called');
+    });
+    this.set('extractor', () => {
+      assert.notOk(true, 'extractMention should not be called');
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('no mention');
+    assert.equal(page.input.value, 'no mention');
+    assert.notOk(page.mentionOptions.isPresent);
+  });
+
+  test('it does not allow more than one space between words', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', () => {
+      assert.notOk(true, 'onMentionStarted should not be called');
+    });
+    this.set('extractor', () => {
+      assert.notOk(true, 'extractMention should not be called');
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('no text with single spaces');
+    assert.equal(page.input.value, 'no text with single spaces');
+
+    await page.fillWithWait('no text  with more than   one space    ');
+    assert.equal(page.input.value, 'no text with more than one space ');
+
+    await page.fillWithWait(' ');
+    assert.equal(page.input.value, '', 'user should not be allowed to start text with a space');
+  });
+
+  test('when the options list is empty, it displays a message informing the user that there are no option results', async function(assert) {
+    assert.expect(4);
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', (val) => {
+      assert.equal(val, 'an');
+      this.set('mentionOptions', []);
+    });
+    this.set('extractor', () => {
+      assert.notOk(true, 'extractMention should not be called');
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+    assert.equal(page.input.value, '@an');
+    assert.equal(page.mentionOptions.length, 1, 'technically equal to 1 because the no results list item is a mention-option in the DOM');
+    assert.equal(page.mentionOptions[0].noResults, 'No results found matching @an');
+  });
+
+  test('mentions are structurally distinct from plain input text (i.e. mention text are contained in their own dom element)', async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', (val) => {
+      this.set('mentionOptions', val ? getTestUsers() : []);
+    });
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+    await page.mentionOptions[0].click();
+    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.notOk(page.mentionOptions.isPresent);
+    assert.equal(page.inputWithMentions.text, '@ajball');
+
+    await page.fillWithWait(page.input.value + '@wil');
+    await page.mentionOptions[0].click();
+    assert.equal(page.inputWithMentions.mentions.length, 2);
+    assert.notOk(page.inputWithMentions.mentions[0].incomplete && page.inputWithMentions.mentions[1].incomplete, 'able to add duplicate mentions');
+    assert.equal(page.inputWithMentions.text, '@ajball @ajball');
+
+    await page.fillWithWait(page.input.value + ' no mention');
+    assert.notOk(page.mentionOptions.isPresent);
+    assert.equal(page.inputWithMentions.text, '@ajball @ajball no mention');
+  });
 });
 
 const testUsers = [
   {
     "username":"ajball",
-    "name":"Andrew Ball",
-    "avatarThumbnail":{
-      "href":"/images/3592",
-      "id":3592
-    }
+    "name":"Andrew Ball"
   },
   {
     "username": "janine",
-    "name": "Janine Schafer",
-    "avatarThumbnail": {
-      "href": "/images/3299",
-      "id": 3299
-    }
+    "name": "Janine Henry"
   }
 ];
+
+const getTestUsers = () => testUsers.map( user => new User({ name: user.name, username: user.username }) );
 
 class User {
   name = null;
   username = null;
-
   constructor({ name, username }) {
     this.name = name;
     this.username = username;

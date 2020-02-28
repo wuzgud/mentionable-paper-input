@@ -107,7 +107,7 @@ class MentionableInputComponent extends Component {
     }
     this.args.onInputChange(newValue);
     if (this.isMentioning) {
-      this.args.onMentionStarted(this.currentMention);
+      this.args.onMentionStarted(this.currentMention.substring(1)); // substring invoked to remove the special character
     }
   }
 
