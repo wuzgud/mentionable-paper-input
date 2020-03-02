@@ -1,4 +1,4 @@
-import { find, render } from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
@@ -57,12 +57,12 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.fillWithWait('@an');
 
     assert.equal(page.input.value, '@an');
-    assert.equal(page.mentionOptions.length, 2);
-    assert.ok(page.mentionOptionsArePresent);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
+    assert.ok(page.mentionOptionsList.isPresent);
 
     expectedMentionStartedVal = null;
     expectedValueEmitted = `@ajball `; // extra space at the end is deliberate. reflects actual behavior of component
-    await page.mentionOptions[0].click();
+    await page.mentionOptionsList.mentionOptions[0].click();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
     assert.equal(page.inputWithMentions.text, '@ajball');
@@ -73,7 +73,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
-    assert.notOk(page.mentionOptionsArePresent, 'Mention options list and help-bar are closed after selecting mention');
+    assert.notOk(page.mentionOptionsList.isPresent, 'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('it renders mention options correctly if they exist', async function(assert) {
@@ -105,11 +105,11 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     await page.fillWithWait('@an');
 
-    assert.equal(page.mentionOptions.length, 2);
-    assert.equal(page.mentionOptions[0].text, 'Andrew Ball ajball');
-    assert.equal(page.mentionOptions[1].text, 'Janine Henry janine');
-    assert.notOk(page.mentionOptions[0].noResultsMsgExists);
-    assert.notOk(page.mentionOptions[1].noResultsMsgExists);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
+    assert.equal(page.mentionOptionsList.mentionOptions[0].text, 'Andrew Ball ajball');
+    assert.equal(page.mentionOptionsList.mentionOptions[1].text, 'Janine Henry janine');
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].noResultsMsgExists);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].noResultsMsgExists);
   });
 
   test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete', async function(assert) {
@@ -154,7 +154,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
     expectedValueEmitted = '@ajball ';
     expectedExtractedMention = 'ajball';
     expectedMentionStartedVal = null;
-    await page.mentionOptions[0].click();
+    await page.mentionOptionsList.mentionOptions[0].click();
 
     assert.equal(page.inputWithMentions.mentions.length, 1);
     assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
@@ -171,7 +171,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
     expectedValueEmitted = '@janine ';
     expectedExtractedMention = 'janine';
     expectedMentionStartedVal = null;
-    await page.mentionOptions[1].click();
+    await page.mentionOptionsList.mentionOptions[1].click();
 
     assert.equal(page.inputWithMentions.mentions.length, 1);
     assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
@@ -206,12 +206,12 @@ module('Integration | Component | mentionable-input', function(hooks) {
     `);
 
     await page.fillWithWait('@an');
-    assert.equal(page.mentionOptions.length, 2);
-    await page.mentionOptions[0].click();
-    assert.equal(page.mentionOptions.length, 0);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
+    await page.mentionOptionsList.mentionOptions[0].click();
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 0);
 
     await page.fillWithWait(page.input.value.slice(0, -1)); //remove space to get cursor at end of mention
-    assert.equal(page.mentionOptions.length, 2);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
   });
 
   test('can set the mention special character prefix via @specialCharacter', async function(assert) {
@@ -245,14 +245,14 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.fillWithWait('@an');
 
     assert.equal(page.input.value, '@an');
-    assert.equal(page.mentionOptions.length, 0);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 0);
 
     await page.fillWithWait('#an');
 
     assert.equal(page.input.value, '#an');
-    assert.equal(page.mentionOptions.length, 2);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
 
-    await page.mentionOptions[0].click();
+    await page.mentionOptionsList.mentionOptions[0].click();
 
     assert.equal(page.input.value, '#ajball ', 'space added to end of mention after adding');
     assert.equal(page.inputWithMentions.text, '#ajball');
@@ -263,7 +263,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
-    assert.notOk(page.mentionOptionsArePresent, 'Mention options list and help-bar are closed after selecting mention');
+    assert.notOk(page.mentionOptionsList.isPresent, 'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
@@ -297,31 +297,31 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.fillWithWait('@an');
 
     assert.equal(page.input.value, '@an');
-    assert.equal(page.mentionOptions.length, 2);
-    page.mentionOptions.forEach((it) => {
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
+    page.mentionOptionsList.mentionOptions.forEach((it) => {
       assert.notOk(it.isFocused);
     });
 
     await page.arrowDown();
-    assert.ok(page.mentionOptions[0].isFocused);
-    assert.notOk(page.mentionOptions[1].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
 
     await page.arrowDown();
-    assert.notOk(page.mentionOptions[0].isFocused);
-    assert.ok(page.mentionOptions[1].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[1].isFocused);
 
     await page.arrowDown();
-    page.mentionOptions.forEach((it) => {
+    page.mentionOptionsList.mentionOptions.forEach((it) => {
       assert.notOk(it.isFocused);
     });
 
     await page.arrowUp();
-    assert.notOk(page.mentionOptions[0].isFocused);
-    assert.ok(page.mentionOptions[1].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[1].isFocused);
 
     await page.arrowUp();
-    assert.ok(page.mentionOptions[0].isFocused);
-    assert.notOk(page.mentionOptions[1].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
 
     await page.pressEnter();
 
@@ -363,7 +363,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     await page.fillWithWait('no mention');
     assert.equal(page.input.value, 'no mention');
-    assert.notOk(page.mentionOptions.isPresent);
+    assert.notOk(page.mentionOptionsList.mentionOptions.isPresent);
   });
 
   test('it does not allow more than one space between words', async function(assert) {
@@ -430,8 +430,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     await page.fillWithWait('@an');
     assert.equal(page.input.value, '@an');
-    assert.equal(page.mentionOptions.length, 1, 'technically equal to 1 because the no results list item is a mention-option in the DOM');
-    assert.equal(page.mentionOptions[0].noResults, 'No results found matching @an');
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 1, 'technically equal to 1 because the no results list item is a mention-option in the DOM');
+    assert.equal(page.mentionOptionsList.mentionOptions[0].noResults, 'No results found matching @an');
   });
 
   test('mentions are structurally distinct from plain input text (i.e. mention text are contained in their own dom element)', async function(assert) {
@@ -460,21 +460,21 @@ module('Integration | Component | mentionable-input', function(hooks) {
     `);
 
     await page.fillWithWait('@an');
-    await page.mentionOptions[0].click();
+    await page.mentionOptionsList.mentionOptions[0].click();
     assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.notOk(page.mentionOptions.isPresent);
+    assert.notOk(page.mentionOptionsList.mentionOptions.isPresent);
     assert.equal(page.inputWithMentions.text, '@ajball');
 
     await page.fillWithWait(page.input.value + '@jan');
     assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
     assert.ok(page.inputWithMentions.mentions[1].isIncomplete);
-    await page.mentionOptions[1].click();
+    await page.mentionOptionsList.mentionOptions[1].click();
     assert.equal(page.inputWithMentions.mentions.length, 2);
     assert.notOk(page.inputWithMentions.mentions[0].isIncomplete && page.inputWithMentions.mentions[1].isIncomplete, 'able to add duplicate mentions');
     assert.equal(page.inputWithMentions.text, '@ajball @janine');
 
     await page.fillWithWait(page.input.value + ' no mention text');
-    assert.notOk(page.mentionOptions.isPresent);
+    assert.notOk(page.mentionOptionsList.mentionOptions.isPresent);
     assert.equal(page.inputWithMentions.text, '@ajball @janine no mention text');
     assert.equal(page.inputWithMentions.mentions.length, 2, 'still have only two completed mentions');
   });
@@ -540,10 +540,16 @@ module('Integration | Component | mentionable-input', function(hooks) {
         </MentionableInput>
     `);
 
-    const textareaEl = window.getComputedStyle(find('[data-test-mention-input] textarea'), null);
+    const assertionMsg = (cssProp, val) => `font color appears transparent when ${cssProp} value is ${val}`;
+    const expectedTextShadowColor = 'rgba(0, 0, 0, 0) 0px 0px 0px';
+    const expectedTextFillColor = 'rgba(0, 0, 0, 0)';
+    const expectedTextShadow = { 'text-shadow': expectedTextShadowColor };
+    const expectedTextFill = { '-webkit-text-fill-color': expectedTextFillColor };
 
-    assert.equal(textareaEl.getPropertyValue('text-shadow'), 'rgba(0, 0, 0, 0) 0px 0px 0px', 'font color appears transparent when text-shadow value is rgba(0, 0, 0, 0) 0px 0px 0px');
-    assert.equal(textareaEl.getPropertyValue('-webkit-text-fill-color'), 'rgba(0, 0, 0, 0)', 'font color appears transparent when -webkit-text-fill-color value is rgba(0, 0, 0, 0)');
+    assert.dom(page.input.getTextareaEl())
+      .hasStyle(expectedTextShadow, assertionMsg('text-shadow', expectedTextShadowColor));
+    assert.dom(page.input.getTextareaEl())
+      .hasStyle(expectedTextFill, assertionMsg('-webkit-text-fill-color', expectedTextFillColor));
   });
 });
 

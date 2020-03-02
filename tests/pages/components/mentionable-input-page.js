@@ -37,11 +37,13 @@ export default function(scope) {
         button: clickable('[data-test-close-x]')
       }
     },
-    mentionOptions: collection('[data-test-mention-option]', {
-      isFocused: hasClass('focused'),
-      noResults: text('[data-test-no-mention-options-text]'),
-      noResultsMsgExists: isPresent('[data-test-no-mention-options-text]')
-    }),
-    mentionOptionsArePresent: isPresent('[data-test-mention-options-list-wrap]')
+    mentionOptionsList: {
+      scope: '[data-test-mention-options-list-wrap]',
+      mentionOptions: collection('[data-test-mention-option]', {
+        isFocused: hasClass('focused'),
+        noResults: text('[data-test-no-mention-options-text]'),
+        noResultsMsgExists: isPresent('[data-test-no-mention-options-text]')
+      })
+    }
   }
 }
