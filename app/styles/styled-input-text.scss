@@ -1,13 +1,13 @@
 .mentionable-input {
 
   .styled-input {
-    width: 100%;
+    display: block;
     position: absolute;
     top: 2px;
-    pointer-events: none;
-    order: 2;
-    display: block;
+    width: 100%;
     margin-top: 0;
+    order: 2;
+    pointer-events: none;
     background: none;
     padding: 2px 2px 1px 2px;
     border-width: 0 0 1px 0;
@@ -16,18 +16,18 @@
     white-space: normal;
 
     a.mention {
-      color: #1264a3;
+      color: $mi-mention-color;
       text-decoration: none;
 
       &:hover {
-        color: darken(#1264a3, 15%);
+        color: darken($mi-mention-color, 15%);
       }
 
       &.incomplete {
-        color: rgb(20, 23, 26);
+        color: $mi-incomplete-mention-color;
         pointer-events: none;
         &:hover {
-          color: rgb(20, 23, 26);
+          color: $mi-incomplete-mention-color;
         }
       }
     }
