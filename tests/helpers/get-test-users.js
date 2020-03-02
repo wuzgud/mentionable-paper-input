@@ -10,7 +10,7 @@ const testUsers = [
 ];
 
 // mentions could be anything in reality, but 'User' seems like the most probable use case
-class User {
+export class User {
   name = null;
   username = null;
   constructor({ name, username }) {

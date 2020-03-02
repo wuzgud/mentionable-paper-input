@@ -1,21 +1,22 @@
-// TODO: Use scss variables instead of hard-coding a lot of these values
-
 @import 'ember-paper';
 @import 'util';
 @import 'dropdown-options';
 @import 'styled-input-text';
 
+// overridable variables
+$mi-font-color: #000;
+
 .mentionable-input {
 
   input, textarea {
-    color: #000 !important;
+    color: $mi-font-color !important;
     text-shadow: 0 0 0 transparent !important; // magic behind styling mentions in comments
     -webkit-text-fill-color: transparent !important;
   }
 
   input::-webkit-input-placeholder,
   textarea::-webkit-input-placeholder {
-    color: #000;
+    color: $mi-font-color;
     text-shadow: none;
     -webkit-text-fill-color: initial;
   }

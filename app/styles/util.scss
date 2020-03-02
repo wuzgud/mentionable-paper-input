@@ -62,11 +62,6 @@ $mi-grid-breakpoints: (
     }
   }
 
-  .subtext {
-    font-size: 14px;
-    color: #929598;
-  }
-
   .text-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -75,29 +70,5 @@ $mi-grid-breakpoints: (
 
   .font-weight-600 {
     font-weight: 600;
-  }
-
-  @mixin circle-of-size($some-number) {
-    min-height: $some-number;
-    min-width: $some-number;
-    max-height: $some-number;
-    max-width: $some-number;
-    border-radius: 50%;
-  }
-
-  .avatar-common {
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  .avatar-rounded-small {
-    @include circle-of-size(30px);
-    @extend .avatar-common;
-    border: 1px solid #929598;
-  }
-
-  .lower-case {
-    text-transform: lowercase;
   }
 }
