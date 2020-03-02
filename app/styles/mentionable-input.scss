@@ -6,6 +6,8 @@ $mi-incomplete-mention-color: $mi-font-color !default;
 $mi-mention-color: #1264a3 !default;
 $mi-help-bar-background-color: #fafbfc !default;
 $mi-help-bar-font-color: #7f7f83 !default;
+$mi-dropdown-border-color: rgba(0,0,0,.15) !default;
+$mi-dropdown-option-background: #eee !default;
 
 @import 'util';
 @import 'dropdown-options';
