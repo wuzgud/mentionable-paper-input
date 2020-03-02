@@ -4,6 +4,7 @@ import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import { waitPromise } from '../../helpers/wait';
+import getTestUsers from '../../helpers/get-test-users';
 
 import mentionableInputPage from "../../pages/components/mentionable-input-page";
 
@@ -16,7 +17,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     this.set('newValue', '');
   });
 
-  test('able to select a mention from the mention options dropdown which emits onInputChange action passing the new input value', async function(assert) {
+  test('able to select a mention from the mention options dropdown which emits onInputChange action passing the new input value',
+    async function(assert) {
     assert.expect(14);
     let expectedValueEmitted;
     this.set('inputChanged', (val) => {
@@ -73,7 +75,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
-    assert.notOk(page.mentionOptionsList.isPresent, 'Mention options list and help-bar are closed after selecting mention');
+    assert.notOk(page.mentionOptionsList.isPresent,
+      'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('it renders mention options correctly if they exist', async function(assert) {
@@ -112,7 +115,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.notOk(page.mentionOptionsList.mentionOptions[1].noResultsMsgExists);
   });
 
-  test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete', async function(assert) {
+  test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete',
+    async function(assert) {
     assert.expect(19);
 
     let expectedValueEmitted;
@@ -263,7 +267,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
-    assert.notOk(page.mentionOptionsList.isPresent, 'Mention options list and help-bar are closed after selecting mention');
+    assert.notOk(page.mentionOptionsList.isPresent,
+      'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
@@ -336,7 +341,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     );
   });
 
-  test('it does not start a mention if normal/plain text (i.e. no @, #, ${specialCharacter}) is entered', async function(assert) {
+  test('it does not start a mention if normal/plain text (i.e. no @, #, ${specialCharacter}) is entered',
+    async function(assert) {
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
     });
@@ -401,7 +407,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.equal(page.input.value, '', 'user should not be allowed to start text with a space');
   });
 
-  test('when the options list is empty, it displays a message informing the user that there are no option results', async function(assert) {
+  test('when the options list is empty, it displays a message informing the user that there are no option results',
+    async function(assert) {
     assert.expect(4);
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
@@ -430,11 +437,13 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     await page.fillWithWait('@an');
     assert.equal(page.input.value, '@an');
-    assert.equal(page.mentionOptionsList.mentionOptions.length, 1, 'technically equal to 1 because the no results list item is a mention-option in the DOM');
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 1,
+      'technically equal to 1 because the no results list item is a mention-option in the DOM');
     assert.equal(page.mentionOptionsList.mentionOptions[0].noResults, 'No results found matching @an');
   });
 
-  test('mentions are structurally distinct from plain input text (i.e. mention text are contained in their own dom element)', async function(assert) {
+  test('mentions are structurally distinct from plain input text (i.e. mention text are contained in their own dom element)',
+    async function(assert) {
     this.set('inputChanged', (val) => {
       this.set('newValue', val);
     });
@@ -470,7 +479,8 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.ok(page.inputWithMentions.mentions[1].isIncomplete);
     await page.mentionOptionsList.mentionOptions[1].click();
     assert.equal(page.inputWithMentions.mentions.length, 2);
-    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete && page.inputWithMentions.mentions[1].isIncomplete, 'able to add duplicate mentions');
+    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete && page.inputWithMentions.mentions[1].isIncomplete,
+      'able to add duplicate mentions');
     assert.equal(page.inputWithMentions.text, '@ajball @janine');
 
     await page.fillWithWait(page.input.value + ' no mention text');
@@ -552,25 +562,3 @@ module('Integration | Component | mentionable-input', function(hooks) {
       .hasStyle(expectedTextFill, assertionMsg('-webkit-text-fill-color', expectedTextFillColor));
   });
 });
-
-const testUsers = [
-  {
-    "username":"ajball",
-    "name":"Andrew Ball"
-  },
-  {
-    "username": "janine",
-    "name": "Janine Henry"
-  }
-];
-
-const getTestUsers = () => testUsers.map( user => new User({ name: user.name, username: user.username }) );
-
-class User {
-  name = null;
-  username = null;
-  constructor({ name, username }) {
-    this.name = name;
-    this.username = username;
-  }
-}
