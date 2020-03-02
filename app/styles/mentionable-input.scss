@@ -1,9 +1,11 @@
 @import 'ember-paper';
 
 // overridable variables
-$mi-font-color: rgb(20, 23, 26);
-$mi-incomplete-mention-color: $mi-font-color;
-$mi-mention-color: #1264a3;
+$mi-font-color: rgb(20, 23, 26) !default;
+$mi-incomplete-mention-color: $mi-font-color !default;
+$mi-mention-color: #1264a3 !default;
+$mi-help-bar-background-color: #fafbfc !default;
+$mi-help-bar-font-color: #7f7f83 !default;
 
 @import 'util';
 @import 'dropdown-options';
