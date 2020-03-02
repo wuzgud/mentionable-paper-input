@@ -1,4 +1,4 @@
-import { render } from '@ember/test-helpers';
+import { find, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
@@ -17,7 +17,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('able to select a mention from the mention options dropdown which emits onInputChange action passing the new input value', async function(assert) {
-    assert.expect(12);
+    assert.expect(14);
     let expectedValueEmitted;
     this.set('inputChanged', (val) => {
       assert.equal(val, expectedValueEmitted);
@@ -58,6 +58,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     assert.equal(page.input.value, '@an');
     assert.equal(page.mentionOptions.length, 2);
+    assert.ok(page.mentionOptionsArePresent);
 
     expectedMentionStartedVal = null;
     expectedValueEmitted = `@ajball `; // extra space at the end is deliberate. reflects actual behavior of component
@@ -72,6 +73,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
+    assert.notOk(page.mentionOptionsArePresent, 'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('it renders mention options correctly if they exist', async function(assert) {
@@ -261,6 +263,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
+    assert.notOk(page.mentionOptionsArePresent, 'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
@@ -510,6 +513,37 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.equal(page.hint, 'Type "@" to mention');
     this.set('showHint', false);
     assert.notOk(page.hintIsPresent, 'Hint is not present');
+  });
+
+  test(`textarea element's font is not visible`, async function(assert) {
+    this.set('inputChanged', (val) => {
+      this.set('newValue', val);
+    });
+    this.set('setUserMentions', (val) => {
+      this.set('mentionOptions', val ? getTestUsers() : []);
+    });
+    this.set('extractor', (user) => {
+      return user.username;
+    });
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    const textareaEl = window.getComputedStyle(find('[data-test-mention-input] textarea'), null);
+
+    assert.equal(textareaEl.getPropertyValue('text-shadow'), 'rgba(0, 0, 0, 0) 0px 0px 0px', 'font color appears transparent when text-shadow value is rgba(0, 0, 0, 0) 0px 0px 0px');
+    assert.equal(textareaEl.getPropertyValue('-webkit-text-fill-color'), 'rgba(0, 0, 0, 0)', 'font color appears transparent when -webkit-text-fill-color value is rgba(0, 0, 0, 0)');
   });
 });
 

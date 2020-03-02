@@ -41,6 +41,7 @@ export default function(scope) {
       isFocused: hasClass('focused'),
       noResults: text('[data-test-no-mention-options-text]'),
       noResultsMsgExists: isPresent('[data-test-no-mention-options-text]')
-    })
+    }),
+    mentionOptionsArePresent: isPresent('[data-test-mention-options-list-wrap]')
   }
 }
