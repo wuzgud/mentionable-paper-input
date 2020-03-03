@@ -14,7 +14,7 @@ class MentionableInputComponent extends Component {
   @tracked
   enableMentions = true;
   @tracked
-  focusedOptionIndex = -1;
+  focusedOptionIndex = 0;
 
   // ===================== Public getters for <MentionableInput>'s input parameters =====================
 
@@ -157,7 +157,7 @@ class MentionableInputComponent extends Component {
   closeOptionsDropdown() {
     this.args.onMentionStarted(null);
     this.enableMentions = false;
-    this.focusedOptionIndex = -1;
+    this.focusedOptionIndex = 0;
   }
   /**
    * Binds to the textarea's key down event and closes the mention options dropdown

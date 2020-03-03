@@ -274,13 +274,7 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     assert.equal(page.input.value, '@an');
     assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
-    page.mentionOptionsList.mentionOptions.forEach((it) => {
-      assert.notOk(it.isFocused);
-      assert.notOk(it.ariaCurrent === 'true');
-    });
-
-    await page.arrowDown();
-    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused, 'first mention option is auto-focused');
     assert.ok(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
     assert.notOk(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
