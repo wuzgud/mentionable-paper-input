@@ -10,9 +10,6 @@ class MentionOptionsComponent extends Component {
   get isDesktop() {
     return this.media.isDesktop || this.media.isJumbo;
   }
-  constructor() {
-    super(...arguments);
-  }
   @action
   setMentionsDropdownTopPosition(mentionsDropdownEl) {
     const height = this.getTextAreaHeight();
