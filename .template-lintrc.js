@@ -5,6 +5,7 @@ module.exports = {
   rules: {
     'no-implicit-this': {
       allow: ['noop']
-    }
+    },
+    'no-html-comments': false
   }
 };
