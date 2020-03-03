@@ -95,8 +95,10 @@ class MentionableInputComponent extends Component {
    * Strips excessive spacing (no more than one space between words is allowed)
    * A necessary (and low-cost) compromise to make the styling magic in StyledInputText work
    * @param  { String } newValue The new, raw text value from textarea element
-   * @return { action<String> } emits updated textarea value to parent context via onInputChange action binding
-   * @return { action<String> } emits current mention (see currentMention) to parent context via onMentionStarted action
+   * @event onInputChange emits updated textarea value to parent context via onInputChange action binding
+
+   * @event onMentionStarted emits current mention to parent context via onMentionStarted action
+   * @see currentMention
    */
   @action
   onInputChange(newValue) {
@@ -116,7 +118,7 @@ class MentionableInputComponent extends Component {
    * Completes the mention by adding it to the textarea text and pushing it to the array tracking added mentions
    * Refocuses textarea element
    * @param  { String } mentionValue Complete mention value (e.g. a user's full username)
-   * @return { action<String> } emits updated textarea text value to parent context via onInputChange action binding
+   * @event this.args.onInputChange emits updated textarea text value to parent context
    */
   @action
   doMention(mentionValue) {
@@ -221,7 +223,8 @@ class MentionableInputComponent extends Component {
     return !!this.currentMention;
   }
   /**
-   * Getter function to get the mention currently being added (see findCurrentMention)
+   * Getter function to get the mention currently being added
+   * @see findCurrentMention
    */
   get currentMention() {
     return this.findCurrentMention();
