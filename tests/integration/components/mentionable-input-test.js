@@ -2,10 +2,10 @@ import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
+import { setBreakpoint } from 'ember-responsive/test-support';
 import { module, test } from 'qunit';
 import getTestUsers from '../../helpers/get-test-users';
 import { waitPromise } from '../../helpers/wait';
-import { setBreakpoint } from 'ember-responsive/test-support';
 
 import mentionableInputPage from "../../pages/components/mentionable-input-page";
 
