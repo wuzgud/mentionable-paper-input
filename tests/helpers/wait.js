@@ -11,7 +11,7 @@ function wait(assert, timeout= 200) {
 function waitPromise(timeout= 200) {
     return new Promise((resolve) => {
         run.later(this, () => {
-            resolve(true);
+            resolve();
         }, timeout);
     });
 }

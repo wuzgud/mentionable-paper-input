@@ -3,8 +3,9 @@ import { hbs } from 'ember-cli-htmlbars';
 import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
-import { waitPromise } from '../../helpers/wait';
 import getTestUsers from '../../helpers/get-test-users';
+import { waitPromise } from '../../helpers/wait';
+import { setBreakpoint } from 'ember-responsive/test-support';
 
 import mentionableInputPage from "../../pages/components/mentionable-input-page";
 
@@ -67,9 +68,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.mentionOptionsList.mentionOptions[0].click();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
-    assert.equal(page.inputWithMentions.text, '@ajball');
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
+    assert.equal(page.styledInput.text, '@ajball');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
     assert.equal(
       this.element.querySelector(page.input.scope + ' textarea'),
       document.activeElement,
@@ -80,17 +81,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('it renders mention options correctly if they exist', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-
-    this.set('setUserMentions', (val) => {
-      this.set('mentionOptions', val ? getTestUsers() : []);
-    });
-
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -160,40 +153,32 @@ module('Integration | Component | mentionable-input', function(hooks) {
     expectedMentionStartedVal = null;
     await page.mentionOptionsList.mentionOptions[0].click();
 
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
-    assert.equal(page.inputWithMentions.text, '@ajball');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.notOk(page.styledInput.mentions[0].isIncomplete);
+    assert.equal(page.styledInput.text, '@ajball');
 
     expectedValueEmitted = '@ajbal';
     expectedMentionStartedVal = 'ajbal';
     await page.fillWithWait(page.input.value.slice(0, -2)); //remove last char
 
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.ok(page.inputWithMentions.mentions[0].isIncomplete);
-    assert.equal(page.inputWithMentions.text, '@ajbal');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.ok(page.styledInput.mentions[0].isIncomplete);
+    assert.equal(page.styledInput.text, '@ajbal');
 
     expectedValueEmitted = '@janine ';
     expectedExtractedMention = 'janine';
     expectedMentionStartedVal = null;
     await page.mentionOptionsList.mentionOptions[1].click();
 
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
-    assert.equal(page.inputWithMentions.text, '@janine');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.notOk(page.styledInput.mentions[0].isIncomplete);
+    assert.equal(page.styledInput.text, '@janine');
   });
 
   test('backspacing to the end of mention triggers onMentionStarted', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-
-    this.set('setUserMentions', (val) => {
-      this.set('mentionOptions', val ? getTestUsers() : []);
-    });
-
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -219,17 +204,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('can set the mention special character prefix via @specialCharacter', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-
-    this.set('setUserMentions', () => {
-      this.set('mentionOptions', getTestUsers());
-    });
-
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -259,9 +236,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
     await page.mentionOptionsList.mentionOptions[0].click();
 
     assert.equal(page.input.value, '#ajball ', 'space added to end of mention after adding');
-    assert.equal(page.inputWithMentions.text, '#ajball');
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
+    assert.equal(page.styledInput.text, '#ajball');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
     assert.equal(
       this.element.querySelector(page.input.scope + ' textarea'),
       document.activeElement,
@@ -272,18 +249,12 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-
-    this.set('setUserMentions', async () => {
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', async (val) => {
       await waitPromise(1000); // Just to make sure it doesn't break if there's a delay setting the options
-      this.set('mentionOptions', getTestUsers());
+      this.set('mentionOptions', val ? getTestUsers() : []);
     });
-
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+    this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -305,53 +276,59 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
     page.mentionOptionsList.mentionOptions.forEach((it) => {
       assert.notOk(it.isFocused);
+      assert.notOk(it.ariaCurrent === 'true');
     });
 
     await page.arrowDown();
     assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
 
     await page.arrowDown();
     assert.notOk(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.ok(page.mentionOptionsList.mentionOptions[1].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
 
     await page.arrowDown();
     page.mentionOptionsList.mentionOptions.forEach((it) => {
       assert.notOk(it.isFocused);
+      assert.notOk(it.ariaCurrent === 'true');
     });
 
     await page.arrowUp();
     assert.notOk(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.ok(page.mentionOptionsList.mentionOptions[1].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
 
     await page.arrowUp();
     assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.ok(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
 
     await page.pressEnter();
 
     assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
-    assert.equal(page.inputWithMentions.text, '@ajball');
-    assert.equal(page.inputWithMentions.mentions.length, 1);
-    assert.equal(page.inputWithMentions.mentions[0].href, '/u/ajball');
+    assert.equal(page.styledInput.text, '@ajball');
+    assert.equal(page.styledInput.mentions.length, 1);
+    assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
     assert.equal(
       this.element.querySelector(page.input.scope + ' textarea'),
       document.activeElement,
       'textarea is still focused after selecting mention'
     );
+    assert.notOk(page.mentionOptionsList.isPresent,
+      'Mention options list and help-bar are closed after selecting mention');
   });
 
   test('it does not start a mention if normal/plain text (i.e. no @, #, ${specialCharacter}) is entered',
     async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-    this.set('setUserMentions', () => {
-      assert.notOk(true, 'onMentionStarted should not be called');
-    });
-    this.set('extractor', () => {
-      assert.notOk(true, 'extractMention should not be called');
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', () => assert.notOk(true, 'onMentionStarted should not be called'));
+    this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
       <MentionableInput
@@ -373,15 +350,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test('it does not allow more than one space between words', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-    this.set('setUserMentions', () => {
-      assert.notOk(true, 'onMentionStarted should not be called');
-    });
-    this.set('extractor', () => {
-      assert.notOk(true, 'extractMention should not be called');
-    });
+    this.set('inputChanged', (val) => this.set('newValue', val));
+    this.set('setUserMentions', () => assert.notOk(true, 'onMentionStarted should not be called'));
+    this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
       <MentionableInput
@@ -410,16 +381,12 @@ module('Integration | Component | mentionable-input', function(hooks) {
   test('when the options list is empty, it displays a message informing the user that there are no option results',
     async function(assert) {
     assert.expect(4);
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', (val) => {
       assert.equal(val, 'an');
       this.set('mentionOptions', []);
     });
-    this.set('extractor', () => {
-      assert.notOk(true, 'extractMention should not be called');
-    });
+    this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
       <MentionableInput
@@ -444,15 +411,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
   test('mentions are structurally distinct from plain input text (i.e. mention text are contained in their own dom element)',
     async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-    this.set('setUserMentions', (val) => {
-      this.set('mentionOptions', val ? getTestUsers() : []);
-    });
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+      this.set('inputChanged', val => this.set('newValue', val));
+      this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+      this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -470,35 +431,29 @@ module('Integration | Component | mentionable-input', function(hooks) {
 
     await page.fillWithWait('@an');
     await page.mentionOptionsList.mentionOptions[0].click();
-    assert.equal(page.inputWithMentions.mentions.length, 1);
+    assert.equal(page.styledInput.mentions.length, 1);
     assert.notOk(page.mentionOptionsList.mentionOptions.isPresent);
-    assert.equal(page.inputWithMentions.text, '@ajball');
+    assert.equal(page.styledInput.text, '@ajball');
 
     await page.fillWithWait(page.input.value + '@jan');
-    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete);
-    assert.ok(page.inputWithMentions.mentions[1].isIncomplete);
+    assert.notOk(page.styledInput.mentions[0].isIncomplete);
+    assert.ok(page.styledInput.mentions[1].isIncomplete);
     await page.mentionOptionsList.mentionOptions[1].click();
-    assert.equal(page.inputWithMentions.mentions.length, 2);
-    assert.notOk(page.inputWithMentions.mentions[0].isIncomplete && page.inputWithMentions.mentions[1].isIncomplete,
+    assert.equal(page.styledInput.mentions.length, 2);
+    assert.notOk(page.styledInput.mentions[0].isIncomplete && page.styledInput.mentions[1].isIncomplete,
       'able to add duplicate mentions');
-    assert.equal(page.inputWithMentions.text, '@ajball @janine');
+    assert.equal(page.styledInput.text, '@ajball @janine');
 
     await page.fillWithWait(page.input.value + ' no mention text');
     assert.notOk(page.mentionOptionsList.mentionOptions.isPresent);
-    assert.equal(page.inputWithMentions.text, '@ajball @janine no mention text');
-    assert.equal(page.inputWithMentions.mentions.length, 2, 'still have only two completed mentions');
+    assert.equal(page.styledInput.text, '@ajball @janine no mention text');
+    assert.equal(page.styledInput.mentions.length, 2, 'still have only two completed mentions');
   });
 
   test('it is able to show a hint', async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-    this.set('setUserMentions', () => {
-      this.set('mentionOptions', []);
-    });
-    this.set('extractor', () => {
-      assert.notOk(true, 'extractMention should not be called');
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', () => this.set('mentionOptions', []));
+    this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
     this.set('showHint', true);
     this.set('specialChar', '#');
 
@@ -526,15 +481,9 @@ module('Integration | Component | mentionable-input', function(hooks) {
   });
 
   test(`textarea element's font is not visible`, async function(assert) {
-    this.set('inputChanged', (val) => {
-      this.set('newValue', val);
-    });
-    this.set('setUserMentions', (val) => {
-      this.set('mentionOptions', val ? getTestUsers() : []);
-    });
-    this.set('extractor', (user) => {
-      return user.username;
-    });
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
 
     await render(hbs`
       <MentionableInput
@@ -560,5 +509,95 @@ module('Integration | Component | mentionable-input', function(hooks) {
       .hasStyle(expectedTextShadow, assertionMsg('text-shadow', expectedTextShadowColor));
     assert.dom(page.input.getTextareaEl())
       .hasStyle(expectedTextFill, assertionMsg('-webkit-text-fill-color', expectedTextFillColor));
+  });
+
+  test('dropdown list element renders directly beneath textarea element', async function(assert) {
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+
+    const textarea = page.input.getTextareaEl();
+    const textAreaHeight = textarea.style.height;
+    const heightNumber = +textAreaHeight.replace(/px/, '');
+    // 2 is a constant used in setMentionsDropdownTopPosition() mention-options.js
+    const expectedOptionsListTopValue = (heightNumber + 2) + 'px';
+
+    assert
+      .dom(page.mentionOptionsList.scope)
+      .hasStyle({ top: expectedOptionsListTopValue });
+  });
+
+  test('the help-bar displays the current mention and instructions to close options dropdown at desktop screen sizes', async function(assert) {
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    setBreakpoint('desktop');
+    await page.fillWithWait('@an');
+
+    assert.equal(page.mentionOptionsList.helpBar.currentMention, 'Results matching "@an"');
+    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'esc to dismiss');
+
+    await page.pressEscape();
+    assert.notOk(page.mentionOptionsList.isPresent);
+  });
+
+  test('the help-bar displays a button to close options dropdown at mobile screen sizes', async function(assert) {
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
+    this.set('extractor', user => user.username);
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    setBreakpoint('mobile');
+    await page.fillWithWait('@an');
+
+    assert.equal(page.mentionOptionsList.helpBar.currentMention, 'Results matching "@an"');
+    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'close');
+
+    await page.mentionOptionsList.helpBar.closeWrap.button();
+    assert.notOk(page.mentionOptionsList.isPresent);
   });
 });
