@@ -178,7 +178,7 @@ class MentionableInputComponent extends Component {
         this.processArrowUp();
       } else if (event.key === 'ArrowDown') {
         event.preventDefault();
-        this.processArrowDown();
+        this.processArrowDown(); // TODO: If element is not visible due to scroll, should we scroll newly focused option into view?
       } else if (event.key === 'Enter') {
         event.preventDefault();
         if (this.focusedOptionIndex === -1) {

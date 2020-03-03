@@ -51,10 +51,9 @@ $mention-help-bar-height: 32px;
       list-style-type: none;
       margin: $mention-help-bar-height 0 0 0;
       padding: 0;
-      background-clip: padding-box;
       overflow: hidden;
       overflow-y: auto;
-      max-height: calc(350px - #{$mention-help-bar-height});
+      max-height: calc(325px - #{$mention-help-bar-height});
 
       li.option {
         display: flex;
