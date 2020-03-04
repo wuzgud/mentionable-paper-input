@@ -41,21 +41,18 @@ $mention-help-bar-height: 32px;
           color: $mi-font-color !important;
         }
 
-        .close:hover {
+        .mi-close:hover {
           cursor: pointer;
         }
       }
     }
 
-    ul.options {
+    ul.mention-options {
       list-style-type: none;
       margin: $mention-help-bar-height 0 0 0;
       padding: 0;
-      overflow: hidden;
-      overflow-y: auto;
-      max-height: calc(325px - #{$mention-help-bar-height});
 
-      li.option {
+      li.mention-option {
         display: flex;
         align-items: center;
         padding: 3px 10px;

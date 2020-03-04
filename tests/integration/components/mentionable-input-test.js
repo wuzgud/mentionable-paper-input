@@ -4,7 +4,7 @@ import { create } from "ember-cli-page-object";
 import { setupRenderingTest } from 'ember-qunit';
 import { setBreakpoint } from 'ember-responsive/test-support';
 import { module, test } from 'qunit';
-import getTestUsers from '../../helpers/get-test-users';
+import { getBigArrayTestUsers, getTestUsers } from '../../helpers/get-test-users';
 import { waitPromise } from '../../helpers/wait';
 
 import mentionableInputPage from "../../pages/components/mentionable-input-page";
@@ -106,6 +106,32 @@ module('Integration | Component | mentionable-input', function(hooks) {
     assert.equal(page.mentionOptionsList.mentionOptions[1].text, 'Janine Henry janine');
     assert.notOk(page.mentionOptionsList.mentionOptions[0].noResultsMsgExists);
     assert.notOk(page.mentionOptionsList.mentionOptions[1].noResultsMsgExists);
+  });
+
+  test('it renders a maximum of 6 mention options', async function(assert) {
+    const testUsers = getBigArrayTestUsers();
+    this.set('inputChanged', val => this.set('newValue', val));
+    this.set('setUserMentions', val => this.set('mentionOptions', val ? testUsers : []));
+    this.set('extractor', user => user.username);
+
+    await render(hbs`
+      <MentionableInput
+        @value={{this.newValue}}
+        @onInputChange={{fn this.inputChanged}}
+        @extractMention={{fn this.extractor}}
+        @options={{this.mentionOptions}}
+        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+          <OptionResult as |user|>
+            <span>{{user.name}} </span>
+            <span>{{user.username}}</span>
+          </OptionResult>
+        </MentionableInput>
+    `);
+
+    await page.fillWithWait('@an');
+
+    assert.ok(testUsers.length > 6);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, 6);
   });
 
   test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete',

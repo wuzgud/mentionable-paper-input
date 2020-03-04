@@ -31,7 +31,13 @@ function findAllUsers() {
       new User({ name: 'Andrew Ball', username: 'ajball' }),
       new User({ name: 'Shauna Robertson', username: 'slauna' }),
       new User({ name: 'Will Henry', username: 'will' }),
-      new User({ name: 'Janine Henry', username: 'janine' })
+      new User({ name: 'Janine Henry', username: 'janine' }),
+      new User({ name: 'Andrew Balls', username: 'ajball2' }),
+      new User({ name: 'Shauna Robertsons', username: 'slauna1' }),
+      new User({ name: 'Will Henrys', username: 'will3' }),
+      new User({ name: 'Janine Henrys', username: 'janine4' }),
+      new User({ name: 'Will Henrysfdsfds', username: 'will10101' }),
+      new User({ name: 'Janine Henrys scrub', username: 'janine00' })
     ])
   });
 }

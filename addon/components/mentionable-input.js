@@ -30,7 +30,7 @@ class MentionableInputComponent extends Component {
    * @return { String } textarea value
    */
   get options() {
-    return this.args.options || [];
+    return this.args.options ? this.args.options.slice(0, 6) : [];
   }
   /**
    * Label for the textarea element

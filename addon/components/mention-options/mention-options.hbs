@@ -9,13 +9,13 @@
       {{#if this.isDesktop}}
         <strong>esc</strong> to dismiss
       {{else}}
-        <span class="close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
+        <span class="mi-close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
           <PaperIcon @icon={{'close'}} @size={{20}} />
         </span>
       {{/if}}
     </span>
   </div>
-  <ul class="options">
+  <ul class="mention-options">
     {{#each @options as |option index|}}
       {{yield (component 'mention-option'
         option=option

@@ -1,4 +1,4 @@
-<li class="option {{if this.focused 'focused'}}" role="option" aria-current="{{this.focused}}"
+<li class="mention-option {{if this.focused 'focused'}}" role="option" aria-current="{{this.focused}}"
   {{on 'click' (fn @doMention this.extractedMention)}} data-test-mention-option>
     {{yield @option}}
 </li>
