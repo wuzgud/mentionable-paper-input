@@ -590,6 +590,14 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
 
     await page.pressEscape();
     assert.notOk(page.mentionOptionsList.isPresent);
+
+    setBreakpoint('jumbo');
+    await page.fillWithWait('@an');
+    assert.equal(page.mentionOptionsList.helpBar.currentMention, 'Results matching "@an"');
+    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'esc to dismiss');
+
+    await page.pressEscape();
+    assert.notOk(page.mentionOptionsList.isPresent);
   });
 
   test('the help-bar displays a button to close options dropdown at mobile screen sizes', async function(assert) {
@@ -615,7 +623,16 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     await page.fillWithWait('@an');
 
     assert.equal(page.mentionOptionsList.helpBar.currentMention, 'Results matching "@an"');
-    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'close');
+    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'close', 'paper icon val');
+
+    await page.mentionOptionsList.helpBar.closeWrap.button();
+    assert.notOk(page.mentionOptionsList.isPresent);
+
+    setBreakpoint('tablet');
+    await page.fillWithWait('@an');
+
+    assert.equal(page.mentionOptionsList.helpBar.currentMention, 'Results matching "@an"');
+    assert.equal(page.mentionOptionsList.helpBar.closeWrap.text, 'close', 'paper icon val');
 
     await page.mentionOptionsList.helpBar.closeWrap.button();
     assert.notOk(page.mentionOptionsList.isPresent);
