@@ -1,10 +1,10 @@
 import Service from '@ember/service';
 import RSVP from 'rsvp';
-import { getBigArrayTestUsers } from 'tests/helpers/get-test-users';
+import { getBigArrayTestUsers } from '../../../helpers/get-test-users';
 
 export default class UserService extends Service {
   constructor() {
-    super();
+    super(...arguments);
   }
   findAll(searchTerm) {
     return new RSVP.Promise(
