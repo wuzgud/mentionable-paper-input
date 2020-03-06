@@ -16,7 +16,7 @@ class MentionablePaperInputComponent extends Component {
   @tracked
   focusedOptionIndex = 0;
 
-  // ===================== Public getters for <MentionableInput>'s input parameters =====================
+  // ===================== Public getters for <MentionablePaperInput>'s input parameters =====================
 
   /**
    * The textarea element's raw text value
@@ -76,15 +76,15 @@ class MentionablePaperInputComponent extends Component {
   constructor() {
     super(...arguments);
     assert(
-      '<MentionableInput> requires a bound `onInputChange` action which accepts the current text value as an argument',
+      '<MentionablePaperInput> requires a bound `onInputChange` action which accepts the current text value as an argument',
       this.args.onInputChange && typeof this.args.onInputChange === 'function'
     );
     assert(
-      '<MentionableInput> requires a bound `onMentionStarted` action which accepts the current mention as an argument',
+      '<MentionablePaperInput> requires a bound `onMentionStarted` action which accepts the current mention as an argument',
       this.args.onMentionStarted && typeof this.args.onMentionStarted === 'function'
     );
     assert(
-      '<MentionableInput> requires a bound `extractMention` action which accepts a mention option as an argument',
+      '<MentionablePaperInput> requires a bound `extractMention` action which accepts a mention option as an argument',
       this.args.extractMention && typeof this.args.extractMention === 'function'
     );
     this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));

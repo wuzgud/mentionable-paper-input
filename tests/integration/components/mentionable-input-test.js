@@ -7,9 +7,9 @@ import { module, test } from 'qunit';
 import { getBigArrayTestUsers, getTestUsers } from '../../helpers/get-test-users';
 import { waitPromise } from '../../helpers/wait';
 
-import mentionableInputPage from "../../pages/components/mentionable-input-page";
+import MentionablePaperInputPage from "../../pages/components/mentionable-input-page";
 
-const page = create(mentionableInputPage('[data-test-mentionable-input]'));
+const page = create(MentionablePaperInputPage('[data-test-mentionable-input]'));
 
 module('Integration | Component | mentionable-paper-input', function(hooks) {
   setupRenderingTest(hooks);
@@ -42,7 +42,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     });
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -52,7 +52,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     expectedValueEmitted = '@an';
@@ -64,10 +64,10 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     assert.ok(page.mentionOptionsList.isPresent);
 
     expectedMentionStartedVal = null;
-    expectedValueEmitted = `@ajball `; // extra space at the end is deliberate. reflects actual behavior of component
+    expectedValueEmitted = '@ajball ';
     await page.mentionOptionsList.mentionOptions[0].click();
 
-    assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
+    assert.equal(page.input.value, '@ajball ', 'space added to end of mention after mention is added');
     assert.equal(page.styledInput.text, '@ajball');
     assert.equal(page.styledInput.mentions.length, 1);
     assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
@@ -86,7 +86,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -96,7 +96,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -115,7 +115,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -125,7 +125,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -157,7 +157,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     });
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -167,7 +167,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     expectedValueEmitted = '@an';
@@ -185,7 +185,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
 
     expectedValueEmitted = '@ajbal';
     expectedMentionStartedVal = 'ajbal';
-    await page.fillWithWait(page.input.value.slice(0, -2)); //remove last char
+    await page.fillWithWait(page.input.value.slice(0, -2)); // remove last char
 
     assert.equal(page.styledInput.mentions.length, 1);
     assert.ok(page.styledInput.mentions[0].isIncomplete);
@@ -207,7 +207,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -217,7 +217,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -225,7 +225,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     await page.mentionOptionsList.mentionOptions[0].click();
     assert.equal(page.mentionOptionsList.mentionOptions.length, 0);
 
-    await page.fillWithWait(page.input.value.slice(0, -1)); //remove space to get cursor at end of mention
+    await page.fillWithWait(page.input.value.slice(0, -1)); // remove space to get cursor at end of mention
     assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
   });
 
@@ -235,7 +235,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @specialCharacter='#'
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
@@ -246,7 +246,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -261,7 +261,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
 
     await page.mentionOptionsList.mentionOptions[0].click();
 
-    assert.equal(page.input.value, '#ajball ', 'space added to end of mention after adding');
+    assert.equal(page.input.value, '#ajball ', 'space added to end of mention after mention is added');
     assert.equal(page.styledInput.text, '#ajball');
     assert.equal(page.styledInput.mentions.length, 1);
     assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
@@ -277,13 +277,13 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
   test('able to use arrow keys and enter to navigate to a mention option and select', async function(assert) {
     this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', async (val) => {
-      await waitPromise(1000); // Just to make sure it doesn't break if there's a delay setting the options
+      await waitPromise(1000); // Just to make sure it doesn't break if there's a delay
       this.set('mentionOptions', val ? getTestUsers() : []);
     });
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -293,7 +293,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -331,7 +331,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
 
     await page.pressEnter();
 
-    assert.equal(page.input.value, '@ajball ', 'space added to end of mention after adding');
+    assert.equal(page.input.value, '@ajball ', 'space added to end of mention after mention is added');
     assert.equal(page.styledInput.text, '@ajball');
     assert.equal(page.styledInput.mentions.length, 1);
     assert.equal(page.styledInput.mentions[0].href, '/u/ajball');
@@ -351,7 +351,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -361,7 +361,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('no mention');
@@ -375,7 +375,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -385,14 +385,14 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('no text with single spaces');
     assert.equal(page.input.value, 'no text with single spaces');
 
-    await page.fillWithWait('no text  with more than   one space    ');
-    assert.equal(page.input.value, 'no text with more than one space ');
+    await page.fillWithWait('no text  with more than   one space    allowed  ');
+    assert.equal(page.input.value, 'no text with more than one space allowed ');
 
     await page.fillWithWait(' ');
     assert.equal(page.input.value, '', 'user should not be allowed to start text with a space');
@@ -409,7 +409,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', () => assert.notOk(true, 'extractMention should not be called'));
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -419,7 +419,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -436,7 +436,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
       this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -446,7 +446,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -478,7 +478,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('specialChar', '#');
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @showHint={{this.showHint}}
         @specialCharacter={{this.specialChar}}
         @value={{this.newValue}}
@@ -490,7 +490,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     assert.equal(page.hint, 'Type "#" to mention');
@@ -506,7 +506,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -516,7 +516,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     const assertionMsg = (cssProp, val) => `font color appears transparent when ${cssProp} value is ${val}`;
@@ -537,7 +537,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -547,7 +547,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     await page.fillWithWait('@an');
@@ -569,7 +569,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -579,7 +579,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     setBreakpoint('desktop');
@@ -598,7 +598,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     this.set('extractor', user => user.username);
 
     await render(hbs`
-      <MentionableInput
+      <MentionablePaperInput
         @value={{this.newValue}}
         @onInputChange={{fn this.inputChanged}}
         @extractMention={{fn this.extractor}}
@@ -608,7 +608,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
           </OptionResult>
-        </MentionableInput>
+        </MentionablePaperInput>
     `);
 
     setBreakpoint('mobile');
