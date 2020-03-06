@@ -1,1 +1,0 @@
-export { default } from 'mentionable-input/components/mentionable-input';

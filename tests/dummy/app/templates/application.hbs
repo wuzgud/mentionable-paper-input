@@ -1,4 +1,4 @@
-<MentionableInput
+<MentionablePaperInput
         @value={{this.textVal}}
         @options={{this.userMentions}}
         @extractMention={{fn this.getUsername}}
@@ -10,5 +10,5 @@
     <span class="primary mr-2" data-test-primary>{{user.name}}</span>
     <span class="subtext" data-test-subtext>{{user.username}}</span>
   </OptionResult>
-</MentionableInput>
+</MentionablePaperInput>
 {{outlet}}

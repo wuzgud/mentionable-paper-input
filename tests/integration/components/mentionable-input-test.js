@@ -11,7 +11,7 @@ import mentionableInputPage from "../../pages/components/mentionable-input-page"
 
 const page = create(mentionableInputPage('[data-test-mentionable-input]'));
 
-module('Integration | Component | mentionable-input', function(hooks) {
+module('Integration | Component | mentionable-paper-input', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {

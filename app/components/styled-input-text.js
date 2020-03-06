@@ -1,1 +1,1 @@
-export { default } from 'mentionable-input/components/styled-input-text/styled-input-text';
+export { default } from 'mentionable-paper-input/components/styled-input-text/styled-input-text';

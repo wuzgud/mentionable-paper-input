@@ -5,7 +5,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { replaceAt } from '../utils/replace-at';
 
-class MentionableInputComponent extends Component {
+class MentionablePaperInputComponent extends Component {
   /**
    * Internally tracked state
    */
@@ -281,4 +281,4 @@ class MentionableInputComponent extends Component {
   }
 }
 
-export default MentionableInputComponent;
+export default MentionablePaperInputComponent;

@@ -1,1 +1,1 @@
-export { default } from 'mentionable-input/components/mention-options/mention-options';
+export { default } from 'mentionable-paper-input/components/mention-options/mention-options';
