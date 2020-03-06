@@ -563,7 +563,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
       .hasStyle({ top: expectedOptionsListTopValue });
   });
 
-  test('the help-bar displays the current mention and instructions to close options dropdown at desktop screen sizes', async function(assert) {
+  test('the help-bar displays the current mention and instructions to close options dropdown at desktop and jumbo screen sizes', async function(assert) {
     this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
     this.set('extractor', user => user.username);
@@ -600,7 +600,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     assert.notOk(page.mentionOptionsList.isPresent);
   });
 
-  test('the help-bar displays a button to close options dropdown at mobile screen sizes', async function(assert) {
+  test('the help-bar displays a button to close options dropdown at mobile device screen sizes', async function(assert) {
     this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
     this.set('extractor', user => user.username);
