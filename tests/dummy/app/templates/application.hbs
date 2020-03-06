@@ -1,7 +1,7 @@
 <MentionablePaperInput
-        @value={{this.textVal}}
+        @value={{this.textareaVal}}
         @options={{this.userMentions}}
-        @extractMention={{fn this.getUsername}}
+        @extractMention={{fn this.extractUsername}}
         @onInputChange={{fn this.valueChanged}}
         @onMentionStarted={{perform this.searchUsersToMention}} as |OptionResult|>
   <OptionResult as |user|>
