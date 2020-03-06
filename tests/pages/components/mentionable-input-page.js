@@ -1,4 +1,4 @@
-import { clickable, collection, hasClass, text, triggerable, isPresent, attribute } from 'ember-cli-page-object';
+import { attribute, clickable, collection, hasClass, isPresent, text, triggerable } from 'ember-cli-page-object';
 import { waitPromise } from "../../helpers/wait";
 import textarea from './paper/paper-textarea-page';
 import styledInputText from "./styled-input-text-page";

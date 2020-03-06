@@ -1,5 +1,5 @@
-import { collection, fillable, text, value } from 'ember-cli-page-object';
 import { find } from '@ember/test-helpers';
+import { collection, fillable, text, value } from 'ember-cli-page-object';
 
 export default function(selector) {
   return {
