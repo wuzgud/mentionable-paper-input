@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import RSVP from 'rsvp';
-import { User } from 'tests/dummy/app/models/user';
+import { User } from '../models/user';
 
 export default class UserService extends Service {
   users = [
@@ -41,12 +41,10 @@ export default class UserService extends Service {
     super(...arguments);
   }
   findAll(searchTerm) {
-    return new RSVP.Promise(
-      resolve => resolve(
-        searchTerm
-        ? this.users.map( user => new User({ name: user.name, username: user.username }) )
-        : []
-      )
-    );
+    const users = searchTerm ? this.users.map( user => {
+      const userObj = { name: user.name, username: user.username };
+      return new User(userObj);
+    }) : [];
+    return new RSVP.Promise( resolve => resolve(users) );
   }
 }
