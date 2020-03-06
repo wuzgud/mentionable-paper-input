@@ -1,7 +1,8 @@
-import { attribute, clickable, collection, hasClass, isPresent, text, triggerable } from 'ember-cli-page-object';
-import { waitPromise } from "../../helpers/wait";
+import { isPresent, text, triggerable } from 'ember-cli-page-object';
+import { waitPromise } from '../../helpers/wait';
+import mentionOptionsPage from './mention-options-page'
 import textarea from './paper/paper-textarea-page';
-import styledInputText from "./styled-input-text-page";
+import styledInputText from './styled-input-text-page';
 
 export default function(scope) {
   return {
@@ -34,22 +35,6 @@ export default function(scope) {
     hint: text('[data-test-mention-hint]'),
     hintIsPresent: isPresent('[data-test-mention-hint]'),
     styledInput: styledInputText('[data-test-text-with-mention-styling]'),
-    mentionOptionsList: {
-      scope: '[data-test-mention-options-list-wrap]',
-      helpBar: {
-        scope: '[data-test-help-bar]',
-        currentMention: text('[data-test-help-bar-text]'),
-        closeWrap: {
-          scope: '[data-test-help-bar-close]',
-          button: clickable('[data-test-close-x]'),
-        }
-      },
-      mentionOptions: collection('[data-test-mention-option]', {
-        isFocused: hasClass('focused'),
-        ariaCurrent: attribute('aria-current'),
-        noResults: text('[data-test-no-mention-options-text]'),
-        noResultsMsgExists: isPresent('[data-test-no-mention-options-text]')
-      })
-    }
+    mentionOptionsList: mentionOptionsPage('[data-test-mention-options-list-wrap]')
   }
 }
