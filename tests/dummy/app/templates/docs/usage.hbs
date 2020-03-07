@@ -49,7 +49,8 @@
               @options={{this.userMentions}}
               @extractMention={{fn this.extractUsername}}
               @onInputChange={{fn this.valueChanged}}
-              @onMentionStarted={{perform this.searchUsersToMention}} @placeholder={{"Type @ to start mentioning"}} as |OptionResult|>
+              @onMentionStarted={{perform this.searchUsersToMention}}
+              @placeholder={{"Type @ to start mentioning"}} as |OptionResult|>
         <OptionResult as |user|>
           <span class="mi-name">{{user.name}}</span>
           <span class="mi-username">{{user.username}}</span>
