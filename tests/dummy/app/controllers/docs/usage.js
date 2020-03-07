@@ -17,9 +17,9 @@ export default class DocsUsage extends Controller {
     return user ? user.username : null;
   }
 
-  @task(function * (currentMention) {
+  @task(function * (mention) {
     yield timeout(150); // throttle the search users call
-    this.set('userMentions', yield this.userService.findAll(currentMention));
+    this.set('userMentions', yield this.userService.findAll(mention));
   }).restartable() searchUsersToMention;
   // END-SNIPPET
 }
