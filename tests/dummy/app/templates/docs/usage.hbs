@@ -19,38 +19,37 @@
 
   {{#with (hash tab=this.selectedTab) class="md-padding" as |current|}}
     {{#if (eq current.tab 0)}}
-      <nav class="
-        docs-demo__snippets-nav docs-py-2 docs-px-4 docs-font-medium
-        docs-bg-black docs-tracking-tight docs-border-b
-        docs-border-grey-darkest
-      ">
-        <button class="
-              docs-mr-4 docs-text-xs docs-no-underline outline-none
-              hover:docs-text-grey-lighter
-              docs-text-grey-lighter
-            " data-ember-action="" data-ember-action-331="331">
+      <nav class="docs-demo__snippets-nav docs-py-2 docs-px-4 docs-font-medium docs-bg-black docs-tracking-tight docs-border-b docs-border-grey-darkest">
+        <button
+          type="button"
+          class="docs-mr-4 docs-text-xs docs-no-underline outline-none hover:docs-text-grey-lighter docs-text-grey-lighter">
           Angle Brackets
         </button>
-        <button class="
-              docs-mr-4 docs-text-xs docs-no-underline outline-none
-              hover:docs-text-grey-lighter
-              docs-text-grey-dark
-            " data-ember-action="" data-ember-action-333="333">
+        <button
+          type="button"
+          class="docs-mr-4 docs-text-xs docs-no-underline outline-none hover:docs-text-grey-lighter docs-text-grey-dark">
           Handlebars
         </button>
       </nav>
-      <DocsSnippet @language={{"hbs"}} @name={{"mentionable-input-usage-template.hbs"}}/>
+      <div class="angle-bracket-snippet">
+        <DocsSnippet
+                @language={{"htmlbars"}}
+                @name={{"mentionable-input-usage-template.hbs"}}/>
+      </div>
     {{else if (eq current.tab 1)}}
-      <DocsSnippet @title={{"my-controller.js"}} @language={{"ts"}} @name={{"mentionable-input-usage-controller.js"}}/>
+      <DocsSnippet
+        @title={{"my-controller.js"}}
+        @language={{"ts"}}
+        @name={{"mentionable-input-usage-controller.js"}}/>
     {{else if (eq current.tab 2)}}
       <!-- BEGIN-SNIPPET mentionable-input-usage-template.hbs -->
       <MentionablePaperInput
-              @value={{this.textareaVal}}
-              @options={{this.userMentions}}
-              @extractMention={{fn this.extractUsername}}
-              @onInputChange={{fn this.valueChanged}}
-              @onMentionStarted={{perform this.searchUsersToMention}}
-              @placeholder={{"Type @ to start mentioning"}} as |OptionResult|>
+          @value={{this.textareaVal}}
+          @options={{this.userMentions}}
+          @extractMention={{fn this.extractUsername}}
+          @onInputChange={{fn this.valueChanged}}
+          @onMentionStarted={{perform this.searchUsersToMention}}
+          @placeholder={{this.placeholderText}} as |OptionResult|>
         <OptionResult as |user|>
           <span class="mi-name">{{user.name}}</span>
           <span class="mi-username">{{user.username}}</span>

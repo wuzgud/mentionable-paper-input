@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class DocsUsage extends Controller {
   // BEGIN-SNIPPET mentionable-input-usage-controller.js
+  placeholderText = 'Type @ to start mentioning';
   @service userService;
 
   @action
