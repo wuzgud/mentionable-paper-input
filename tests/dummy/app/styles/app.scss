@@ -1,4 +1,43 @@
+$primary-color-palette: "grey";
+$primary: "grey";
+$accent: "grey";
 @import 'mentionable-input';
+
+:root {
+  --brand-primary: #6ECE9E;
+}
+
+md-tabs {
+  margin-bottom: 20px;
+
+  .md-tab.md-active {
+    background: #F5F5F5;
+    border-top-left-radius: 0.35rem;
+    border-top-right-radius: 0.35rem;
+  }
+}
+
+md-tabs .md-tab.md-active,
+md-tabs .md-tab.md-active md-icon,
+md-tabs .md-tab.md-focused,
+md-tabs .md-tab.md-focused md-icon,
+md-tabs .md-tab {
+  color: $mi-font-color;
+}
+
+.styled-input {
+  border-color: transparent;
+  border-style: hidden;
+}
+
+nav {
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+   + .docs-code-snippet {
+     border-top-left-radius: 0;
+     border-top-right-radius: 0;
+   }
+}
 
 $mi-grey: #929598;
 .mentionable-input {
@@ -20,14 +59,13 @@ $mi-grey: #929598;
         }
       }
 
-      .primary {
+      .mi-name {
         color: $mi-font-color;
         font-weight: 600;
+        margin-right: 0.5rem;
       }
 
-      .subtext {
-        position: relative;
-        top: 1px;
+      .mi-username {
         font-size: 14px;
         color: $mi-grey;
       }

@@ -1,0 +1,12 @@
+
+<DocsViewer as |viewer|>
+  <viewer.nav as |nav|>
+    <nav.section @label={{"Introduction"}} />
+    <nav.item @label={{"What is Mentionable Paper Input?"}} @route={{"docs.index"}} />
+    <nav.item @label={{"Basic Usage"}} @route={{"docs.usage"}} />
+    <nav.item @label={{"Full Demo"}} @route={{"docs.demo"}} />
+  </viewer.nav>
+  <viewer.main>
+    {{outlet}}
+  </viewer.main>
+</DocsViewer>

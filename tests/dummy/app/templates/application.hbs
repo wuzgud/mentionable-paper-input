@@ -1,14 +1,18 @@
-<MentionablePaperInput
-        @value={{this.textareaVal}}
-        @options={{this.userMentions}}
-        @extractMention={{fn this.extractUsername}}
-        @onInputChange={{fn this.valueChanged}}
-        @onMentionStarted={{perform this.searchUsersToMention}} as |OptionResult|>
-  <OptionResult as |user|>
-    <!-- TODO: Use actual avatar images for dummy demo site -->
-<!--    <span class="avatar-rounded-small mr-2"></span>-->
-    <span class="primary mr-2" data-test-primary>{{user.name}}</span>
-    <span class="subtext" data-test-subtext>{{user.username}}</span>
-  </OptionResult>
-</MentionablePaperInput>
+<DocsHeader></DocsHeader>
+
+{{#if false}}
+  <MentionablePaperInput
+    @value={{this.textareaVal}}
+    @options={{this.userMentions}}
+    @extractMention={{fn this.extractUsername}}
+    @onInputChange={{fn this.valueChanged}}
+    @onMentionStarted={{perform this.searchUsersToMention}} as |OptionResult|>
+    <OptionResult as |user|>
+      <!-- TODO: Use actual avatar images for dummy demo site -->
+      <!--    <span class="avatar-rounded-small mr-2"></span>-->
+      <span class="primary mr-2">{{user.name}}</span>
+      <span class="subtext">{{user.username}}</span>
+    </OptionResult>
+  </MentionablePaperInput>
+{{/if}}
 {{outlet}}

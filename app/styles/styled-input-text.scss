@@ -1,6 +1,11 @@
 .mentionable-input {
 
   .styled-input {
+    @if $font-family != null {
+      font-family: $font-family;
+    } @else {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+    }
     position: absolute;
     top: 2px;
     width: 100%;

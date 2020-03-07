@@ -23,10 +23,29 @@ $mi-dropdown-option-background: #eee !default;
 
   input::-webkit-input-placeholder,
   textarea::-webkit-input-placeholder {
-    color: $mi-font-color;
+    color: $mi-help-bar-font-color;
     text-shadow: none;
     -webkit-text-fill-color: initial;
   }
+  //textarea::-webkit-input-placeholder {
+  //  color: #0bf;
+  //}
+  //
+  //textarea:-moz-placeholder { /* Firefox 18- */
+  //  color: #0bf;
+  //}
+  //
+  //textarea::-moz-placeholder {  /* Firefox 19+ */
+  //  color: #0bf;
+  //}
+  //
+  //textarea:-ms-input-placeholder {
+  //  color: #0bf;
+  //}
+  //
+  //textarea::placeholder {
+  //  color: #0bf;
+  //}
 
   .hint {
     font-size: 14px;

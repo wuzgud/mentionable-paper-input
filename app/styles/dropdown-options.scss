@@ -35,7 +35,8 @@ $mention-help-bar-height: 32px;
 
       .mi-close-action {
         position: relative;
-        right: 12px;
+        right: 11px;
+        bottom: 1px;
 
         md-icon {
           color: $mi-font-color !important;
