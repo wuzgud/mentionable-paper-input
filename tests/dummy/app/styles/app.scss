@@ -3,8 +3,9 @@ $primary: "grey";
 $accent: "grey";
 @import 'mentionable-input';
 
+$mint-chip: #6ECE9E;
 :root {
-  --brand-primary: #6ECE9E;
+  --brand-primary: $mint-chip;
 }
 
 md-tabs {
@@ -75,6 +76,11 @@ nav {
 $mi-grey: #929598;
 .mentionable-input {
 
+  md-input-container:not(.md-input-invalid).md-input-focused .md-input,
+  md-input-container:not(.md-input-invalid).md-input-resized .md-input {
+    border-color: $mint-chip;
+  }
+
   ul.mention-options {
 
     li.mention-option {
@@ -103,5 +109,16 @@ $mi-grey: #929598;
         color: $mi-grey;
       }
     }
+  }
+}
+
+main {
+
+  md-ink-bar {
+    height: 1px;
+  }
+
+  div[data-test-edit-page-link], div[data-test-next-link], div[data-current-page-index-target] + div {
+    display: none;
   }
 }

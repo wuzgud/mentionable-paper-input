@@ -4,8 +4,10 @@ import { task, timeout } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 
 export default class DocsUsage extends Controller {
-  // BEGIN-SNIPPET mentionable-input-usage-controller.js
   placeholderText = 'Type @ to start mentioning';
+  selectedTab = 0;
+  templateType = 'angle';
+  // BEGIN-SNIPPET mentionable-input-usage-controller.js
   @service userService;
 
   @action
@@ -23,4 +25,9 @@ export default class DocsUsage extends Controller {
     this.set('userMentions', yield this.userService.findAll(mention));
   }).restartable() searchUsersToMention;
   // END-SNIPPET
+
+  @action
+  setTemplateType(type) {
+    this.set('templateType', type);
+  }
 }
