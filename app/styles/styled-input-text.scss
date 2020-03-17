@@ -17,22 +17,22 @@
     border-width: 0 0 1px 0;
     line-height: 26px;
     border-radius: 0;
+  }
+}
 
-    a.mention {
-      color: $mi-mention-color;
-      text-decoration: none;
+a.mi-mention {
+  color: $mi-mention-color;
+  text-decoration: none;
 
-      &:hover {
-        color: darken($mi-mention-color, 15%);
-      }
+  &:hover {
+    color: darken($mi-mention-color, 15%);
+  }
 
-      &.incomplete {
-        color: $mi-incomplete-mention-color;
-        pointer-events: none;
-        &:hover {
-          color: $mi-incomplete-mention-color;
-        }
-      }
+  &.mi-incomplete {
+    color: $mi-incomplete-mention-color;
+    pointer-events: none;
+    &:hover {
+      color: $mi-incomplete-mention-color;
     }
   }
 }

@@ -16,7 +16,8 @@ class StyledInputTextComponent extends Component {
     return this.args.rawValue;
   }
   /**
-   * List of mentions that have already been added
+   * List of mentions that have already been added.
+   * If the user doesn't pass, any text matching the provided mention pattern will be styled as a mention
    * @return { String[] }
    */
   get existingMentions() {
@@ -32,12 +33,16 @@ class StyledInputTextComponent extends Component {
 
   constructor() {
     super(...arguments);
-    addEventListener(this, window, 'resize',
-      () => debounceTask(this, 'setReplacementTextWidth', 200)
-    );
+    if (!this.args.isStatic) {
+      addEventListener(this, window, 'resize',
+        () => debounceTask(this, 'setReplacementTextWidth', 200)
+      );
+    }
   }
   willDestroy() {
-    runDisposables(this);
+    if (!this.args.isStatic) {
+      runDisposables(this);
+    }
   }
 
   get textSegments() {
@@ -52,7 +57,7 @@ class StyledInputTextComponent extends Component {
       const segments = [ plainText ];
       if (mentions[i]) {
         const mention = mentions[i];
-        const cssClass = this.isIncompleteMention(mention) ? 'incomplete' : '';
+        const cssClass = this.isIncompleteMention(mention) ? 'mi-incomplete' : '';
         const mentionHtml = this.generateMentionSafeHtml(mention, cssClass);
         segments.push(mentionHtml);
       }
@@ -65,7 +70,7 @@ class StyledInputTextComponent extends Component {
     return !!existingMentions && !existingMentions.includes(mention);
   }
   generateMentionSafeHtml(mention, className) {
-    return htmlSafe(`<a class="mention ${className}"
+    return htmlSafe(`<a class="mi-mention ${className}"
                         href="/u/${mention.substring(1)}"
                         data-test-mention>
                         ${mention}
@@ -81,7 +86,7 @@ class StyledInputTextComponent extends Component {
     this.replacementTextEl = element;
   }
   setReplacementTextWidth() {
-    if (this.replacementTextEl) {
+    if (this.args.textAreaElement && this.replacementTextEl) {
       const widthFloat = parseFloat(this.textAreaWidth);
       this.replacementTextEl.style.width = `${widthFloat - 4}px`; // -4 to account for textarea horizontal padding
     }

@@ -1,3 +1,5 @@
+@import "demo.scss";
+
 $primary-color-palette: "grey";
 $primary: "grey";
 $accent: "grey";
@@ -6,6 +8,10 @@ $accent: "grey";
 $mint-chip: #6ECE9E;
 :root {
   --brand-primary: $mint-chip;
+}
+
+.d-flex {
+  display: flex;
 }
 
 md-tabs {
@@ -114,11 +120,29 @@ $mi-grey: #929598;
 
 main {
 
+  a {
+    color: #1264a3;
+
+    &:hover {
+      color: darken(#1264a3, 10%);
+    }
+  }
+
   md-ink-bar {
     height: 1px;
   }
 
   div[data-test-edit-page-link], div[data-test-next-link], div[data-current-page-index-target] + div {
     display: none;
+  }
+
+  .mi-green {
+    background-color: #6CA693;
+  }
+  .mi-blue {
+    background-color: #1264a3;
+  }
+  .mi-red {
+    background-color: #C2555E;
   }
 }

@@ -1,1 +1,55 @@
-<h2>Demo</h2>
+<PaperList @class="comment-list">
+  {{#each this.comments as |comment|}}
+    <PaperItem class="w-100">
+      <div class="d-flex w-100">
+        <div class="avatar-wrap">
+          <div class="avatar {{comment.user.cssClass}}">
+            {{comment.user.firstInitial}}
+          </div>
+        </div>
+        <div class="md-list-item-text comment-bubble">
+          <div class="comment-text">
+            <span class="username">
+              {{comment.user.username}}
+            </span>
+            <StyledInputText
+              @rawValue={{comment.text}}
+              @mentionPattern={{this.mentionPattern}}
+              @isStatic={{true}} />
+          </div>
+          <div class="time-since-posted">
+            {{comment.timeSincePosted}}
+          </div>
+        </div>
+      </div>
+    </PaperItem>
+  {{/each}}
+</PaperList>
+
+<div class="docs-mt-12 add-comment-wrap">
+  <div class="avatar-wrap">
+    <div class="avatar mi-blue">
+      You
+    </div>
+  </div>
+  <MentionablePaperInput
+          @value={{this.textareaVal}}
+          @options={{this.userMentions}}
+          @extractMention={{fn this.extractUsername}}
+          @onInputChange={{fn this.valueChanged}}
+          @onMentionStarted={{perform this.searchUsersToMention}}
+          @placeholder={{this.placeholderText}} as |OptionResult|>
+    <OptionResult as |user|>
+      <span class="mi-name">{{user.name}}</span>
+      <span class="mi-username">{{user.username}}</span>
+    </OptionResult>
+  </MentionablePaperInput>
+
+  <PaperButton
+          @iconButton={{true}}
+          @primary={{false}}
+          @raised={{true}}
+          @onClick={{fn this.addComment this.textareaVal}}>
+    <PaperIcon @icon={{"send"}} />
+  </PaperButton>
+</div>
