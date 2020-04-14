@@ -1,0 +1,14 @@
+.d-flex {
+  display: flex;
+}
+
+ul.original {
+  list-style: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+}
+
+.mint-border {
+  border: 2px solid $mint-chip;
+}

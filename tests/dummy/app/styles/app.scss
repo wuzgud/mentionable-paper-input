@@ -1,121 +1,14 @@
-@import "demo.scss";
+@import "variables";
+@import 'syntax-highlighting';
+@import "utils";
 
-$primary-color-palette: "grey";
-$primary: "grey";
-$accent: "grey";
 @import 'mentionable-input';
+@import 'basic-usage';
+@import "demo.scss";
+@import "paper";
 
-$mint-chip: #6ECE9E;
 :root {
-  --brand-primary: $mint-chip;
-}
-
-.d-flex {
-  display: flex;
-}
-
-md-tabs {
-  margin-bottom: 20px;
-
-  .md-tab.md-active {
-    background: #F5F5F5;
-    border-top-left-radius: 0.35rem;
-    border-top-right-radius: 0.35rem;
-  }
-}
-
-md-tabs .md-tab.md-active,
-md-tabs .md-tab.md-active md-icon,
-md-tabs .md-tab.md-focused,
-md-tabs .md-tab.md-focused md-icon,
-md-tabs .md-tab {
-  color: $mi-font-color;
-}
-
-.styled-input {
-  border-color: transparent;
-  border-style: hidden;
-}
-
-nav {
-  border-top-left-radius: .25rem;
-  border-top-right-radius: .25rem;
-
-   + div.angle-bracket-snippet > div {
-     border-top-left-radius: 0;
-     border-top-right-radius: 0;
-   }
-}
-
-.angle-bracket-snippet {
-  pre {
-    .hljs-name {
-      color: #e06c75;
-    }
-    .hljs-template-variable {
-      color: #9B849D;
-    }
-    .hljs-string {
-      color: #98c379;
-    }
-    .hljs-tag {
-      .hljs-name + .hljs-attr {
-        color: #FAEF92;
-      }
-    }
-    .xml {
-      &:nth-child(1), &:nth-child(5), &:nth-child(9) {
-        .hljs-attr {
-          color: #98c379;
-        }
-      }
-
-      &:nth-child(3), &:nth-child(7), &:nth-child(11), &:nth-child(13) {
-        .hljs-attr {
-          color: #FAEF92;
-        }
-      }
-    }
-  }
-}
-
-$mi-grey: #929598;
-.mentionable-input {
-
-  md-input-container:not(.md-input-invalid).md-input-focused .md-input,
-  md-input-container:not(.md-input-invalid).md-input-resized .md-input {
-    border-color: $mint-chip;
-  }
-
-  ul.mention-options {
-
-    li.mention-option {
-
-      .avatar-rounded-small {
-        min-height: 30px;
-        min-width: 30px;
-        max-height: 30px;
-        max-width: 30px;
-        border-radius: 50%;
-        border: 1px solid $mi-grey;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      .mi-name {
-        color: $mi-font-color;
-        font-weight: 600;
-        margin-right: 0.5rem;
-      }
-
-      .mi-username {
-        font-size: 14px;
-        color: $mi-grey;
-      }
-    }
-  }
+  --brand-primary: #6ECE9E;
 }
 
 main {
@@ -127,22 +20,21 @@ main {
       color: darken(#1264a3, 10%);
     }
   }
+}
 
-  md-ink-bar {
-    height: 1px;
+.docs-viewer > .docs-w-full {
+  height: 100%;
+}
+
+body > .ember-view {
+  margin-top: 0;
+
+  &:not(.docs-viewer) {
+    flex: none;
   }
 
-  div[data-test-edit-page-link], div[data-test-next-link], div[data-current-page-index-target] + div {
-    display: none;
-  }
-
-  .mi-green {
-    background-color: #6CA693;
-  }
-  .mi-blue {
-    background-color: #1264a3;
-  }
-  .mi-red {
-    background-color: #C2555E;
+  .hover\:docs-text-white:hover {
+    color: $primary-text;
+    background-color: #fff;
   }
 }

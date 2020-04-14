@@ -3,8 +3,10 @@
   <viewer.nav as |nav|>
     <nav.section @label={{"Introduction"}} />
     <nav.item @label={{"Overview"}} @route={{"docs.index"}} />
+    <nav.item @label={{"Installation"}} @route={{"docs.install"}} />
     <nav.item @label={{"Basic Usage"}} @route={{"docs.usage"}} class="custom-nav-item" />
     <nav.item @label={{"Full Demo"}} @route={{"docs.demo"}} />
+    <nav.item @label={{"Caveats and Considerations"}} @route={{"docs.caveats"}} />
   </viewer.nav>
   <viewer.main>
     {{outlet}}

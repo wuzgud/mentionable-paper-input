@@ -1,0 +1,21 @@
+md-tabs {
+  margin-bottom: 20px;
+
+  .md-tab.md-active {
+    background: #F5F5F5;
+    border-top-left-radius: 0.35rem;
+    border-top-right-radius: 0.35rem;
+  }
+
+  md-ink-bar {
+    height: 1px;
+  }
+}
+
+md-tabs .md-tab.md-active,
+md-tabs .md-tab.md-active md-icon,
+md-tabs .md-tab.md-focused,
+md-tabs .md-tab.md-focused md-icon,
+md-tabs .md-tab {
+  color: $mi-font-color;
+}

@@ -50,8 +50,8 @@ export default class DocsDemo extends Controller {
         timeSincePosted: 'Now',
         text: trimmed,
         user: new User({
-          username: 'you',
-          cssClass: 'mi-blue'
+          username: 'me',
+          cssClass: 'mi-blue mint-border'
         })
       });
       this.set('textareaVal', '');

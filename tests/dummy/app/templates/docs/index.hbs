@@ -1,28 +1,20 @@
 <h1 class="docs-md__h1">Overview</h1>
 
-<p><strong>Mentionable Paper Input</strong> is an implementation of
-  <a href="http://miguelcobain.github.io/ember-paper/">ember-paper's</a> textarea input that allows
-  users to add "mentions" (think "@'ing" someone on Twitter or Instagram) to input text.
-  <a href="https://github.com/yakmada/ember-cli-mentionable">Other mention libraries </a> are out there
-  in the Ember ecosystem, but very few actually have the same, sleek mention styling you see on popular social networking sites.
-  And understandably so - HTML does not let you style <code>input</code> and <code>textarea</code> values directly,
-  making it very difficult to implement custom mention styling on input text.</p>
+<p class="docs-md">
+  <strong>Mentionable Paper Input</strong> is an implementation of
+  <a href="http://miguelcobain.github.io/ember-paper/#/components/input">ember-paper's textarea input</a> that allows
+  users to add "mentions" to input text - think <span class="inline-snippet at-ing">@</span>ing someone on Twitter
+  or Instagram. There are <a href="https://github.com/yakmada/ember-cli-mentionable">other mention libraries </a>
+  in the Ember ecosystem, but none provide the same sleek styling you'd see on popular social networking sites.
+  And understandably so - browsers prevent direct styling of <code class="inline-snippet">&lt;input&gt;</code>
+  and <code class="inline-snippet">&lt;textarea&gt;</code> values,
+  making it difficult to implement custom mention styling on input text.
+</p>
 
-<p class="docs-mb-8">However with a little CSS and Javascript sleight of hand, <a href="https://wuzgud.app/login">we</a> were able to
-  create a <strong>styled</strong> and completely <strong>customizable</strong> mentionable input addon.
-  Here's what the addon looks like in use:</p>
-
-<img src="/images/mentionable-input.png" />
-
-<p class="docs-my-8">And this is what it looks like when the user is in the middle of making a mention with the search
-  dropdown visible:</p>
-
-<img src="/images/mentionable-input-open.png" />
-
-<p class="docs-mt-8"><strong>Mentioning users</strong> is likely the most common and obvious use case when you hear the word "mentions".
-  But <strong>Mentionable Paper Input</strong> can be used in any number of application contexts: adding hashtags,
-  tagging a location, checking-in at a place, etc.
-  The important point is that the component is flexible enough to address a wide set of features cases related to keyword highlighting,
-  while exposing a simple and lightweight API for writing readable code quickly.</p>
-
-<p class="docs-mt-4 docs-mb-12">Go to the next section to actually see some code and understand what a basic implementation of mentionable input looks like.</p>
+<p class="docs-mt-4 docs-mb-4">
+  However with a little CSS and Javascript sleight of hand, <a href="https://wuzgud.app/login">we</a> were able to
+  create a <strong>styled</strong> and <strong>customizable</strong> mentionable input addon. Its use
+  isn't strictly limited to mentions either. Mentionable Paper Input can be used to add hashtags,
+  check-in at a location, highlight keywords in text, and so on.
+  The component is extremely flexible and can support a number of use cases beyond basic mentioning.
+</p>

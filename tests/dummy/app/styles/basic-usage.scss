@@ -1,0 +1,41 @@
+$mi-grey: #929598;
+.mentionable-input {
+
+  md-input-container:not(.md-input-invalid).md-input-focused .md-input,
+  md-input-container:not(.md-input-invalid).md-input-resized .md-input {
+    border-color: $mint-chip; // TODO: Make customizable
+  }
+
+  .styled-input {
+    border-color: transparent;
+    border-style: hidden;
+  }
+}
+
+// mention option custom styling
+li.mention-option {
+
+  .avatar-rounded-small {
+    min-height: 30px;
+    min-width: 30px;
+    max-height: 30px;
+    max-width: 30px;
+    border-radius: 50%;
+    border: 1px solid $mi-grey;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .mi-name {
+    color: $mi-font-color;
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  .mi-username {
+    font-size: 14px;
+    color: $mi-grey;
+  }
+}

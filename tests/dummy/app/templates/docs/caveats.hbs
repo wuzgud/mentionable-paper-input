@@ -1,0 +1,29 @@
+<h1 class="docs-md__h1">Caveats</h1>
+
+<p class="docs-md">
+  There are a few things to keep in mind before you install the addon and while you're developing:
+  <ul class="original">
+    <li>
+      As its name implies, Mentionable Paper Input is dependent on the
+      <a href="http://miguelcobain.github.io/ember-paper">ember-paper</a> library.
+      We recommend using this addon if ember-paper is already in use in your project.
+    </li>
+    <li>
+      The mentions dropdown list only supports a maximum of 6 visible mentions.
+      Scrolling is disabled on the dropdown element as well.
+    </li>
+    <li>
+      Depending on text length and combination of specific characters the user enters, mention styling on certain
+      mobile devices and browsers can look "off" or inconsistent at times.
+      This issue is rare but can hurt the overall user experience. You can conditionally apply the
+      <code class="inline-snippet">disableStyling</code> flag at mobile screen sizes as a way to bypass the issue.
+    </li>
+  </ul>
+</p>
+
+<p class="docs-md docs-mt-4 docs-mb-4">
+  We will continue to work to improve the developer and user experience of the addon and intend to address these and
+  other issues in future versions. We are always accepting
+  <a href="https://github.com/wuzgud/mentionable-paper-input/pulls">pull-requests</a> for features, enhancements,
+  and/or bug fixes.
+</p>

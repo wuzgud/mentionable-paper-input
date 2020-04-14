@@ -15,37 +15,25 @@ $mi-dropdown-option-background: #eee !default;
 
 .mentionable-input {
 
-  input, textarea {
+  textarea {
     color: $mi-font-color !important;
     text-shadow: 0 0 0 transparent !important; // magic behind styling mentions in comments
     -webkit-text-fill-color: transparent !important;
   }
 
-  input::-webkit-input-placeholder,
-  textarea::-webkit-input-placeholder {
+  @mixin placeholder {
+    textarea::-webkit-input-placeholder { @content }
+    textarea:-moz-placeholder           { @content }
+    textarea::-moz-placeholder          { @content }
+    textarea:-ms-input-placeholder      { @content }
+    textarea::placeholder               { @content }
+  }
+
+  @include placeholder {
     color: $mi-help-bar-font-color;
     text-shadow: none;
     -webkit-text-fill-color: initial;
   }
-  //textarea::-webkit-input-placeholder {
-  //  color: #0bf;
-  //}
-  //
-  //textarea:-moz-placeholder { /* Firefox 18- */
-  //  color: #0bf;
-  //}
-  //
-  //textarea::-moz-placeholder {  /* Firefox 19+ */
-  //  color: #0bf;
-  //}
-  //
-  //textarea:-ms-input-placeholder {
-  //  color: #0bf;
-  //}
-  //
-  //textarea::placeholder {
-  //  color: #0bf;
-  //}
 
   .hint {
     font-size: 14px;

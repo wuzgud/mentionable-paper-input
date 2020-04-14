@@ -9,7 +9,9 @@ const Router = AddonDocsRouter.extend({
 Router.map(function() {
   docsRoute(this, function() {
     this.route('index', { path: '/intro' });
+    this.route('caveats');
     this.route('demo');
+    this.route('install');
     this.route('usage');
   });
   this.route('not-found', { path: '/*path' });

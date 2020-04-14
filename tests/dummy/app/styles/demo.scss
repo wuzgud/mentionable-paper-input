@@ -79,6 +79,35 @@ $avatar-size: 40px;
     min-height: $avatar-size;
     min-width: $avatar-size;
     color: #fff;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 18px;
   }
+}
+
+.mi-green {
+  background-color: #6CA693;
+}
+.mi-blue {
+  background-color: #1264a3;
+}
+.mi-red {
+  background-color: #C2555E;
+}
+
+.mi-anonymous-user {
+  border-radius: 50%;
+  color: #fff;
+  min-width: 27px;
+  display: flex;
+  justify-content: center;
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.pro-tip {
+  //border: 1px solid #dae1e7;
+  border-radius: 10px;
+  padding: 20px 30px 30px 30px;
+  background-color: #f8fafc;
+  margin-top: 20px;
 }

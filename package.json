@@ -1,7 +1,7 @@
 {
   "name": "mentionable-paper-input",
   "version": "0.0.0",
-  "description": "A mention inputer",
+  "description": "A styled mention input",
   "keywords": [
     "ember-addon"
   ],

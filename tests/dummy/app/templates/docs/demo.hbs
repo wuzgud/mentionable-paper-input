@@ -12,10 +12,12 @@
             <span class="username">
               {{comment.user.username}}
             </span>
+            <!-- BEGIN-SNIPPET styled-input-text-usage-template.hbs -->
             <StyledInputText
-              @rawValue={{comment.text}}
-              @mentionPattern={{this.mentionPattern}}
-              @isStatic={{true}} />
+                    @rawValue={{comment.text}}
+                    @mentionPattern={{this.mentionPattern}}
+                    @isStatic={{true}} />
+            <!-- END-SNIPPET -->
           </div>
           <div class="time-since-posted">
             {{comment.timeSincePosted}}
@@ -28,8 +30,8 @@
 
 <div class="docs-mt-12 add-comment-wrap">
   <div class="avatar-wrap">
-    <div class="avatar mi-blue">
-      You
+    <div class="avatar mi-blue mint-border">
+      Me
     </div>
   </div>
   <MentionablePaperInput
@@ -40,6 +42,7 @@
           @onMentionStarted={{perform this.searchUsersToMention}}
           @placeholder={{this.placeholderText}} as |OptionResult|>
     <OptionResult as |user|>
+      <span class="mi-anonymous-user {{user.cssClass}}">{{user.firstInitial}}</span>
       <span class="mi-name">{{user.name}}</span>
       <span class="mi-username">{{user.username}}</span>
     </OptionResult>
@@ -52,4 +55,14 @@
           @onClick={{fn this.addComment this.textareaVal}}>
     <PaperIcon @icon={{"send"}} />
   </PaperButton>
+</div>
+
+<div class="pro-tip">
+  <strong>Pro Tip</strong>
+  <p class="docs-md docs-mb-4">
+    You can also use the <code class="inline-snippet">&lt;StyledInputText&gt;</code> component
+    to render mentions in readonly mode
+  </p>
+
+  <DocsSnippet @language={{"htmlbars"}} @name={{"styled-input-text-usage-template.hbs"}}/>
 </div>
