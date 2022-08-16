@@ -3,7 +3,11 @@ import Component from '@glimmer/component';
 import { htmlSafe } from '@ember/string';
 import { action } from '@ember/object';
 
-import { addEventListener, debounceTask, runDisposables } from "ember-lifeline";
+import {
+  addEventListener,
+  debounceTask,
+  runDisposables
+} from "ember-lifeline";
 import { tagName } from '@ember-decorators/component';
 
 @tagName('')

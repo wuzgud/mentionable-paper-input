@@ -37,18 +37,18 @@
         {{#if (eq this.templateType "angle")}}
           <DocsSnippet
             @language={{"htmlbars"}}
-            @name={{"mentionable-input-angle-usage-template.hbs"}}/>
+            @name=<mentionable-input-angle-usage-template.hbs /> />
         {{else if (eq this.templateType "hbs")}}
           <DocsSnippet
             @language={{"htmlbars"}}
-            @name={{"mentionable-input-hbs-usage-template.hbs"}}/>
+            @name=<mentionable-input-hbs-usage-template.hbs /> />
         {{/if}}
       </div>
     {{else if (eq current.tab 1)}}
       <DocsSnippet
-        @title={{"my-controller.js"}}
+        @title=<my-controller.js />
         @language={{"ts"}}
-        @name={{"mentionable-input-usage-controller.js"}}/>
+        @name=<mentionable-input-usage-controller.js /> />
     {{else if (eq current.tab 2)}}
       <!-- BEGIN-SNIPPET mentionable-input-angle-usage-template.hbs -->
       <MentionablePaperInput
@@ -70,17 +70,11 @@
 
 {{#if false}}
   <!-- BEGIN-SNIPPET mentionable-input-hbs-usage-template.hbs -->
-  {{#mentionable-paper-input
-      value=this.textareaVal
-      options=this.userMentions
-      extractMention=(fn this.extractUsername)
-      onInputChange=(fn this.valueChanged)
-      onMentionStarted=(perform this.searchUsersToMention)
-      placeholder=this.placeholderText as |option-result|}}
-    {{#option-result as |user|}}
+  <MentionablePaperInput @value={{this.textareaVal}} @options={{this.userMentions}} @extractMention={{fn this.extractUsername}} @onInputChange={{fn this.valueChanged}} @onMentionStarted={{perform this.searchUsersToMention}} @placeholder={{this.placeholderText}} as |option-result|>
+    <OptionResult as |user|>
       <span class="mi-name">{{user.name}}</span>
       <span class="mi-username">{{user.username}}</span>
-    {{/option-result}}
-  {{/mentionable-paper-input}}
+    </OptionResult>
+  </MentionablePaperInput>
   <!-- END-SNIPPET -->
 {{/if}}

@@ -22,7 +22,7 @@ export default class DocsUsage extends Controller {
 
   @task(function * (mention) {
     yield timeout(150); // throttle the search users call
-    this.set('userMentions', yield this.userService.findAll(mention));
+    this.set('userMentions', (yield this.userService.findAll(mention)));
   }).restartable() searchUsersToMention;
   // END-SNIPPET
 
