@@ -1,0 +1,8 @@
+2022-08-16T18:21:01.503Z [warn] WARNING: {{docs-link}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/not-found.hbs
+2022-08-16T18:21:01.563Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-16T18:21:01.568Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-16T18:21:01.569Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-16T18:21:01.722Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-16T18:21:01.725Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-16T18:21:01.725Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-16T18:21:01.725Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
