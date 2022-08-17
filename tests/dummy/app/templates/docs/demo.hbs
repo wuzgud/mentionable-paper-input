@@ -12,12 +12,10 @@
             <span class="username">
               {{comment.user.username}}
             </span>
-            <!-- BEGIN-SNIPPET styled-input-text-usage-template.hbs -->
             <StyledInputText
-                    @rawValue={{comment.text}}
-                    @mentionPattern={{this.mentionPattern}}
-                    @isStatic={{true}} />
-            <!-- END-SNIPPET -->
+              @rawValue={{comment.text}}
+              @mentionPattern={{this.mentionPattern}}
+              @isStatic={{true}} />
           </div>
           <div class="time-since-posted">
             {{comment.timeSincePosted}}
@@ -35,12 +33,12 @@
     </div>
   </div>
   <MentionablePaperInput
-          @value={{this.textareaVal}}
-          @options={{this.userMentions}}
-          @extractMention={{fn this.extractUsername}}
-          @onInputChange={{fn this.valueChanged}}
-          @onMentionStarted={{perform this.searchUsersToMention}}
-          @placeholder={{this.placeholderText}} as |OptionResult|>
+    @value={{this.textareaVal}}
+    @options={{this.userMentions}}
+    @extractMention={{fn this.extractUsername}}
+    @onInputChange={{fn this.valueChanged}}
+    @onMentionStarted={{perform this.searchUsersToMention}}
+    @placeholder={{this.placeholderText}} as |OptionResult|>
     <OptionResult as |user|>
       <span class="mi-anonymous-user {{user.cssClass}}">{{user.firstInitial}}</span>
       <span class="mi-name">{{user.name}}</span>
@@ -49,10 +47,10 @@
   </MentionablePaperInput>
 
   <PaperButton
-          @iconButton={{true}}
-          @primary={{false}}
-          @raised={{true}}
-          @onClick={{fn this.addComment this.textareaVal}}>
+    @iconButton={{true}}
+    @primary={{false}}
+    @raised={{true}}
+    @onClick={{fn this.addComment this.textareaVal}}>
     <PaperIcon @icon={{"send"}} />
   </PaperButton>
 </div>
@@ -64,5 +62,5 @@
     to render mentions in readonly mode
   </p>
 
-  <DocsSnippet @language={{"htmlbars"}} @name=<styled-input-text-usage-template.hbs /> />
+<!--  <DocsSnippet @language={{"htmlbars"}} @name=<styled-input-text-usage-template.hbs /> />-->
 </div>

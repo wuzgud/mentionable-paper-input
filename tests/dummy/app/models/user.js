@@ -1,4 +1,4 @@
-// mentions could be anything in reality, but 'User' seems like the most likely use case
+// mentions could be anything in reality, but mentioning users is a common use case
 export class User {
   name = null;
   username = null;
