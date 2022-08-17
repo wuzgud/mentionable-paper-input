@@ -8,9 +8,7 @@ import {
   debounceTask,
   runDisposables
 } from "ember-lifeline";
-import { tagName } from '@ember-decorators/component';
 
-@tagName('')
 class StyledInputTextComponent extends Component {
   /**
    * Raw, un-stylized text string value

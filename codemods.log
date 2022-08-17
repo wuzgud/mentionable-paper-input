@@ -14,3 +14,12 @@
 2022-08-17T13:06:20.250Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
 2022-08-17T13:06:20.252Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
 2022-08-17T13:06:20.253Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-17T14:03:28.403Z [warn] WARNING: {{docs-link}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/not-found.hbs
+2022-08-17T14:03:28.460Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-17T14:03:28.462Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-17T14:03:28.462Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/demo.hbs
+2022-08-17T14:03:28.524Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-17T14:03:28.526Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-17T14:03:28.526Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-17T14:03:28.527Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
+2022-08-17T14:03:28.527Z [warn] WARNING: {{fn}} was not converted as it has positional parameters which can't be automatically converted. Source: tests/dummy/app/templates/docs/usage.hbs
