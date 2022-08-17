@@ -3,7 +3,7 @@
 # compiled output
 /dist/
 /tmp/
-.idea/*
+/.idea/
 
 # dependencies
 /bower_components/
