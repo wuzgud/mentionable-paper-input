@@ -1,53 +1,51 @@
-{{#if true}}
-  <PaperTabs
-    @selected={{this.selectedTab}}
-    @onChange={{fn (mut this.selectedTab)}}
-    @center={{false}}
-    @stretch={{false}}
-    @borderBottom={{false}}
-    @shouldPaginate={{false}} as |tabs|>
-    <tabs.tab>
-      Template
-    </tabs.tab>
-    <tabs.tab>
-      JS
-    </tabs.tab>
-    <tabs.tab>
-      Result
-    </tabs.tab>
-  </PaperTabs>
+<PaperTabs
+  @selected={{this.selectedTab}}
+  @onChange={{fn (mut this.selectedTab)}}
+  @center={{false}}
+  @stretch={{false}}
+  @borderBottom={{false}}
+  @shouldPaginate={{false}} as |tabs|>
+  <tabs.tab>
+    Template
+  </tabs.tab>
+  <tabs.tab>
+    JS
+  </tabs.tab>
+  <tabs.tab>
+    Result
+  </tabs.tab>
+</PaperTabs>
 
-  <div class="md-padding">
-    {{#with (hash tab=this.selectedTab) as |current|}}
-      {{#if (eq current.tab 0)}}
-        <div class="angle-bracket-snippet">
-          <DocsSnippet
-            @language={{"htmlbars"}}
-            @name="mentionable-input-angle-usage-template.hbs"/>
-        </div>
-      {{else if (eq current.tab 1)}}
+<div class="md-padding">
+  {{#with (hash tab=this.selectedTab) as |current|}}
+    {{#if (eq current.tab 0)}}
+      <div class="angle-bracket-snippet">
         <DocsSnippet
-          @title="my-controller.js"
-          @language="ts"
-          @name="mentionable-input-usage-controller.js"/>
-      {{else if (eq current.tab 2)}}
-        <!-- BEGIN-SNIPPET mentionable-input-angle-usage-template.hbs -->
-        <MentionablePaperInput
-          @value={{this.value}}
-          @onChange={{fn (mut this.value)}}
-          @options={{this.userMentionOptions}}
-          @onMention={{this.extractUsername}}
-          @getMentionOptions={{this.searchUsersToMention}}
-          @placeholder={{"Type @ to start mentioning"}}
-          as |OptionResult|
-        >
-          <OptionResult as |user|>
-            <span class="mi-name">{{user.name}}</span>
-            <span class="mi-username">{{user.username}}</span>
-          </OptionResult>
-        </MentionablePaperInput>
-        <!-- END-SNIPPET -->
-      {{/if}}
-    {{/with}}
-  </div>
-{{/if}}
+          @language={{"htmlbars"}}
+          @name="mentionable-input-angle-usage-template.hbs"/>
+      </div>
+    {{else if (eq current.tab 1)}}
+      <DocsSnippet
+        @title="my-controller.js"
+        @language="ts"
+        @name="mentionable-input-usage-controller.js"/>
+    {{else if (eq current.tab 2)}}
+      <!-- BEGIN-SNIPPET mentionable-input-angle-usage-template.hbs -->
+      <MentionablePaperInput
+        @value={{this.value}}
+        @onChange={{fn (mut this.value)}}
+        @options={{this.userMentionOptions}}
+        @onMention={{this.extractUsername}}
+        @getMentionOptions={{this.searchUsersToMention}}
+        @placeholder={{"Type @ to start mentioning"}}
+        as |OptionResult|
+      >
+        <OptionResult as |user|>
+          <span class="mi-name">{{user.name}}</span>
+          <span class="mi-username">{{user.username}}</span>
+        </OptionResult>
+      </MentionablePaperInput>
+      <!-- END-SNIPPET -->
+    {{/if}}
+  {{/with}}
+</div>

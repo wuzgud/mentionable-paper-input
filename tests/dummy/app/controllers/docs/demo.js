@@ -1,13 +1,14 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { A } from '@ember/array';
 import { tracked } from '@glimmer/tracking';
 import { User } from "../../models/user";
 
 export default class DocsDemo extends Controller {
   mentionPattern = new RegExp(`\\B@[a-z0-9_.]+`, 'gi');
-  comments = A([
+
+  @tracked
+  comments = [
     {
       "timeSincePosted": "4 hours ago",
       "text": "sounds like my kinda place. similar vibe to Sound Table?",
@@ -22,7 +23,7 @@ export default class DocsDemo extends Controller {
         "username": "ajball"
       })
     }
-  ]);
+  ];
 
   @service userService;
 
@@ -46,14 +47,17 @@ export default class DocsDemo extends Controller {
   addComment(comment) {
     const trimmed = comment ? comment.trim() : '';
     if (trimmed) {
-      this.comments.pushObject({
-        timeSincePosted: 'Now',
-        text: trimmed,
-        user: new User({
-          username: 'me',
-          cssClass: 'mi-blue mint-border'
-        })
-      });
+      this.comments = [
+        ...this.comments,
+        {
+          timeSincePosted: 'Now',
+          text: trimmed,
+          user: new User({
+            username: 'me',
+            cssClass: 'mi-blue mint-border'
+          })
+        },
+      ];
       this.value = '';
     }
   }

@@ -12,10 +12,12 @@
             <span class="username">
               {{comment.user.username}}
             </span>
+            <!-- BEGIN-SNIPPET mentionable-input-readonly.hbs -->
             <StyledInputText
               @value={{comment.text}}
               @mentionPattern={{this.mentionPattern}}
-              @isStatic={{true}} />
+              @readonly={{true}} />
+            <!-- END-SNIPPET -->
           </div>
           <div class="time-since-posted">
             {{comment.timeSincePosted}}
@@ -50,7 +52,7 @@
     @iconButton={{true}}
     @primary={{false}}
     @raised={{true}}
-    @onClick={{fn this.addComment this.textareaVal}}>
+    @onClick={{fn this.addComment this.value}}>
     <PaperIcon @icon={{"send"}} />
   </PaperButton>
 </div>
@@ -62,5 +64,5 @@
     to render mentions in readonly mode
   </p>
 
-<!--  <DocsSnippet @language={{"htmlbars"}} @name=<styled-input-text-usage-template.hbs /> />-->
+  <DocsSnippet @language={{"htmlbars"}} @name="mentionable-input-readonly.hbs" />
 </div>

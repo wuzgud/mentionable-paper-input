@@ -35,14 +35,14 @@ class StyledInputTextComponent extends Component {
 
   constructor() {
     super(...arguments);
-    if (!this.args.isStatic) {
+    if (!this.args.readonly) {
       addEventListener(this, window, 'resize',
         () => debounceTask(this, 'setReplacementTextWidth', 200)
       );
     }
   }
   willDestroy() {
-    if (!this.args.isStatic) {
+    if (!this.args.readonly) {
       runDisposables(this);
     }
   }
