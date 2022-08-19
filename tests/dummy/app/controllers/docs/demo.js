@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { task, timeout } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
+import { tracked } from '@glimmer/tracking';
 import { User } from "../../models/user";
 
 export default class DocsDemo extends Controller {
@@ -24,23 +24,23 @@ export default class DocsDemo extends Controller {
     }
   ]);
 
-  placeholderText = 'Type @ to start mentioning';
   @service userService;
 
-  @action
-  valueChanged(newText) {
-    this.set('textareaVal', newText);
-  }
+  @tracked
+  value;
+
+  @tracked
+  userMentionOptions = [];
 
   @action
   extractUsername(user) {
     return user ? user.username : null;
   }
 
-  @task(function * (mention) {
-    yield timeout(150); // throttle the search users call
-    this.set('userMentions', (yield this.userService.findAll(mention)));
-  }).restartable() searchUsersToMention;
+  @action
+  async searchUsersToMention(mention) {
+    this.userMentionOptions = await this.userService.findAll(mention);
+  }
 
   @action
   addComment(comment) {
@@ -54,7 +54,7 @@ export default class DocsDemo extends Controller {
           cssClass: 'mi-blue mint-border'
         })
       });
-      this.set('textareaVal', '');
+      this.value = '';
     }
   }
 }

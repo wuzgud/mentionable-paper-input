@@ -60,7 +60,7 @@
           @options={{this.userMentions}}
           @onMention={{this.extractUsername}}
           @onChange={{this.valueChanged}}
-          @onMentionStarted={{perform this.searchUsersToMention}}
+          @getMentionOptions={{this.searchUsersToMention}}
           @placeholder={{this.placeholderText}}
           as |OptionResult|
         >

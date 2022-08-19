@@ -76,16 +76,16 @@ class MentionablePaperInputComponent extends Component {
   constructor() {
     super(...arguments);
     assert(
-      '<MentionablePaperInput> requires a bound `onInputChange` action which accepts the current text value as an argument',
-      this.args.onInputChange && typeof this.args.onInputChange === 'function'
+      '<MentionablePaperInput> requires a bound `onChange` action which accepts the current text value as an argument',
+      this.args.onChange && typeof this.args.onChange === 'function'
     );
     assert(
-      '<MentionablePaperInput> requires a bound `onMentionStarted` action which accepts the current mention as an argument',
-      this.args.onMentionStarted && typeof this.args.onMentionStarted === 'function'
+      '<MentionablePaperInput> requires a bound `onMention` action which accepts the current mention as an argument',
+      this.args.onMention && typeof this.args.onMention === 'function'
     );
     assert(
-      '<MentionablePaperInput> requires a bound `extractMention` action which accepts a mention option as an argument',
-      this.args.extractMention && typeof this.args.extractMention === 'function'
+      '<MentionablePaperInput> requires a bound `getMentionOptions` action which accepts a mention option as an argument',
+      this.args.getMentionOptions && typeof this.args.getMentionOptions === 'function'
     );
     this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
   }
@@ -95,7 +95,7 @@ class MentionablePaperInputComponent extends Component {
    * Strips excessive spacing (no more than one space between words is allowed)
    * A necessary (and low-cost) compromise to make the css voodoo in `<StyledInputText />` work
    * @param  { String } newValue The new, raw text value from textarea element
-   * @event onChange emits updated textarea value to parent context via onInputChange action binding
+   * @event onChange emits updated textarea value to parent context via onChange action binding
 
    * @event getMentionOptions emits current mention to parent context via getMentionOptions action
    * @see currentMention

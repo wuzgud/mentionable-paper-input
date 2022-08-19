@@ -33,12 +33,12 @@
     </div>
   </div>
   <MentionablePaperInput
-    @value={{this.textareaVal}}
-    @options={{this.userMentions}}
+    @value={{this.value}}
+    @onChange={{fn (mut this.value)}}
+    @options={{this.userMentionOptions}}
     @onMention={{this.extractUsername}}
-    @onChange={{this.valueChanged}}
-    @onMentionStarted={{perform this.searchUsersToMention}}
-    @placeholder={{this.placeholderText}} as |OptionResult|>
+    @getMentionOptions={{this.searchUsersToMention}}
+    @placeholder={{"Type @ to start mentioning"}} as |OptionResult|>
     <OptionResult as |user|>
       <span class="mi-anonymous-user {{user.cssClass}}">{{user.firstInitial}}</span>
       <span class="mi-name">{{user.name}}</span>
