@@ -30,8 +30,8 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     let expectedMentionStartedVal;
     this.set('setUserMentions', (val) => {
       const assertionMsg = val === null
-        ? `onMentionStarted action: null because mention is completed and we are no longer "mentioning" after a mention is clicked`
-        : `onMentionStarted action: we have a value of ${val} because mention was just started and is incomplete`;
+        ? `getMentionOptions action: null because mention is completed and we are no longer "mentioning" after a mention is clicked`
+        : `getMentionOptions action: we have a value of ${val} because mention was just started and is incomplete`;
       assert.equal(val, expectedMentionStartedVal, assertionMsg);
       this.set('mentionOptions', val ? getTestUsers() : []);
     });
@@ -47,7 +47,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -91,7 +91,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -120,7 +120,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -162,7 +162,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -201,7 +201,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
     assert.equal(page.styledInput.text, '@janine');
   });
 
-  test('backspacing to the end of mention triggers onMentionStarted', async function(assert) {
+  test('backspacing to the end of mention triggers getMentionOptions', async function(assert) {
     this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', val => this.set('mentionOptions', val ? getTestUsers() : []));
     this.set('extractor', user => user.username);
@@ -212,7 +212,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -241,7 +241,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -288,7 +288,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -347,7 +347,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
   test('it does not start a mention if normal/plain text (i.e. no @, #, ${specialCharacter}) is entered',
     async function(assert) {
     this.set('inputChanged', val => this.set('newValue', val));
-    this.set('setUserMentions', () => assert.notOk(true, 'onMentionStarted should not be called'));
+    this.set('setUserMentions', () => assert.notOk(true, 'getMentionOptions should not be called'));
     this.set('extractor', () => assert.notOk(true, 'onMention should not be called'));
 
     await render(hbs`
@@ -356,7 +356,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -371,7 +371,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
 
   test('it does not allow more than one space between words', async function(assert) {
     this.set('inputChanged', (val) => this.set('newValue', val));
-    this.set('setUserMentions', () => assert.notOk(true, 'onMentionStarted should not be called'));
+    this.set('setUserMentions', () => assert.notOk(true, 'getMentionOptions should not be called'));
     this.set('extractor', () => assert.notOk(true, 'onMention should not be called'));
 
     await render(hbs`
@@ -380,7 +380,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -414,7 +414,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -441,7 +441,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}} </span>
             <span>{{user.username}}</span>
@@ -485,7 +485,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -511,7 +511,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -542,7 +542,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -574,7 +574,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
@@ -611,7 +611,7 @@ module('Integration | Component | mentionable-paper-input', function(hooks) {
         @onChange={{fn this.inputChanged}}
         @onMention={{fn this.extractor}}
         @options={{this.mentionOptions}}
-        @onMentionStarted={{fn this.setUserMentions}} as |OptionResult|>
+        @getMentionOptions={{fn this.setUserMentions}} as |OptionResult|>
           <OptionResult as |user|>
             <span>{{user.name}}</span>
             <span>{{user.username}}</span>
