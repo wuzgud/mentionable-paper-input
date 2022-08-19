@@ -8,9 +8,9 @@
     @passThru={{hash maxRows=4}}
     @required={{@required}}
     @value={{@value}}
-    @onChange={{fn this.onInputChange}}
+    @onChange={{this.onChange}}
     @spellcheck={{false}}
-    @onKeyDown={{fn this.keyDown}}
+    @onKeyDown={{this.keyDown}}
     {{did-insert this.setTextAreaWrapperElement}}>
     {{#if this.showHint}}
       <div class="hint" data-test-mention-hint>
@@ -19,7 +19,7 @@
     {{/if}}
 
     <StyledInputText
-      @rawValue={{@value}}
+      @value={{@value}}
       @existingMentions={{this.alreadyMentioned}}
       @mentionPattern={{this.mentionPattern}}
       @textAreaElement={{this.textAreaElement}}>
@@ -28,10 +28,10 @@
     {{#if (and this.isMentioning this.enableMentions)}}
       <MentionOptions
         @options={{this.options}}
-        @doMention={{fn this.doMention}}
-        @extractMention={{@extractMention}}
+        @doMention={{this.doMention}}
+        @onMention={{@onMention}}
         @currentMention={{this.currentMention}}
-        @closeDropdown={{fn this.closeOptionsDropdown}}
+        @closeDropdown={{this.closeOptionsDropdown}}
         @focusedIndex={{this.focusedOptionIndex}}
         @textAreaElement={{this.textAreaElement}} as |OptionComponent|>
         {{yield OptionComponent}}

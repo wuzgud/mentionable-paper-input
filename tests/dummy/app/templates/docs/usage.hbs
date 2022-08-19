@@ -58,8 +58,8 @@
         <MentionablePaperInput
           @value={{this.textareaVal}}
           @options={{this.userMentions}}
-          @extractMention={{this.extractUsername}}
-          @onInputChange={{this.valueChanged}}
+          @onMention={{this.extractUsername}}
+          @onChange={{this.valueChanged}}
           @onMentionStarted={{perform this.searchUsersToMention}}
           @placeholder={{this.placeholderText}}
           as |OptionResult|
@@ -80,8 +80,8 @@
   <MentionablePaperInput
     @value={{this.textareaVal}}
     @options={{this.userMentions}}
-    @extractMention={{this.extractUsername}}
-    @onInputChange={{this.valueChanged}}
+    @onMention={{this.extractUsername}}
+    @onChange={{this.valueChanged}}
     @onMentionStarted={{perform this.searchUsersToMention}}
     @placeholder={{this.placeholderText}}
     as |OptionResult|

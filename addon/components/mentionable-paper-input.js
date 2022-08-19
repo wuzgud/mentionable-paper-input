@@ -16,7 +16,7 @@ class MentionablePaperInputComponent extends Component {
   @tracked
   focusedOptionIndex = 0;
 
-  // ===================== Public getters for <MentionablePaperInput>'s input parameters =====================
+  // ===================== Getters for <MentionablePaperInput>'s args =====================
 
   /**
    * The textarea element's raw text value
@@ -56,7 +56,7 @@ class MentionablePaperInputComponent extends Component {
   /**
    * Regular expression pattern used to match text for mentions
    * @return { RegExp } Defaults to a pattern that matches a string
-   *    starting with a space-preceded ${this.specialCharacter} followed by a continuous string of letters, numbers, underscores, and periods
+   *    starting with a space-preceded ${this.specialCharacter} followed by an unbroken, successive string of letters, numbers, underscores, and periods
    */
   get defaultRegex() {
     //TODO: this.specialCharacter needs to be escaped properly so that special regex characters could be used literally (eg $)
@@ -93,23 +93,23 @@ class MentionablePaperInputComponent extends Component {
   /**
    * Executed when a user edits (i.e. add or remove) the textarea's value
    * Strips excessive spacing (no more than one space between words is allowed)
-   * A necessary (and low-cost) compromise to make the styling magic in StyledInputText work
+   * A necessary (and low-cost) compromise to make the css voodoo in `<StyledInputText />` work
    * @param  { String } newValue The new, raw text value from textarea element
-   * @event onInputChange emits updated textarea value to parent context via onInputChange action binding
+   * @event onChange emits updated textarea value to parent context via onInputChange action binding
 
-   * @event onMentionStarted emits current mention to parent context via onMentionStarted action
+   * @event getMentionOptions emits current mention to parent context via getMentionOptions action
    * @see currentMention
    */
   @action
-  onInputChange(newValue) {
+  onChange(newValue) {
     this.enableMentions = true;
     if (newValue === ' ') newValue = '';
     if (newValue) {
       newValue = newValue.replace(/\s\s+/g, ' ');
     }
-    this.args.onInputChange(newValue);
+    this.args.onChange(newValue);
     if (this.isMentioning) {
-      this.args.onMentionStarted(this.currentMention.substring(1)); // substring invoked to remove the special character
+      this.args.getMentionOptions(this.currentMention.substring(1)); // substring invoked to remove the special character
     }
   }
 
@@ -118,7 +118,7 @@ class MentionablePaperInputComponent extends Component {
    * Completes the mention by adding it to the textarea text and pushing it to the array tracking added mentions
    * Refocuses textarea element
    * @param  { String } mentionValue Complete mention value (e.g. a user's full username)
-   * @event this.args.onInputChange emits updated textarea text value to parent context
+   * @event this.args.onChange emits updated textarea text value to parent context
    */
   @action
   doMention(mentionValue) {
@@ -129,7 +129,7 @@ class MentionablePaperInputComponent extends Component {
 
     if (this.currentMention) {
       const updatedTextWithMention = this.addMentionToText(this.value, this.currentMention, mentionValue);
-      this.args.onInputChange(updatedTextWithMention);
+      this.args.onChange(updatedTextWithMention);
     }
 
     this.closeOptionsDropdown();
@@ -157,7 +157,7 @@ class MentionablePaperInputComponent extends Component {
    */
   @action
   closeOptionsDropdown() {
-    this.args.onMentionStarted(null);
+    this.args.getMentionOptions(null);
     this.enableMentions = false;
     this.focusedOptionIndex = 0;
   }
@@ -186,7 +186,7 @@ class MentionablePaperInputComponent extends Component {
         } else {
           const option = this.options[this.focusedOptionIndex];
           if (option) {
-            const mentionText = this.args.extractMention(option);
+            const mentionText = this.args.onMention(option);
             this.doMention(mentionText);
           } else {
             this.closeOptionsDropdown();
@@ -237,6 +237,8 @@ class MentionablePaperInputComponent extends Component {
     text = text || '';
     return text.match(this.mentionPattern) || [];
   }
+
+  // TODO: This function seems redundant with the currentMention getter above...maybe consolidate?
   /**
    * Finds the mention the user is currently adding based on the position of the user's cursor inside the textarea
    * @return { String } the current (incomplete) mention

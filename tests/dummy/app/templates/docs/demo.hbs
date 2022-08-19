@@ -13,7 +13,7 @@
               {{comment.user.username}}
             </span>
             <StyledInputText
-              @rawValue={{comment.text}}
+              @value={{comment.text}}
               @mentionPattern={{this.mentionPattern}}
               @isStatic={{true}} />
           </div>
@@ -35,8 +35,8 @@
   <MentionablePaperInput
     @value={{this.textareaVal}}
     @options={{this.userMentions}}
-    @extractMention={{this.extractUsername}}
-    @onInputChange={{this.valueChanged}}
+    @onMention={{this.extractUsername}}
+    @onChange={{this.valueChanged}}
     @onMentionStarted={{perform this.searchUsersToMention}}
     @placeholder={{this.placeholderText}} as |OptionResult|>
     <OptionResult as |user|>

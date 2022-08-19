@@ -14,8 +14,8 @@ class StyledInputTextComponent extends Component {
    * Raw, un-stylized text string value
    * @return { String }
    */
-  get rawValue() {
-    return this.args.rawValue;
+  get value() {
+    return this.args.value;
   }
   /**
    * List of mentions that have already been added.
@@ -48,13 +48,13 @@ class StyledInputTextComponent extends Component {
   }
 
   get textSegments() {
-    const rawValue = this.rawValue;
-    if (!rawValue) {
+    const value = this.value;
+    if (!value) {
       return [];
     }
     const mentionRegex = this.mentionPattern;
-    const mentions = rawValue.match(mentionRegex) || [];
-    const plainTextSegments = rawValue.split(mentionRegex);
+    const mentions = value.match(mentionRegex) || [];
+    const plainTextSegments = value.split(mentionRegex);
     return plainTextSegments.flatMap( (plainText, i) => {
       const segments = [ plainText ];
       if (mentions[i]) {
