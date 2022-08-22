@@ -13,9 +13,10 @@
               {{comment.user.username}}
             </span>
             <!-- BEGIN-SNIPPET mentionable-input-readonly.hbs -->
-            <StyledInputText
+            <StyledMentionText
               @value={{comment.text}}
               @mentionPattern={{this.mentionPattern}}
+              @hrefOverride="/click/me"
               @readonly={{true}} />
             <!-- END-SNIPPET -->
           </div>
@@ -60,9 +61,14 @@
 <div class="pro-tip">
   <strong>Pro Tip</strong>
   <p class="docs-md docs-mb-4">
-    You can also use the <code class="inline-snippet">&lt;StyledInputText&gt;</code> component
+    You can also use the <code class="inline-snippet">&lt;StyledMentionText&gt;</code> component
     to render mentions in readonly mode
   </p>
 
   <DocsSnippet @language={{"htmlbars"}} @name="mentionable-input-readonly.hbs" />
+
+  <p class="docs-md docs-mt-4">
+    For now, the "on mention click" behavior is limited to overriding the href via <code class="inline-snippet">@hrefOverride</code>.
+    In future versions this will be more flexible.
+  </p>
 </div>

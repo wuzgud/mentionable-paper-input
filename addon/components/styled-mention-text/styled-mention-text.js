@@ -9,7 +9,7 @@ import {
   runDisposables
 } from "ember-lifeline";
 
-class StyledInputTextComponent extends Component {
+class StyledMentionTextComponent extends Component {
   /**
    * Raw, un-stylized text string value
    * @return { String }
@@ -17,6 +17,7 @@ class StyledInputTextComponent extends Component {
   get value() {
     return this.args.value;
   }
+
   /**
    * List of mentions that have already been added.
    * If the user doesn't pass, any text matching the provided mention pattern will be styled as a mention
@@ -25,6 +26,7 @@ class StyledInputTextComponent extends Component {
   get existingMentions() {
     return this.args.existingMentions;
   }
+
   /**
    * Regular expression pattern used to match text for mentions
    * @return { RegExp }
@@ -33,16 +35,45 @@ class StyledInputTextComponent extends Component {
     return this.args.mentionPattern;
   }
 
+  /**
+   * Render standalone mention text in readonly mode
+   * @return { boolean }
+   */
+  get readonly() {
+    return this.args.readonly;
+  }
+
+  /**
+   * Reference to the textarea DOM element. Not relevant in readonly mode
+   * @return { Element }
+   */
+  get textAreaElement() {
+    return this.args.textAreaElement;
+  }
+
+  /**
+   * Optionally override the onclick behavior when a mention is clicked
+   * @param  { String } mention The new, raw text value from textarea element
+   * @event onMentionClick emits clicked mention to consuming app to handle
+   */
+  @action
+  onMentionClick(mention) {
+    if (this.args.onMentionClick) {
+      return this.args.onMentionClick(mention);
+    }
+  }
+
   constructor() {
     super(...arguments);
-    if (!this.args.readonly) {
+    if (!this.readonly) {
       addEventListener(this, window, 'resize',
         () => debounceTask(this, 'setReplacementTextWidth', 200)
       );
     }
   }
+
   willDestroy() {
-    if (!this.args.readonly) {
+    if (!this.readonly) {
       runDisposables(this);
     }
   }
@@ -55,8 +86,8 @@ class StyledInputTextComponent extends Component {
     const mentionRegex = this.mentionPattern;
     const mentions = value.match(mentionRegex) || [];
     const plainTextSegments = value.split(mentionRegex);
-    return plainTextSegments.flatMap( (plainText, i) => {
-      const segments = [ plainText ];
+    return plainTextSegments.flatMap((plainText, i) => {
+      const segments = [plainText];
       if (mentions[i]) {
         const mention = mentions[i];
         const cssClass = this.isIncompleteMention(mention) ? 'mi-incomplete' : '';
@@ -66,16 +97,18 @@ class StyledInputTextComponent extends Component {
       return segments;
     });
   }
+
   // don't want to highlight mentions that aren't actually mentions
   isIncompleteMention(mention) {
     const existingMentions = this.existingMentions;
     return !!existingMentions && !existingMentions.includes(mention);
   }
 
-  // TODO: Make action/href overrideable
+  // TODO: Allow consumer more flexibility in how they handle on mention click behavior (e.g. access to actual click event, ability to make href a noop, etc)
   generateMentionSafeHtml(mention, className) {
+    const href = this.args.hrefOverride || `/u/${mention.substring(1)}`;
     return htmlSafe(`<a class="mi-mention ${className}"
-                        href="/u/${mention.substring(1)}"
+                        href="${href}"
                         data-test-mention>
                         ${mention}
                     </a>`);
@@ -86,18 +119,20 @@ class StyledInputTextComponent extends Component {
   replacementTextEl; // reference modifier to replacement text element
 
   @action
-  setStyledInputTextReference(element) {
+  setStyledMentionTextReference(element) {
     this.replacementTextEl = element;
   }
+
   setReplacementTextWidth() {
-    if (this.args.textAreaElement && this.replacementTextEl) {
+    if (this.textAreaElement && this.replacementTextEl) {
       const widthFloat = parseFloat(this.textAreaWidth);
       this.replacementTextEl.style.width = `${widthFloat - 4}px`; // -4 to account for textarea horizontal padding
     }
   }
+
   get textAreaWidth() {
-    return window.getComputedStyle(this.args.textAreaElement).width;
+    return window.getComputedStyle(this.textAreaElement).width;
   }
 }
 
-export default StyledInputTextComponent;
+export default StyledMentionTextComponent;

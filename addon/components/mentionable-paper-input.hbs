@@ -18,12 +18,12 @@
       </div>
     {{/if}}
 
-    <StyledInputText
+    <StyledMentionText
       @value={{@value}}
       @existingMentions={{this.alreadyMentioned}}
       @mentionPattern={{this.mentionPattern}}
       @textAreaElement={{this.textAreaElement}}>
-    </StyledInputText>
+    </StyledMentionText>
 
     {{#if (and this.isMentioning this.enableMentions)}}
       <MentionOptions

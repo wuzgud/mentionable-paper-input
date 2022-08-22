@@ -2,7 +2,7 @@ import { isPresent, text, triggerable } from 'ember-cli-page-object';
 import { waitPromise } from '../../helpers/wait';
 import mentionOptionsPage from './mention-options-page'
 import textarea from './paper/paper-textarea-page';
-import styledInputText from './styled-input-text-page';
+import styledMentionText from './styled-mention-text-page';
 
 export default function(scope) {
   return {
@@ -34,7 +34,7 @@ export default function(scope) {
     }),
     hint: text('[data-test-mention-hint]'),
     hintIsPresent: isPresent('[data-test-mention-hint]'),
-    styledInput: styledInputText('[data-test-text-with-mention-styling]'),
+    styledInput: styledMentionText('[data-test-text-with-mention-styling]'),
     mentionOptionsList: mentionOptionsPage('[data-test-mention-options-list-wrap]')
   }
 }

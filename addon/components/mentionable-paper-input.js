@@ -93,7 +93,7 @@ class MentionablePaperInputComponent extends Component {
   /**
    * Executed when a user edits (i.e. add or remove) the textarea's value
    * Strips excessive spacing (no more than one space between words is allowed)
-   * A necessary (and low-cost) compromise to make the css voodoo in `<StyledInputText />` work
+   * A necessary (and low-cost) compromise to make the css voodoo in `<StyledMentionText />` work
    * @param  { String } newValue The new, raw text value from textarea element
    * @event onChange emits updated textarea value to parent context via onChange action binding
 
