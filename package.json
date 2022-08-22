@@ -1,15 +1,17 @@
 {
   "name": "mentionable-paper-input",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A styled mention input",
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuzgud/mentionable-paper-input.git"
+  },
   "license": "MIT",
-  "author": "",
+  "author": "Andrew Ball",
   "directories": {
-    "doc": "doc",
     "test": "tests"
   },
   "scripts": {
@@ -92,5 +94,9 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "homepage": "https://wuzgud.github.io/mentionable-paper-input"
+  "homepage": "https://wuzgud.github.io/mentionable-paper-input",
+  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/wuzgud/mentionable-paper-input/issues"
+  }
 }
