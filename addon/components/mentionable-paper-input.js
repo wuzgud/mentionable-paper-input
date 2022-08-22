@@ -274,6 +274,7 @@ class MentionablePaperInputComponent extends Component {
   // reference modifier to the textarea paper element wrapper
   // Use textarea getter to get a reference to the actual textarea element
   textAreaWrapperEl;
+
   @action
   setTextAreaWrapperElement(element) {
     this.textAreaWrapperEl = element;

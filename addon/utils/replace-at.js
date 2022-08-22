@@ -1,4 +1,4 @@
 
 export function replaceAt(text, index, replacementText, replacedTextLength) {
-  return text.substr(0, index) + replacementText + text.substr(index + replacedTextLength);
+  return text.substring(0, index) + replacementText + text.substring(index + replacedTextLength);
 }
