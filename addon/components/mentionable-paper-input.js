@@ -1,4 +1,3 @@
-import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
@@ -10,7 +9,7 @@ class MentionablePaperInputComponent extends Component {
    * Internally tracked state
    */
   @tracked
-  alreadyMentioned = A([]);
+  alreadyMentioned = [];
   @tracked
   enableMentions = true;
   @tracked
@@ -87,7 +86,8 @@ class MentionablePaperInputComponent extends Component {
       '<MentionablePaperInput> requires a bound `getMentionOptions` action which accepts a mention option as an argument',
       this.args.getMentionOptions && typeof this.args.getMentionOptions === 'function'
     );
-    this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
+    // TODO: Handle passed in text with mentions already there
+    // this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
   }
 
   /**
@@ -124,7 +124,10 @@ class MentionablePaperInputComponent extends Component {
   doMention(mentionValue) {
     const fullMentionText = `${this.specialCharacter}${mentionValue}`;
     if (!this.alreadyMentioned.includes(fullMentionText)) {
-      this.alreadyMentioned.pushObject(fullMentionText);
+      this.alreadyMentioned = [
+        ...this.alreadyMentioned,
+        fullMentionText,
+      ];
     }
 
     if (this.currentMention) {

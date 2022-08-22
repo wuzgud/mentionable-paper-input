@@ -6,11 +6,11 @@
       Results matching <strong>"{{@currentMention}}"</strong>
     </span>
     <span class="mi-close-action" data-test-help-bar-close>
-      {{#if this.isDesktop}}
+      {{#if (media "isDesktop")}}
         <strong>esc</strong> to dismiss
       {{else}}
         <span class="mi-close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
-          <PaperIcon @icon={{'close'}} @size={{20}} />
+          <PaperIcon @icon={{'close'}} @size={{20}} data-test-close-icon />
         </span>
       {{/if}}
     </span>

@@ -71,6 +71,8 @@ class StyledInputTextComponent extends Component {
     const existingMentions = this.existingMentions;
     return !!existingMentions && !existingMentions.includes(mention);
   }
+
+  // TODO: Make action/href overrideable
   generateMentionSafeHtml(mention, className) {
     return htmlSafe(`<a class="mi-mention ${className}"
                         href="/u/${mention.substring(1)}"

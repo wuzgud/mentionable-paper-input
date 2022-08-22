@@ -1,16 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 class MentionOptionsComponent extends Component {
-  @service media;
-
-  // @computed('media.{isDesktop,isJumbo}')
-  get isDesktop() {
-    return true;
-    // return this.media.isDesktop || this.media.isJumbo;
-  }
-
   @action
   setMentionsDropdownTopPosition(mentionsDropdownEl) {
     const height = this.getTextAreaHeight();

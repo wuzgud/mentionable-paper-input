@@ -17,7 +17,7 @@
 </PaperTabs>
 
 <div class="md-padding">
-  {{#with (hash tab=this.selectedTab) as |current|}}
+  {{#let (hash tab=this.selectedTab) as |current|}}
     {{#if (eq current.tab 0)}}
       <div class="angle-bracket-snippet">
         <DocsSnippet
@@ -47,5 +47,5 @@
       </MentionablePaperInput>
       <!-- END-SNIPPET -->
     {{/if}}
-  {{/with}}
+  {{/let}}
 </div>
