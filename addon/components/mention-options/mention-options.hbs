@@ -6,7 +6,7 @@
       Results matching <strong>"{{@currentMention}}"</strong>
     </span>
     <span class="mi-close-action" data-test-help-bar-close>
-      {{#if (media "isDesktop")}}
+      {{#if (or (media "isDesktop") (media "isJumbo"))}}
         <strong>esc</strong> to dismiss
       {{else}}
         <span class="mi-close" role="button" {{on 'click' @closeDropdown}} data-test-close-x>
