@@ -1,8 +1,8 @@
 // mentions could be anything in reality, but mentioning users is a common use case
 export class User {
-  name = null;
-  username = null;
-  cssClass = null;
+  name = '';
+  username = '';
+  cssClass = '';
   classMap = {
     1: 'mi-red',
     2: 'mi-green',
@@ -16,7 +16,9 @@ export class User {
   }
 
   get firstInitial() {
-    return this.username ? this.username[0].toUpperCase() : '';
+    return this.username === 'me'
+      ? this.username.charAt(0).toUpperCase() + this.username.slice(1)
+      : this.username[0].toUpperCase();
   }
 
   getRandomInt(min = 1, max = 3) {

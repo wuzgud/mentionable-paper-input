@@ -83,12 +83,12 @@ class StyledMentionTextComponent extends Component {
     const mentions = value.match(mentionRegex) || [];
     const plainTextSegments = value.split(mentionRegex);
     return plainTextSegments.flatMap((plainText, i) => {
-      const segments = [plainText];
+      const segments = [htmlSafe(plainText)];
       if (mentions[i]) {
         const mention = mentions[i];
         const cssClass = this.isIncompleteMention(mention) ? 'mi-incomplete' : '';
         const mentionHtml = this.generateMentionSafeHtml(mention, cssClass);
-        segments.push(mentionHtml.toString());
+        segments.push(mentionHtml);
       }
       return segments;
     });
