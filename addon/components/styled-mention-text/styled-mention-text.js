@@ -52,15 +52,11 @@ class StyledMentionTextComponent extends Component {
   }
 
   /**
-   * Optionally override the onclick behavior when a mention is clicked
-   * @param  { String } mention The new, raw text value from textarea element
-   * @event onMentionClick emits clicked mention to consuming app to handle
+   * Optional "on mention click" href override
+   * @return { String }
    */
-  @action
-  onMentionClick(mention) {
-    if (this.args.onMentionClick) {
-      return this.args.onMentionClick(mention);
-    }
+  get hrefOverride() {
+    return this.args.hrefOverride;
   }
 
   constructor() {
@@ -74,7 +70,7 @@ class StyledMentionTextComponent extends Component {
 
   willDestroy() {
     if (!this.readonly) {
-      runDisposables(this);
+      runDisposables();
     }
   }
 
@@ -92,7 +88,7 @@ class StyledMentionTextComponent extends Component {
         const mention = mentions[i];
         const cssClass = this.isIncompleteMention(mention) ? 'mi-incomplete' : '';
         const mentionHtml = this.generateMentionSafeHtml(mention, cssClass);
-        segments.push(mentionHtml);
+        segments.push(mentionHtml.toString());
       }
       return segments;
     });
@@ -106,7 +102,7 @@ class StyledMentionTextComponent extends Component {
 
   // TODO: Allow consumer more flexibility in how they handle on mention click behavior (e.g. access to actual click event, ability to make href a noop, etc)
   generateMentionSafeHtml(mention, className) {
-    const href = this.args.hrefOverride || `/u/${mention.substring(1)}`;
+    const href = this.hrefOverride || `/u/${mention.substring(1)}`;
     return htmlSafe(`<a class="mi-mention ${className}"
                         href="${href}"
                         data-test-mention>
