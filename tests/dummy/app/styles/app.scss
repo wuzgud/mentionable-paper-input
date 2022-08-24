@@ -38,3 +38,7 @@ body > .ember-view {
     background-color: #fff;
   }
 }
+
+.AddonDocs-DocsViewer-CurrentPageIndex > .docs-sticky {
+  visibility: hidden;
+}
