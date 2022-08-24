@@ -7,8 +7,8 @@
     @placeholder={{@placeholder}}
     @passThru={{hash maxRows=4}}
     @required={{@required}}
-    @value={{@value}}
-    @onChange={{this.onChange}}
+    @value={{this.value}}
+    @onChange={{this._onChange}}
     @spellcheck={{false}}
     @onKeyDown={{this.keyDown}}
     {{did-insert this.setTextAreaWrapperElement}}>
@@ -19,7 +19,7 @@
     {{/if}}
 
     <StyledMentionText
-      @value={{@value}}
+      @value={{this.value}}
       @existingMentions={{this.alreadyMentioned}}
       @mentionPattern={{this.mentionPattern}}
       @textAreaElement={{this.textAreaElement}}>
@@ -29,7 +29,7 @@
       <MentionOptions
         @options={{this.options}}
         @doMention={{this.doMention}}
-        @onMention={{@onMention}}
+        @onMention={{this.onMention}}
         @currentMention={{this.currentMention}}
         @closeDropdown={{this.closeOptionsDropdown}}
         @focusedIndex={{this.focusedOptionIndex}}
