@@ -108,7 +108,7 @@ module('Integration | Component | mentionable-paper-input', function (hooks) {
     assert.notOk(page.mentionOptionsList.mentionOptions[1].noResultsMsgExists);
   });
 
-  test('it renders a maximum of 6 mention options', async function (assert) {
+  test('it renders the expected number of mention options', async function (assert) {
     const testUsers = getBigArrayTestUsers();
     this.set('inputChanged', val => this.set('newValue', val));
     this.set('setUserMentions', val => this.set('mentionOptions', val ? testUsers : []));
@@ -130,8 +130,7 @@ module('Integration | Component | mentionable-paper-input', function (hooks) {
 
     await page.fillWithWait('@an');
 
-    assert.ok(testUsers.length > 6);
-    assert.equal(page.mentionOptionsList.mentionOptions.length, 6);
+    assert.equal(page.mentionOptionsList.mentionOptions.length, testUsers.length);
   });
 
   test('removing character(s) from an added mention starts a new mention and displays the mention as incomplete',
@@ -300,7 +299,13 @@ module('Integration | Component | mentionable-paper-input', function (hooks) {
 
     assert.equal(page.input.value, '@an');
     assert.equal(page.mentionOptionsList.mentionOptions.length, 2);
-    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused, 'first mention option is auto-focused');
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
+    assert.notOk(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
+
+    await page.arrowDown();
+    assert.ok(page.mentionOptionsList.mentionOptions[0].isFocused);
     assert.ok(page.mentionOptionsList.mentionOptions[0].ariaCurrent === 'true');
     assert.notOk(page.mentionOptionsList.mentionOptions[1].isFocused);
     assert.notOk(page.mentionOptionsList.mentionOptions[1].ariaCurrent === 'true');
@@ -494,7 +499,7 @@ module('Integration | Component | mentionable-paper-input', function (hooks) {
     `);
 
     assert.equal(page.hint, 'Type "#" to mention');
-    this.set('specialChar', null);
+    this.set('specialChar', undefined);
     assert.equal(page.hint, 'Type "@" to mention');
     this.set('showHint', false);
     assert.notOk(page.hintIsPresent, 'Hint is not present');

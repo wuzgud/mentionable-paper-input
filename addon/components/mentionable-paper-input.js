@@ -1,4 +1,3 @@
-
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -10,7 +9,7 @@ class MentionablePaperInputComponent extends Component {
   /**
    * The textarea element's raw text value
    * @argument value
-   * @type string
+   * @type { string }
    */
   @arg(string)
   value = '';
@@ -18,17 +17,15 @@ class MentionablePaperInputComponent extends Component {
   /**
    * A list of mentionable options
    * @argument options
-   * @type array
+   * @type { string[] | object[] }
    */
   @arg(array)
-  get options() {
-    return this.args.options ? this.args.options.slice(0, 6) : [];
-  }
+  options = [];
 
   /**
    * Label for the textarea input element
    * @argument label
-   * @type string
+   * @type { string }
    */
   @arg(string)
   label = '';
@@ -37,7 +34,7 @@ class MentionablePaperInputComponent extends Component {
    * Character used to trigger a mention
    * @argument specialCharacter
    * @default
-   * @type string
+   * @type { string }
    */
   @arg(string)
   specialCharacter = '@';
@@ -46,7 +43,7 @@ class MentionablePaperInputComponent extends Component {
    * Regular expression pattern used to match text for mentions
    * Defaults to a pattern that matches a string starting with a space-preceded ${this.specialCharacter} followed by an unbroken, successive string of letters, numbers, underscores, and periods
    * @argument mentionPattern
-   * @type RegExp
+   * @type { RegExp }
    */
   @arg(instanceOf(RegExp))
   get mentionPattern() {
@@ -59,15 +56,17 @@ class MentionablePaperInputComponent extends Component {
    * Hidden by default.
    * @argument showHint
    * @default
-   * @type boolean
+   * @type { boolean }
    */
   @arg(bool)
   showHint = false;
 
   /**
-   * Executed when a user edits (i.e. add or remove) the textarea's value
-   * The pass-thru _onChange call strips excessive spacing (no more than one space between words is allowed)
-   * A necessary (and low-cost) compromise to make the css voodoo in `<StyledMentionText />` work
+   * Executed when a user edits the textarea's value.
+   * The pass-thru `_onChange` call strips excessive spacing, which means no more than one space between words is allowed.
+   * A necessary and low-cost compromise to make the css voodoo in `<StyledMentionText />` work
+   * @argument onChange
+   * @type { (newValue: string) => void }
    * @param  { string } newValue The new text value from textarea element
    * @event getMentionOptions emits current mention to parent context via getMentionOptions action argument
    * @see getMentionOptions
@@ -77,7 +76,9 @@ class MentionablePaperInputComponent extends Component {
 
   /**
    * Executed when a user selects a mention from the dropdown
-   * @param  { string, Object } option The mention option selected
+   * @argument onMention
+   * @type { (selectedOption: string | object) => string }
+   * @param  { string, object } option The mention option selected
    * @returns { string } The consuming app must parse the passed option and return a string/display value for the mention
    */
   @arg(func.isRequired)
@@ -85,6 +86,8 @@ class MentionablePaperInputComponent extends Component {
 
   /**
    * Executed when it is determined the user is attempting to mention. Consuming app should pass mention options during this step.
+   * @type { (currentMention: string) => void | Promise<void> }
+   * @argument getMentionOptions
    * @param  { string } currentMention The incomplete (i.e. "in progress") mention
    * @see options
    */
@@ -96,13 +99,7 @@ class MentionablePaperInputComponent extends Component {
   @tracked
   enableMentions = true;
   @tracked
-  focusedOptionIndex = 0;
-
-  constructor() {
-    super(...arguments);
-    // TODO: Handle passed in text with mentions already there
-    // this.alreadyMentioned.pushObjects(this.args.prePopulatedMentions || A([]));
-  }
+  focusedOptionIndex = -1;
 
   @action
   _onChange(newValue) {
@@ -151,7 +148,7 @@ class MentionablePaperInputComponent extends Component {
   closeOptionsDropdown() {
     this.getMentionOptions(null);
     this.enableMentions = false;
-    this.focusedOptionIndex = 0;
+    this.focusedOptionIndex = -1;
   }
 
   @action
@@ -185,7 +182,9 @@ class MentionablePaperInputComponent extends Component {
 
   processArrowUp() {
     let options = this.options;
-    if (!options) { return; }
+    if (!options) {
+      return;
+    }
     if (this.focusedOptionIndex === -1) {
       this.focusedOptionIndex = options.length - 1;
     } else {
@@ -195,8 +194,10 @@ class MentionablePaperInputComponent extends Component {
 
   processArrowDown() {
     let options = this.options;
-    if (!options) { return; }
-    if (this.focusedOptionIndex === (options.length -1)) {
+    if (!options) {
+      return;
+    }
+    if (this.focusedOptionIndex === (options.length - 1)) {
       this.focusedOptionIndex = -1;
     } else {
       this.focusedOptionIndex++;
@@ -236,9 +237,11 @@ class MentionablePaperInputComponent extends Component {
   setTextAreaWrapperElement(element) {
     this._textAreaWrapperEl = element;
   }
+
   get textAreaElement() {
     return this._textAreaWrapperEl ? this._textAreaWrapperEl.querySelector('textarea') : {};
   }
+
   getCursorPosition() {
     return this.textAreaElement.selectionStart;
   }
