@@ -1,6 +1,6 @@
 {
   "name": "mentionable-paper-input",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "A styled mention input",
   "keywords": [
     "ember-addon"
@@ -93,7 +93,8 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "https://wuzgud.github.io/mentionable-paper-input/versions/master/"
   },
   "homepage": "https://wuzgud.github.io/mentionable-paper-input",
   "main": "index.js",
