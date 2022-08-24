@@ -6,45 +6,50 @@ export default class UserService extends Service {
   users = [
     {
       "username": "ajball",
-      "name":"Andrew Ball"
+      "name":"Andrew Ball",
+      "cssClass": "mi-blue"
     },
     {
       "username": "janine",
-      "name": "Janine Henry"
+      "name": "Janine Henry",
+      "cssClass": "mi-green"
     },
     {
       "username": "will",
-      "name":"Will Henry"
+      "name":"Will Henry",
+      "cssClass": "mi-green"
     },
     {
       "username": "slauna",
-      "name": "Shauna Robertson"
+      "name": "Shauna Robertson",
+      "cssClass": "mi-red"
     },
     {
       "username": "wsb",
-      "name":"Will Belcher"
+      "name":"Will Belcher",
+      "cssClass": "mi-blue"
     },
     {
       "username": "chuck_city",
-      "name": "Charlie Arrendale"
+      "name": "Charlie Arrendale",
+      "cssClass": "mi-red"
     },
     {
       "username": "carly",
-      "name":"Carly Waters"
+      "name":"Carly Waters",
+      "cssClass": "mi-green"
     },
     {
       "username": "test",
-      "name": "Test User"
+      "name": "Test User",
+      "cssClass": "mi-red"
     }
   ];
   constructor() {
     super(...arguments);
   }
   findAll(searchTerm) {
-    const users = searchTerm ? this.users.map( user => {
-      const userObj = { name: user.name, username: user.username };
-      return new User(userObj);
-    }) : [];
+    const users = searchTerm ? this.users.map( user => new User(user)) : [];
     return new RSVP.Promise( resolve => resolve(users) );
   }
 }
