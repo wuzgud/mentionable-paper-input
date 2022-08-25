@@ -1,9 +1,12 @@
 {
   "name": "mentionable-paper-input",
-  "version": "0.2.2",
-  "description": "A styled mention input",
+  "version": "0.2.3",
+  "description": "A styled mention input for Ember Paper",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-paper",
+    "mention",
+    "mentionable"
   ],
   "repository": {
     "type": "git",
