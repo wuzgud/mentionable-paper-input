@@ -26,7 +26,7 @@ npm install mentionable-paper-input
 Documentation and Demo
 ------------------------------------------------------------------------------
 
-[Click here for documentation and usage examples](https://wuzgud.github.io/mentionable-paper-input/versions/master/)
+[Click here for documentation and usage examples](https://wuzgud.github.io/mentionable-paper-input/)
 
 
 License
