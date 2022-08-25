@@ -14,7 +14,13 @@
   "-latest": {
     "path": "",
     "name": "Latest",
-    "sha": "6abc987a4893ef7b2664fc718eac640afe8db860",
-    "tag": "v0.2.3"
+    "sha": "224af54a9820600f8cee46ec9811e740c5eddb0e",
+    "tag": "v0.2.4"
+  },
+  "v0.2.4": {
+    "path": "versions/v0.2.4",
+    "name": "v0.2.4",
+    "sha": "224af54a9820600f8cee46ec9811e740c5eddb0e",
+    "tag": "v0.2.4"
   }
 }
