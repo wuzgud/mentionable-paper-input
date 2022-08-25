@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-class MentionOptionsComponent extends Component {
+class MentionOptions extends Component {
   @service
   media;
 
@@ -18,4 +18,4 @@ class MentionOptionsComponent extends Component {
   }
 }
 
-export default MentionOptionsComponent;
+export default MentionOptions;

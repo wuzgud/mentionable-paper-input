@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { User } from "../../models/user";
 
-export default class DocsDemo extends Controller {
+export default class Demo extends Controller {
   mentionPattern = new RegExp(`\\B@[a-z0-9_.]+`, 'gi');
 
   @tracked
@@ -34,7 +34,7 @@ export default class DocsDemo extends Controller {
   userMentionOptions = [];
 
   @action
-  extractUsername(user) {
+  getMentionDisplayText(user) {
     return user ? user.username : null;
   }
 

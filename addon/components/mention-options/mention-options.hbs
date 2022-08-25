@@ -25,7 +25,7 @@
         focusedIndex=@focusedIndex
       )}}
     {{else}}
-      <MentionOption @doMention={{noop}} @index={{null}}>
+      <MentionOption @doMention={{(noop)}} @index={{null}}>
         <span data-test-no-mention-options-text>
           No results found matching <span class="ml-1 font-weight-600">{{@currentMention}}</span>
         </span>

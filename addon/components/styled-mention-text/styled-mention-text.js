@@ -8,56 +8,59 @@ import {
   debounceTask,
   runDisposables
 } from "ember-lifeline";
+import { arg } from "ember-arg-types";
+import { array, bool, instanceOf, string } from 'prop-types';
 
-class StyledMentionTextComponent extends Component {
+class StyledMentionText extends Component {
   /**
    * Raw, un-stylized text string value
-   * @return { String }
+   * @argument value
+   * @type { string }
    */
-  get value() {
-    return this.args.value;
-  }
+  @arg(string.isRequired)
+  value = '';
 
   /**
    * List of mentions that have already been added.
-   * If the user doesn't pass, any text matching the provided mention pattern will be styled as a mention
-   * @return { String[] }
+   * If the user doesn't pass, any text matching the provided mention pattern will be styled as a mention.
+   * @argument existingMentions
+   * @type { string[] }
    */
-  get existingMentions() {
-    return this.args.existingMentions;
-  }
+  @arg(array)
+  existingMentions = [];
 
   /**
-   * Regular expression pattern used to match text for mentions
-   * @return { RegExp }
+   * Regular expression pattern used to match text for mentions.
+   * The default one used by this addon is `new RegExp(`\\B@[a-z0-9_.]+`, 'gi')` where '@' is the special character.
+   * @argument mentionPattern
+   * @type { RegExp }
    */
-  get mentionPattern() {
-    return this.args.mentionPattern;
-  }
+  @arg(instanceOf(RegExp).isRequired)
+  mentionPattern;
 
   /**
-   * Render standalone mention text in readonly mode
-   * @return { boolean }
+   * Render standalone mention text in readonly mode. Defaults to `false`.
+   * @argument readonly
+   * @type { boolean }
    */
-  get readonly() {
-    return this.args.readonly;
-  }
+  @arg(bool)
+  readonly = false;
 
   /**
-   * Reference to the textarea DOM element. Not relevant in readonly mode
-   * @return { Element }
+   * Reference to the textarea DOM element. Not relevant in readonly mode.
+   * @argument textAreaElement
+   * @type { HTMLElement }
    */
-  get textAreaElement() {
-    return this.args.textAreaElement;
-  }
+  @arg(instanceOf(HTMLElement))
+  textAreaElement;
 
   /**
-   * Optional "on mention click" href override
-   * @return { String }
+   * Optional "on mention click" href override.
+   * @argument hrefOverride
+   * @type { string }
    */
-  get hrefOverride() {
-    return this.args.hrefOverride;
-  }
+  @arg(string)
+  hrefOverride;
 
   constructor() {
     super(...arguments);
@@ -110,8 +113,6 @@ class StyledMentionTextComponent extends Component {
                     </a>`);
   }
 
-  // ===================== DOM helper functions =====================
-
   replacementTextEl; // reference modifier to replacement text element
 
   @action
@@ -131,4 +132,4 @@ class StyledMentionTextComponent extends Component {
   }
 }
 
-export default StyledMentionTextComponent;
+export default StyledMentionText;

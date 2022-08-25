@@ -39,7 +39,7 @@
     @value={{this.value}}
     @onChange={{fn (mut this.value)}}
     @options={{this.userMentionOptions}}
-    @onMention={{this.extractUsername}}
+    @onMention={{this.getMentionDisplayText}}
     @getMentionOptions={{this.searchUsersToMention}}
     @placeholder={{"Type @ to start mentioning"}} as |OptionResult|>
     <OptionResult as |user|>

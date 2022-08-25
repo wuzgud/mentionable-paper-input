@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 
-class MentionOptionComponent extends Component {
+class MentionOption extends Component {
   get extractedMention() {
     return this.args.onMention(this.args.option);
   }
@@ -9,4 +9,4 @@ class MentionOptionComponent extends Component {
   }
 }
 
-export default MentionOptionComponent;
+export default MentionOption;

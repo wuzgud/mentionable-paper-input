@@ -1,6 +1,6 @@
 <PaperTabs
   @selected={{this.selectedTab}}
-  @onChange={{fn (mut this.selectedTab)}}
+  @onChange={{this.onTabChange}}
   @center={{false}}
   @stretch={{false}}
   @borderBottom={{false}}
@@ -30,22 +30,24 @@
         @language="ts"
         @name="mentionable-input-usage-controller.js"/>
     {{else if (eq current.tab 2)}}
-      <!-- BEGIN-SNIPPET mentionable-input-angle-usage-template.hbs -->
-      <MentionablePaperInput
-        @value={{this.value}}
-        @onChange={{fn (mut this.value)}}
-        @options={{this.userMentionOptions}}
-        @onMention={{this.extractUsername}}
-        @getMentionOptions={{this.searchUsersToMention}}
-        @placeholder={{"Type @ to start mentioning"}}
-        as |OptionResult|
-      >
-        <OptionResult as |user|>
-          <span class="mi-name">{{user.name}}</span>
-          <span class="mi-username">{{user.username}}</span>
-        </OptionResult>
-      </MentionablePaperInput>
-      <!-- END-SNIPPET -->
+      <div {{did-insert this.focusTextarea}}>
+        <!-- BEGIN-SNIPPET mentionable-input-angle-usage-template.hbs -->
+        <MentionablePaperInput
+          @value={{this.value}}
+          @onChange={{fn (mut this.value)}}
+          @options={{this.userMentionOptions}}
+          @onMention={{this.getMentionDisplayText}}
+          @getMentionOptions={{this.searchUsersToMention}}
+          @placeholder={{"Type @ to start mentioning"}}
+          as |OptionResult|
+        >
+          <OptionResult as |user|>
+            <span class="mi-name">{{user.name}}</span>
+            <span class="mi-username">{{user.username}}</span>
+          </OptionResult>
+        </MentionablePaperInput>
+        <!-- END-SNIPPET -->
+      </div>
     {{/if}}
   {{/let}}
 </div>

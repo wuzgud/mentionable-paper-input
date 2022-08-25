@@ -5,7 +5,7 @@ import { replaceAt } from '../utils/replace-at';
 import { arg } from 'ember-arg-types';
 import { array, bool, func, instanceOf, string } from 'prop-types';
 
-class MentionablePaperInputComponent extends Component {
+class MentionablePaperInput extends Component {
   /**
    * The textarea element's raw text value
    * @argument value
@@ -31,16 +31,15 @@ class MentionablePaperInputComponent extends Component {
   label = '';
 
   /**
-   * Character used to trigger a mention
+   * Character used to trigger a mention. Defaults to '@' if not passed.
    * @argument specialCharacter
-   * @default
    * @type { string }
    */
   @arg(string)
   specialCharacter = '@';
 
   /**
-   * Regular expression pattern used to match text for mentions
+   * Regular expression pattern used to match text for mentions.
    * Defaults to a pattern that matches a string starting with a space-preceded ${this.specialCharacter} followed by an unbroken, successive string of letters, numbers, underscores, and periods
    * @argument mentionPattern
    * @type { RegExp }
@@ -64,7 +63,7 @@ class MentionablePaperInputComponent extends Component {
   /**
    * Executed when a user edits the textarea's value.
    * The pass-thru `_onChange` call strips excessive spacing, which means no more than one space between words is allowed.
-   * A necessary and low-cost compromise to make the css voodoo in `<StyledMentionText />` work
+   * A necessary and low-cost compromise to make the css voodoo in `<StyledMentionText />` work.
    * @argument onChange
    * @type { (newValue: string) => void }
    * @param  { string } newValue The new text value from textarea element
@@ -75,7 +74,8 @@ class MentionablePaperInputComponent extends Component {
   onChange;
 
   /**
-   * Executed when a user selects a mention from the dropdown
+   * Executed when a user selects a mention from the dropdown.
+   * Returns a `string` which should be the display text from the given mention option.
    * @argument onMention
    * @type { (selectedOption: string | object) => string }
    * @param  { string, object } option The mention option selected
@@ -162,7 +162,7 @@ class MentionablePaperInputComponent extends Component {
         this.processArrowUp();
       } else if (event.key === 'ArrowDown') {
         event.preventDefault();
-        this.processArrowDown(); // TODO: If element is not visible due to scroll, should we scroll newly focused option into view?
+        this.processArrowDown();
       } else if (event.key === 'Enter') {
         event.preventDefault();
         if (this.focusedOptionIndex === -1) {
@@ -247,4 +247,4 @@ class MentionablePaperInputComponent extends Component {
   }
 }
 
-export default MentionablePaperInputComponent;
+export default MentionablePaperInput;
