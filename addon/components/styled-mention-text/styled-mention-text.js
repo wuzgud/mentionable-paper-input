@@ -27,7 +27,7 @@ class StyledMentionText extends Component {
    * @type { string[] }
    */
   @arg(array)
-  existingMentions = [];
+  existingMentions;
 
   /**
    * Regular expression pattern used to match text for mentions.

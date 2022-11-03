@@ -11,14 +11,14 @@ export default class Demo extends Controller {
   comments = [
     {
       "timeSincePosted": "4 hours ago",
-      "text": "sounds like my kinda place. similar vibe to Sound Table?",
+      "text": "sounds great. I'll see you over there in a couple hours",
       "user": new User({
         "username": "will"
       })
     },
     {
       "timeSincePosted": "3 hours ago",
-      "text": "@will it's similar but not quite the same. Sound Table is much bigger with more dancing",
+      "text": "@will be sure to bring the extra set of car keys with you",
       "user": new User({
         "username": "ajball"
       })
